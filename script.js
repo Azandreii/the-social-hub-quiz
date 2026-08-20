@@ -19,6 +19,7 @@ function loadQuestion() {
     questionElement.textContent = questionData.question;
 
     answersElement.innerHTML = "";
+    answersElement.style.display = "";
 
     feedbackElement.innerHTML = "";
 
@@ -45,12 +46,18 @@ function checkAnswer(selectedAnswer) {
     const questionData = questions[currentQuestion];
 
     const feedback = document.getElementById("feedback");
+    const answersElement = document.getElementById("answers");
     const answerButtons = document.querySelectorAll("#answers button");
 
 
     answerButtons.forEach(function(button) {
         button.disabled = true;
     });
+
+
+    if (document.body.classList.contains("embed-mode")) {
+        answersElement.style.display = "none";
+    }
 
 
     if (selectedAnswer === questionData.correctAnswer) {
@@ -97,9 +104,15 @@ function checkAnswer(selectedAnswer) {
 function tryAgain() {
 
     const feedback = document.getElementById("feedback");
+    const answersElement = document.getElementById("answers");
     const answerButtons = document.querySelectorAll("#answers button");
 
+
     feedback.innerHTML = "";
+
+
+    answersElement.style.display = "";
+
 
     answerButtons.forEach(function(button) {
         button.disabled = false;
