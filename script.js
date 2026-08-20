@@ -143,9 +143,10 @@ function showCompletion() {
     const answersElement = document.getElementById("answers");
     const feedbackElement = document.getElementById("feedback");
 
-    questionElement.textContent = "Quiz complete!";
+    questionElement.textContent = "Quick Challenge complete!";
 
     answersElement.innerHTML = "";
+    answersElement.style.display = "none";
 
     feedbackElement.innerHTML = `
         <div class="feedback correct">
@@ -154,13 +155,25 @@ function showCompletion() {
 
             <p>
                 You completed the Quick Challenge.
+                Close this card to continue exploring the tour.
             </p>
+
+            <button onclick="restartQuiz()">
+                Restart Quiz
+            </button>
 
         </div>
     `;
 
 }
 
+function restartQuiz() {
+
+    currentQuestion = 0;
+
+    loadQuestion();
+
+}
 
 
 
