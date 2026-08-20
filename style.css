@@ -98,3 +98,22 @@ body {
 .quiz-card button:disabled:hover {
     background-color: #f3f3f3;
 }
+
+/* EMBED MODE  */
+
+body.embed-mode {
+    min-height: 0;
+
+    display: block;
+
+    background-color: transparent;
+}
+
+body.embed-mode .quiz-card {
+    width: 100%;
+    max-width: none;
+
+    padding: 30px;
+
+    border-radius: 0;
+}

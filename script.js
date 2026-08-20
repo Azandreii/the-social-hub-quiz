@@ -1,3 +1,9 @@
+const urlParams = new URLSearchParams(window.location.search);
+
+if (urlParams.get("embed") === "1") {
+    document.body.classList.add("embed-mode");
+}
+
 let currentQuestion = 0;
 
 
@@ -141,6 +147,8 @@ function showCompletion() {
     `;
 
 }
+
+
 
 
 loadQuestion();
