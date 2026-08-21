@@ -243,7 +243,7 @@ function showCompletion() {
 
             <button class="feedback-button" onclick="restartQuiz()">
                 Restart challenge
-                <span aria-hidden="true">↻</span>
+                <span class="restart-icon" aria-hidden="true">↻</span>
             </button>
 
         </div>

@@ -150,6 +150,7 @@ body {
 
 .answer-button:hover {
     background-color: #eeeeea;
+    border-color: #111111;
 
     transform: translateY(-2px);
 }
@@ -157,6 +158,17 @@ body {
 
 .answer-button:active {
     transform: translateY(0) scale(0.99);
+}
+
+/* KEYBOARD FOCUS */
+
+.answer-button:focus-visible {
+    outline: 3px solid #111111;
+    outline-offset: 3px;
+}
+
+.answer-button:hover .answer-letter {
+    transform: scale(1.08);
 }
 
 
@@ -178,6 +190,10 @@ body {
 
     font-size: 12px;
     font-weight: 700;
+
+     transition:
+        background-color 0.15s ease,
+        transform 0.15s ease;
 }
 
 
@@ -303,10 +319,33 @@ body {
     transform: translateY(-2px);
 }
 
+.feedback-button span {
+    display: inline-block;
+
+    transition: transform 0.15s ease;
+}
+
+
+.feedback-button:hover span:not(.restart-icon) {
+    transform: translateX(4px);
+}
+
+
+.feedback-button:hover .restart-icon {
+    transform: rotate(45deg);
+}
+
 
 .feedback-button:active {
     transform: translateY(0) scale(0.99);
 }
+
+.feedback-button:focus-visible {
+    outline: 3px solid #111111;
+    outline-offset: 3px;
+}
+
+/* DISABLED STATE */
 
 .answer-button:disabled {
     color: #777777;
@@ -330,7 +369,13 @@ body {
 
 .answer-button:disabled:hover {
     background-color: #f0efec;
+    border-color: #b5b5b5;
 
+    transform: none;
+}
+
+
+.answer-button:disabled:active {
     transform: none;
 }
 
