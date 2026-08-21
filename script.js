@@ -6,6 +6,51 @@ if (urlParams.get("embed") === "1") {
 
 let currentQuestion = 0;
 
+function changeQuizState(updateFunction) {
+
+    const quizStage = document.getElementById("quiz-stage");
+
+    const prefersReducedMotion =
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+    if (prefersReducedMotion) {
+
+        updateFunction();
+
+        return;
+
+    }
+
+
+    quizStage.classList.remove("is-entering");
+
+    quizStage.classList.add("is-leaving");
+
+
+    quizStage.addEventListener("transitionend", function handleTransition() {
+
+        updateFunction();
+
+        quizStage.classList.remove("is-leaving");
+
+
+        void quizStage.offsetWidth;
+
+
+        quizStage.classList.add("is-entering");
+
+
+        quizStage.addEventListener("animationend", function() {
+
+            quizStage.classList.remove("is-entering");
+
+        }, { once: true });
+
+
+    }, { once: true });
+
+}
 
 function loadQuestion() {
 
@@ -94,76 +139,76 @@ function checkAnswer(selectedAnswer) {
     });
 
 
-    // if (document.body.classList.contains("embed-mode")) {
+    changeQuizState(function() {
 
         answersElement.style.display = "none";
         answerInstruction.style.display = "none";
 
-    // }
-    // DECIDED TO KEEP THE SAME UI UX FOR NON-EMBEDD AS IT SIMPLIFIES IT AND GOES WITH THE BRAND IDENTITY 
 
-    if (selectedAnswer === questionData.correctAnswer) {
+        if (selectedAnswer === questionData.correctAnswer) {
 
-        feedback.innerHTML = `
-            <div class="feedback feedback-success">
+            feedback.innerHTML = `
+                <div class="feedback feedback-success">
 
-                <div class="feedback-status">
+                    <div class="feedback-status">
 
-                    <span class="feedback-icon">
-                        ✓
-                    </span>
+                        <span class="feedback-icon">
+                            ✓
+                        </span>
 
-                    <span class="feedback-label">
-                        Nice one
-                    </span>
+                        <span class="feedback-label">
+                            Nice one
+                        </span>
 
-                </div>
+                    </div>
 
-                <h2>Correct!</h2>
+                    <h2>Correct!</h2>
 
-                <p>
-                    ${questionData.explanation}
-                </p>
+                    <p>
+                        ${questionData.explanation}
+                    </p>
 
-                <button class="feedback-button" onclick="continueQuiz()">
-                    Next one
-                    <span aria-hidden="true">→</span>
-                </button>
-
-            </div>
-        `;
-
-    } else {
-
-        feedback.innerHTML = `
-            <div class="feedback feedback-error">
-
-                <div class="feedback-status">
-
-                    <span class="feedback-icon">
-                        ×
-                    </span>
-
-                    <span class="feedback-label">
-                        Not quite
-                    </span>
+                    <button class="feedback-button" onclick="continueQuiz()">
+                        Next one
+                        <span aria-hidden="true">→</span>
+                    </button>
 
                 </div>
+            `;
 
-                <h2>Give it another shot.</h2>
+        } else {
 
-                <p>
-                    That wasn't the right answer.
-                </p>
+            feedback.innerHTML = `
+                <div class="feedback feedback-error">
 
-                <button class="feedback-button" onclick="tryAgain()">
-                    Try Again
-                </button>
+                    <div class="feedback-status">
 
-            </div>
-        `;
+                        <span class="feedback-icon">
+                            ×
+                        </span>
 
-    }
+                        <span class="feedback-label">
+                            Not quite
+                        </span>
+
+                    </div>
+
+                    <h2>Give it another shot.</h2>
+
+                    <p>
+                        That wasn't the right answer.
+                    </p>
+
+                    <button class="feedback-button" onclick="tryAgain()">
+                        Try Again
+                    </button>
+
+                </div>
+            `;
+
+        }
+
+    });
 
 }
 
@@ -176,32 +221,40 @@ function tryAgain() {
     const answerButtons = document.querySelectorAll("#answers button");
 
 
-    feedback.innerHTML = "";
+    changeQuizState(function() {
 
-    answersElement.style.display = "";
+        feedback.innerHTML = "";
 
-    answerInstruction.style.display = "";
+        answersElement.style.display = "";
+
+        answerInstruction.style.display = "";
 
 
-    answerButtons.forEach(function(button) {
-        button.disabled = false;
+        answerButtons.forEach(function(button) {
+            button.disabled = false;
+        });
+
     });
 
 }
 
 function continueQuiz() {
 
-    currentQuestion++;
+    changeQuizState(function() {
 
-    if (currentQuestion < questions.length) {
+        currentQuestion++;
 
-        loadQuestion();
+        if (currentQuestion < questions.length) {
 
-    } else {
+            loadQuestion();
 
-        showCompletion();
+        } else {
 
-    }
+            showCompletion();
+
+        }
+
+    });
 
 }
 
@@ -253,9 +306,13 @@ function showCompletion() {
 
 function restartQuiz() {
 
-    currentQuestion = 0;
+    changeQuizState(function() {
 
-    loadQuestion();
+        currentQuestion = 0;
+
+        loadQuestion();
+
+    });
 
 }
 
