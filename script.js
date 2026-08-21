@@ -41,7 +41,7 @@ function changeQuizState(updateFunction) {
         quizStage.classList.add("is-entering");
 
 
-        quizStage.addEventListener("animationend", function() {
+        quizStage.addEventListener("animationend", function () {
 
             quizStage.classList.remove("is-entering");
 
@@ -72,39 +72,43 @@ function loadQuestion() {
 
     progressElement.innerHTML = "";
 
-questions.forEach(function(question, index) {
+    questions.forEach(function (question, index) {
 
-    const progressItem = document.createElement("div");
-    progressItem.classList.add("progress-item");
-
-
-    const progressNode = document.createElement("span");
-    progressNode.classList.add("progress-node");
-
-    if (index <= currentQuestion) {
-        progressNode.classList.add("active");
-    }
-
-    progressItem.appendChild(progressNode);
+        const progressItem = document.createElement("div");
+        progressItem.classList.add("progress-item");
 
 
-    if (index < questions.length - 1) {
+        const progressNode = document.createElement("span");
+        progressNode.classList.add("progress-node");
 
-        const progressLine = document.createElement("span");
-        progressLine.classList.add("progress-line");
+        if (index <= currentQuestion) {
+            progressNode.classList.add("active");
 
-        if (index < currentQuestion) {
-            progressLine.classList.add("active");
+            if (index === currentQuestion) {
+    progressNode.classList.add("current");
+}
         }
 
-        progressItem.appendChild(progressLine);
-
-    }
+        progressItem.appendChild(progressNode);
 
 
-    progressElement.appendChild(progressItem);
+        if (index < questions.length - 1) {
 
-});
+            const progressLine = document.createElement("span");
+            progressLine.classList.add("progress-line");
+
+            if (index < currentQuestion) {
+                progressLine.classList.add("active");
+            }
+
+            progressItem.appendChild(progressLine);
+
+        }
+
+
+        progressElement.appendChild(progressItem);
+
+    });
 
 
     answersElement.innerHTML = "";
@@ -117,9 +121,10 @@ questions.forEach(function(question, index) {
     const answerLetters = ["A", "B", "C", "D"];
 
 
-    questionData.answers.forEach(function(answer, index) {
+    questionData.answers.forEach(function (answer, index) {
 
         const button = document.createElement("button");
+        button.type = "button";
 
         button.classList.add("answer-button");
 
@@ -133,7 +138,7 @@ questions.forEach(function(question, index) {
             </span>
         `;
 
-        button.onclick = function() {
+        button.onclick = function () {
             checkAnswer(index);
         };
 
@@ -154,12 +159,12 @@ function checkAnswer(selectedAnswer) {
     const answerButtons = document.querySelectorAll("#answers button");
 
 
-    answerButtons.forEach(function(button) {
+    answerButtons.forEach(function (button) {
         button.disabled = true;
     });
 
 
-    changeQuizState(function() {
+    changeQuizState(function () {
 
         answersElement.style.display = "none";
         answerInstruction.style.display = "none";
@@ -188,7 +193,10 @@ function checkAnswer(selectedAnswer) {
                         ${questionData.explanation}
                     </p>
 
-                    <button class="feedback-button" onclick="continueQuiz()">
+                    <button
+                        type="button"
+                        class="feedback-button"
+                        onclick="continueQuiz()">
                         Next one
                         <span aria-hidden="true">→</span>
                     </button>
@@ -219,7 +227,10 @@ function checkAnswer(selectedAnswer) {
                         That wasn't the right answer.
                     </p>
 
-                    <button class="feedback-button" onclick="tryAgain()">
+                    <button
+                        type="button"
+                        class="feedback-button"
+                        onclick="tryAgain()">
                         Try Again
                     </button>
 
@@ -227,6 +238,16 @@ function checkAnswer(selectedAnswer) {
             `;
 
         }
+
+
+        const feedbackButton = feedback.querySelector(".feedback-button");
+
+        if (feedbackButton) {
+            feedbackButton.focus({
+                preventScroll: true
+            });
+        }
+
 
     });
 
@@ -241,7 +262,7 @@ function tryAgain() {
     const answerButtons = document.querySelectorAll("#answers button");
 
 
-    changeQuizState(function() {
+    changeQuizState(function () {
 
         feedback.innerHTML = "";
 
@@ -250,7 +271,7 @@ function tryAgain() {
         answerInstruction.style.display = "";
 
 
-        answerButtons.forEach(function(button) {
+        answerButtons.forEach(function (button) {
             button.disabled = false;
         });
 
@@ -260,7 +281,7 @@ function tryAgain() {
 
 function continueQuiz() {
 
-    changeQuizState(function() {
+    changeQuizState(function () {
 
         currentQuestion++;
 
@@ -314,7 +335,10 @@ function showCompletion() {
                 Keep exploring The Social Hub.
             </p>
 
-            <button class="feedback-button" onclick="restartQuiz()">
+            <button
+                type="button"
+                class="feedback-button"
+                onclick="restartQuiz()">
                 Restart challenge
                 <span class="restart-icon" aria-hidden="true">↻</span>
             </button>
@@ -322,11 +346,20 @@ function showCompletion() {
         </div>
     `;
 
+    const restartButton =
+        feedbackElement.querySelector(".feedback-button");
+
+    if (restartButton) {
+        restartButton.focus({
+            preventScroll: true
+        });
+    }
+
 }
 
 function restartQuiz() {
 
-    changeQuizState(function() {
+    changeQuizState(function () {
 
         currentQuestion = 0;
 
@@ -335,7 +368,5 @@ function restartQuiz() {
     });
 
 }
-
-
 
 loadQuestion();

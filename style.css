@@ -117,6 +117,11 @@ body {
     background-color: #111111;
 
     transform: scale(1.15);
+    
+}
+
+.progress-node.current {
+    box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.12);
 }
 
 
@@ -307,6 +312,8 @@ body {
 
     font-size: 18px;
     font-weight: 700;
+
+    animation: feedback-icon-enter 0.22s ease-out both;
 }
 
 
@@ -494,6 +501,20 @@ body {
         opacity: 1;
 
         transform: translateY(0);
+    }
+
+}
+
+@keyframes feedback-icon-enter {
+
+    from {
+        opacity: 0;
+        transform: scale(0.75);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
 
 }
@@ -699,5 +720,9 @@ body.embed-mode .feedback p {
     .progress-line {
         transition: none;
     }
+
+    .feedback-icon {
+    animation: none;
+}
 
 }
