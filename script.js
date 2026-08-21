@@ -72,19 +72,39 @@ function loadQuestion() {
 
     progressElement.innerHTML = "";
 
-    questions.forEach(function(question, index) {
+questions.forEach(function(question, index) {
 
-        const progressNode = document.createElement("span");
+    const progressItem = document.createElement("div");
+    progressItem.classList.add("progress-item");
 
-        progressNode.classList.add("progress-node");
 
-        if (index <= currentQuestion) {
-            progressNode.classList.add("active");
+    const progressNode = document.createElement("span");
+    progressNode.classList.add("progress-node");
+
+    if (index <= currentQuestion) {
+        progressNode.classList.add("active");
+    }
+
+    progressItem.appendChild(progressNode);
+
+
+    if (index < questions.length - 1) {
+
+        const progressLine = document.createElement("span");
+        progressLine.classList.add("progress-line");
+
+        if (index < currentQuestion) {
+            progressLine.classList.add("active");
         }
 
-        progressElement.appendChild(progressNode);
+        progressItem.appendChild(progressLine);
 
-    });
+    }
+
+
+    progressElement.appendChild(progressItem);
+
+});
 
 
     answersElement.innerHTML = "";
