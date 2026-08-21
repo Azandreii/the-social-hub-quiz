@@ -14,17 +14,31 @@
 
 <body>
 
-    <div class="quiz-card">
+<div class="quiz-card">
 
-        <h1>Welcome to The Social Hub!</h1>
+    <div class="quiz-header">
 
-        <p id="question"></p>
+        <span class="quiz-label">
+            Quick Challenge
+        </span>
 
-        <div id="answers"></div>
-
-        <div id="feedback"></div>
+        <span id="question-counter" class="question-counter"></span>
 
     </div>
+
+    <div id="progress" class="progress"></div>
+
+    <p id="question" class="question"></p>
+
+<p id="answer-instruction" class="answer-instruction">
+    Pick an answer
+</p>
+
+    <div id="answers"></div>
+
+    <div id="feedback"></div>
+
+</div>
 
     <script src="questions.js"></script>
     <script src="script.js"></script>

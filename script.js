@@ -14,21 +14,59 @@ function loadQuestion() {
     const questionElement = document.getElementById("question");
     const answersElement = document.getElementById("answers");
     const feedbackElement = document.getElementById("feedback");
+    const questionCounter = document.getElementById("question-counter");
+    const progressElement = document.getElementById("progress");
+    const answerInstruction = document.getElementById("answer-instruction");
 
 
     questionElement.textContent = questionData.question;
+
+    questionCounter.textContent =
+        `${currentQuestion + 1} / ${questions.length}`;
+
+
+    progressElement.innerHTML = "";
+
+    questions.forEach(function(question, index) {
+
+        const progressNode = document.createElement("span");
+
+        progressNode.classList.add("progress-node");
+
+        if (index <= currentQuestion) {
+            progressNode.classList.add("active");
+        }
+
+        progressElement.appendChild(progressNode);
+
+    });
+
 
     answersElement.innerHTML = "";
     answersElement.style.display = "";
 
     feedbackElement.innerHTML = "";
+    answerInstruction.style.display = "";
+
+
+    const answerLetters = ["A", "B", "C", "D"];
 
 
     questionData.answers.forEach(function(answer, index) {
 
         const button = document.createElement("button");
 
-        button.textContent = answer;
+        button.classList.add("answer-button");
+
+        button.innerHTML = `
+            <span class="answer-letter">
+                ${answerLetters[index]}
+            </span>
+
+            <span class="answer-text">
+                ${answer}
+            </span>
+        `;
 
         button.onclick = function() {
             checkAnswer(index);
@@ -47,6 +85,7 @@ function checkAnswer(selectedAnswer) {
 
     const feedback = document.getElementById("feedback");
     const answersElement = document.getElementById("answers");
+    const answerInstruction = document.getElementById("answer-instruction");
     const answerButtons = document.querySelectorAll("#answers button");
 
 
@@ -55,15 +94,30 @@ function checkAnswer(selectedAnswer) {
     });
 
 
-    if (document.body.classList.contains("embed-mode")) {
-        answersElement.style.display = "none";
-    }
+    // if (document.body.classList.contains("embed-mode")) {
 
+        answersElement.style.display = "none";
+        answerInstruction.style.display = "none";
+
+    // }
+    // DECIDED TO KEEP THE SAME UI UX FOR NON-EMBEDD AS IT SIMPLIFIES IT AND GOES WITH THE BRAND IDENTITY 
 
     if (selectedAnswer === questionData.correctAnswer) {
 
         feedback.innerHTML = `
-            <div class="feedback correct">
+            <div class="feedback feedback-success">
+
+                <div class="feedback-status">
+
+                    <span class="feedback-icon">
+                        ✓
+                    </span>
+
+                    <span class="feedback-label">
+                        Nice one
+                    </span>
+
+                </div>
 
                 <h2>Correct!</h2>
 
@@ -71,8 +125,9 @@ function checkAnswer(selectedAnswer) {
                     ${questionData.explanation}
                 </p>
 
-                <button onclick="continueQuiz()">
-                    Continue
+                <button class="feedback-button" onclick="continueQuiz()">
+                    Next one
+                    <span aria-hidden="true">→</span>
                 </button>
 
             </div>
@@ -81,15 +136,27 @@ function checkAnswer(selectedAnswer) {
     } else {
 
         feedback.innerHTML = `
-            <div class="feedback incorrect">
+            <div class="feedback feedback-error">
 
-                <h2>Not quite</h2>
+                <div class="feedback-status">
+
+                    <span class="feedback-icon">
+                        ×
+                    </span>
+
+                    <span class="feedback-label">
+                        Not quite
+                    </span>
+
+                </div>
+
+                <h2>Give it another shot.</h2>
 
                 <p>
-                    That's not the correct answer. Try again!
+                    That wasn't the right answer.
                 </p>
 
-                <button onclick="tryAgain()">
+                <button class="feedback-button" onclick="tryAgain()">
                     Try Again
                 </button>
 
@@ -105,13 +172,15 @@ function tryAgain() {
 
     const feedback = document.getElementById("feedback");
     const answersElement = document.getElementById("answers");
+    const answerInstruction = document.getElementById("answer-instruction");
     const answerButtons = document.querySelectorAll("#answers button");
 
 
     feedback.innerHTML = "";
 
-
     answersElement.style.display = "";
+
+    answerInstruction.style.display = "";
 
 
     answerButtons.forEach(function(button) {
@@ -119,7 +188,6 @@ function tryAgain() {
     });
 
 }
-
 
 function continueQuiz() {
 
@@ -142,24 +210,40 @@ function showCompletion() {
     const questionElement = document.getElementById("question");
     const answersElement = document.getElementById("answers");
     const feedbackElement = document.getElementById("feedback");
+    const answerInstruction = document.getElementById("answer-instruction");
 
     questionElement.textContent = "Quick Challenge complete!";
 
     answersElement.innerHTML = "";
     answersElement.style.display = "none";
 
-    feedbackElement.innerHTML = `
-        <div class="feedback correct">
+    answerInstruction.style.display = "none";
 
-            <h2>Well done!</h2>
+    feedbackElement.innerHTML = `
+        <div class="feedback feedback-complete">
+
+            <div class="feedback-status">
+
+                <span class="feedback-icon">
+                    ✓
+                </span>
+
+                <span class="feedback-label">
+                    Nice work
+                </span>
+
+            </div>
+
+            <h2>You made it!</h2>
 
             <p>
-                You completed the Quick Challenge.
-                Close this card to continue exploring the tour.
+                That's the Quick Challenge done.
+                Keep exploring The Social Hub.
             </p>
 
-            <button onclick="restartQuiz()">
-                Restart Quiz
+            <button class="feedback-button" onclick="restartQuiz()">
+                Restart challenge
+                <span aria-hidden="true">↻</span>
             </button>
 
         </div>
