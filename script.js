@@ -6,6 +6,13 @@ if (urlParams.get("embed") === "1") {
 
 let currentQuestion = 0;
 
+//gamification vars
+const BASE_POINTS = 100;
+const FIRST_TRY_BONUS = 50;
+let totalPoints = 0;
+let firstTryBonuses = 0;
+let attemptedCurrentQuestion = false;
+
 function changeQuizState(updateFunction) {
 
     const quizStage = document.getElementById("quiz-stage");
@@ -54,6 +61,8 @@ function changeQuizState(updateFunction) {
 
 function loadQuestion() {
 
+    attemptedCurrentQuestion = false;
+
     const questionData = questions[currentQuestion];
 
     const questionElement = document.getElementById("question");
@@ -85,8 +94,8 @@ function loadQuestion() {
             progressNode.classList.add("active");
 
             if (index === currentQuestion) {
-    progressNode.classList.add("current");
-}
+                progressNode.classList.add("current");
+            }
         }
 
         progressItem.appendChild(progressNode);
@@ -172,39 +181,77 @@ function checkAnswer(selectedAnswer) {
 
         if (selectedAnswer === questionData.correctAnswer) {
 
+            let earnedPoints = BASE_POINTS;
+            let earnedFirstTryBonus = false;
+
+            if (!attemptedCurrentQuestion) {
+
+                earnedPoints += FIRST_TRY_BONUS;
+                firstTryBonuses++;
+
+                earnedFirstTryBonus = true;
+
+            }
+
+            totalPoints += earnedPoints;
+
+
             feedback.innerHTML = `
-                <div class="feedback feedback-success">
+        <div class="feedback feedback-success">
 
-                    <div class="feedback-status">
+            <div class="feedback-status">
 
-                        <span class="feedback-icon">
-                            ✓
-                        </span>
+                <span class="feedback-icon">
+                    ✓
+                </span>
 
-                        <span class="feedback-label">
-                            Nice one
-                        </span>
+                <span class="feedback-label">
+                    Nice one
+                </span>
 
-                    </div>
+            </div>
 
-                    <h2>Correct!</h2>
+            <h2>Correct!</h2>
 
-                    <p>
-                        ${questionData.explanation}
-                    </p>
+            <p>
+                ${questionData.explanation}
+            </p>
 
-                    <button
-                        type="button"
-                        class="feedback-button"
-                        onclick="continueQuiz()">
-                        Next one
-                        <span aria-hidden="true">→</span>
-                    </button>
+            <div class="points-reward">
 
+                <div class="points-earned">
+                    +${earnedPoints}
+                    <span>points</span>
                 </div>
-            `;
+
+                ${earnedFirstTryBonus
+                    ? `
+                        <div class="first-try-bonus">
+                            First-try bonus +${FIRST_TRY_BONUS}
+                        </div>
+                    `
+                    : ""
+                }
+
+            </div>
+
+            <button
+                type="button"
+                class="feedback-button"
+                onclick="continueQuiz()">
+
+                Next one
+
+                <span aria-hidden="true">→</span>
+
+            </button>
+
+        </div>
+    `;
 
         } else {
+
+            attemptedCurrentQuestion = true;
 
             feedback.innerHTML = `
                 <div class="feedback feedback-error">
@@ -283,9 +330,9 @@ function continueQuiz() {
 
     changeQuizState(function () {
 
-        currentQuestion++;
+        if (currentQuestion < questions.length - 1) {
 
-        if (currentQuestion < questions.length) {
+            currentQuestion++;
 
             loadQuestion();
 
@@ -299,6 +346,44 @@ function continueQuiz() {
 
 }
 
+function getCompletionMessage() {
+
+    if (firstTryBonuses === questions.length) {
+        return "Nailed it!";
+    }
+
+    if (firstTryBonuses >= Math.ceil(questions.length / 2)) {
+        return "Nice work!";
+    }
+
+    return "You made it!";
+
+}
+
+function getBonusMessage() {
+
+    if (firstTryBonuses === questions.length) {
+
+        return `
+            <div class="bonus-summary bonus-summary-perfect">
+                <strong>Perfect run!</strong>
+                You got every question right on your first try
+                and earned every available first-try bonus.
+            </div>
+        `;
+
+    }
+
+    return `
+        <div class="bonus-summary">
+            <strong>Want to beat your score?</strong>
+            Get a question right on your first try to earn
+            an extra +50 points.
+        </div>
+    `;
+
+}
+
 function showCompletion() {
 
     const questionElement = document.getElementById("question");
@@ -306,12 +391,17 @@ function showCompletion() {
     const feedbackElement = document.getElementById("feedback");
     const answerInstruction = document.getElementById("answer-instruction");
 
+    const completionMessage = getCompletionMessage();
+    const bonusMessage = getBonusMessage();
+
+
     questionElement.textContent = "Quick Challenge complete!";
 
     answersElement.innerHTML = "";
     answersElement.style.display = "none";
 
     answerInstruction.style.display = "none";
+
 
     feedbackElement.innerHTML = `
         <div class="feedback feedback-complete">
@@ -328,31 +418,72 @@ function showCompletion() {
 
             </div>
 
-            <h2>You made it!</h2>
+            <h2>${completionMessage}</h2>
+
+
+            <div class="completion-score">
+
+                <div class="completion-points">
+                    ${totalPoints}
+                </div>
+
+                <div class="completion-points-label">
+                    Points
+                </div>
+
+            </div>
+
+
+            <div class="completion-bonuses">
+
+                ${firstTryBonuses}
+                ${
+                    firstTryBonuses === 1
+                        ? "first-try bonus"
+                        : "first-try bonuses"
+                }
+
+            </div>
+
+
+            ${bonusMessage}
+
 
             <p>
-                That's the Quick Challenge done.
+                You completed all ${questions.length} questions.
                 Keep exploring The Social Hub.
             </p>
+
 
             <button
                 type="button"
                 class="feedback-button"
                 onclick="restartQuiz()">
+
                 Restart challenge
-                <span class="restart-icon" aria-hidden="true">↻</span>
+
+                <span
+                    class="restart-icon"
+                    aria-hidden="true">
+                    ↻
+                </span>
+
             </button>
 
         </div>
     `;
 
+
     const restartButton =
         feedbackElement.querySelector(".feedback-button");
 
+
     if (restartButton) {
+
         restartButton.focus({
             preventScroll: true
         });
+
     }
 
 }
@@ -362,6 +493,10 @@ function restartQuiz() {
     changeQuizState(function () {
 
         currentQuestion = 0;
+
+        totalPoints = 0;
+        firstTryBonuses = 0;
+        attemptedCurrentQuestion = false;
 
         loadQuestion();
 
