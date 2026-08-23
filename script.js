@@ -404,43 +404,52 @@ function showCompletion() {
     const bonusMessage = getBonusMessage();
 
     //badge
-    const unlockedBadge = completeChallenge();
+    const unlockedBadges =
+        completeChallenge();
+
     let badgeUnlockHTML = "";
 
 
-if (unlockedBadge) {
+    if (unlockedBadges.length > 0) {
 
-    badgeUnlockHTML = `
-        <div class="badge-unlock">
+        badgeUnlockHTML =
+            unlockedBadges
+                .map(function (badge) {
 
-            <div class="badge-icon">
-                ${unlockedBadge.icon}
-            </div>
+                    return `
+                    <div class="badge-unlock">
 
-            <div class="badge-content">
+                        <div class="badge-icon">
+                            ${badge.icon}
+                        </div>
 
-                <div class="badge-kicker">
-                    Badge unlocked
-                </div>
+                        <div class="badge-content">
 
-                <div class="badge-name">
-                    ${unlockedBadge.name}
-                </div>
+                            <div class="badge-kicker">
+                                Badge unlocked
+                            </div>
 
-                <div class="badge-description">
-                    ${unlockedBadge.description}
-                </div>
+                            <div class="badge-name">
+                                ${badge.name}
+                            </div>
 
-                <div class="badge-reward">
-                    +${unlockedBadge.reward} Hub Points
-                </div>
+                            <div class="badge-description">
+                                ${badge.description}
+                            </div>
 
-            </div>
+                            <div class="badge-reward">
+                                +${badge.reward} Hub Points
+                            </div>
 
-        </div>
-    `;
+                        </div>
 
-}
+                    </div>
+                `;
+
+                })
+                .join("");
+
+    }
 
 
     questionElement.textContent = "Quick Challenge complete!";
@@ -482,11 +491,10 @@ if (unlockedBadge) {
 
         <div class="completion-bonuses">
             ${firstTryBonuses}
-            ${
-                firstTryBonuses === 1
-                    ? "first-try bonus"
-                    : "first-try bonuses"
-            }
+            ${firstTryBonuses === 1
+            ? "first-try bonus"
+            : "first-try bonuses"
+        }
         </div>
 
         ${bonusMessage}
@@ -616,7 +624,7 @@ function loadTourProgress() {
 
 function getBadgeById(badgeId) {
 
-    return badges.find(function(badge) {
+    return badges.find(function (badge) {
         return badge.id === badgeId;
     });
 
@@ -649,6 +657,60 @@ function unlockBadge(badgeId) {
 
 }
 
+function evaluateBadges(context) {
+
+    const newlyUnlockedBadges = [];
+
+
+    badges.forEach(function (badge) {
+
+        if (
+            tourProgress.unlockedBadges.includes(
+                badge.id
+            )
+        ) {
+            return;
+        }
+
+
+        if (
+            typeof badge.condition !== "function"
+        ) {
+            return;
+        }
+
+
+        const conditionMet =
+            badge.condition(
+                tourProgress,
+                context
+            );
+
+
+        if (!conditionMet) {
+            return;
+        }
+
+
+        const unlockedBadge =
+            unlockBadge(badge.id);
+
+
+        if (unlockedBadge) {
+
+            newlyUnlockedBadges.push(
+                unlockedBadge
+            );
+
+        }
+
+    });
+
+
+    return newlyUnlockedBadges;
+
+}
+
 function completeChallenge() {
 
     const isAlreadyCompleted =
@@ -668,32 +730,36 @@ function completeChallenge() {
     }
 
 
-    let unlockedBadge = null;
+    const badgeContext = {
+
+        challengeId:
+            CHALLENGE_ID,
+
+        challengePoints:
+            totalPoints,
+
+        firstTryBonuses:
+            firstTryBonuses,
+
+        totalQuestions:
+            questions.length,
+
+        isFirstCompletion:
+            !isAlreadyCompleted
+
+    };
 
 
-    /*
-        FIRST STEPS BADGE
-
-        Unlock once the user has completed
-        at least one challenge.
-
-        Checking the actual achievement condition
-        instead of only checking whether THIS
-        completion happened to be the first one.
-    */
-
-    if (tourProgress.completedChallenges.length >= 1) {
-
-        unlockedBadge =
-            unlockBadge("first-steps");
-
-    }
+    const unlockedBadges =
+        evaluateBadges(
+            badgeContext
+        );
 
 
     saveTourProgress();
 
 
-    return unlockedBadge;
+    return unlockedBadges;
 
 }
 

@@ -10,7 +10,38 @@ const badges = [
 
         reward: 100,
 
-        icon: "★"
+        icon: "★",
+
+        condition: function(progress, context) {
+
+            return (
+                progress.completedChallenges.length >= 1
+            );
+
+        }
+    },
+
+
+    {
+        id: "perfect-run",
+
+        name: "Perfect Run",
+
+        description:
+            "Complete a Quick Challenge with every first-try bonus.",
+
+        reward: 150,
+
+        icon: "✓",
+
+        condition: function(progress, context) {
+
+            return (
+                context &&
+                context.firstTryBonuses === context.totalQuestions
+            );
+
+        }
     }
 
 ];
