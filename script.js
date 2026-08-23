@@ -13,6 +13,15 @@ let totalPoints = 0;
 let firstTryBonuses = 0;
 let attemptedCurrentQuestion = false;
 
+//global point system
+let tourProgress = {
+    hubPoints: 0,
+    completedChallenges: [],
+    unlockedBadges: []
+};
+
+const CHALLENGE_ID = "groningen-quick-challenge";
+
 function changeQuizState(updateFunction) {
 
     const quizStage = document.getElementById("quiz-stage");
@@ -394,6 +403,45 @@ function showCompletion() {
     const completionMessage = getCompletionMessage();
     const bonusMessage = getBonusMessage();
 
+    //badge
+    const unlockedBadge = completeChallenge();
+    let badgeUnlockHTML = "";
+
+
+if (unlockedBadge) {
+
+    badgeUnlockHTML = `
+        <div class="badge-unlock">
+
+            <div class="badge-icon">
+                ${unlockedBadge.icon}
+            </div>
+
+            <div class="badge-content">
+
+                <div class="badge-kicker">
+                    Badge unlocked
+                </div>
+
+                <div class="badge-name">
+                    ${unlockedBadge.name}
+                </div>
+
+                <div class="badge-description">
+                    ${unlockedBadge.description}
+                </div>
+
+                <div class="badge-reward">
+                    +${unlockedBadge.reward} Hub Points
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
 
     questionElement.textContent = "Quick Challenge complete!";
 
@@ -404,74 +452,81 @@ function showCompletion() {
 
 
     feedbackElement.innerHTML = `
-        <div class="feedback feedback-complete">
+    <div class="feedback feedback-complete">
 
-            <div class="feedback-status">
+        <div class="feedback-status">
 
-                <span class="feedback-icon">
-                    ✓
-                </span>
+            <span class="feedback-icon">
+                ✓
+            </span>
 
-                <span class="feedback-label">
-                    Nice work
-                </span>
-
-            </div>
-
-            <h2>${completionMessage}</h2>
-
-
-            <div class="completion-score">
-
-                <div class="completion-points">
-                    ${totalPoints}
-                </div>
-
-                <div class="completion-points-label">
-                    Points
-                </div>
-
-            </div>
-
-
-            <div class="completion-bonuses">
-
-                ${firstTryBonuses}
-                ${
-                    firstTryBonuses === 1
-                        ? "first-try bonus"
-                        : "first-try bonuses"
-                }
-
-            </div>
-
-
-            ${bonusMessage}
-
-
-            <p>
-                You completed all ${questions.length} questions.
-                Keep exploring The Social Hub.
-            </p>
-
-
-            <button
-                type="button"
-                class="feedback-button"
-                onclick="restartQuiz()">
-
-                Restart challenge
-
-                <span
-                    class="restart-icon"
-                    aria-hidden="true">
-                    ↻
-                </span>
-
-            </button>
+            <span class="feedback-label">
+                Nice work
+            </span>
 
         </div>
-    `;
+
+        <h2>${completionMessage}</h2>
+
+        <div class="completion-score">
+
+            <div class="completion-points">
+                ${totalPoints}
+            </div>
+
+            <div class="completion-points-label">
+                Points
+            </div>
+
+        </div>
+
+        <div class="completion-bonuses">
+            ${firstTryBonuses}
+            ${
+                firstTryBonuses === 1
+                    ? "first-try bonus"
+                    : "first-try bonuses"
+            }
+        </div>
+
+        ${bonusMessage}
+
+        ${badgeUnlockHTML}
+
+        <div class="hub-points-total">
+
+            <span class="hub-points-label">
+                Hub Points
+            </span>
+
+            <span class="hub-points-value">
+                ${tourProgress.hubPoints}
+            </span>
+
+        </div>
+
+        <p>
+            You completed all ${questions.length} questions.
+            Keep exploring The Social Hub.
+        </p>
+
+        <button
+            type="button"
+            class="feedback-button"
+            onclick="restartQuiz()">
+
+            Restart challenge
+
+            <span
+                class="restart-icon"
+                aria-hidden="true">
+                ↻
+            </span>
+
+        </button>
+
+    </div>
+`;
 
 
     const restartButton =
@@ -504,4 +559,143 @@ function restartQuiz() {
 
 }
 
+//badges functions
+
+function saveTourProgress() {
+
+    localStorage.setItem(
+        "tshTourProgress",
+        JSON.stringify(tourProgress)
+    );
+
+}
+
+
+function loadTourProgress() {
+
+    const savedProgress =
+        localStorage.getItem("tshTourProgress");
+
+
+    if (!savedProgress) {
+        return;
+    }
+
+
+    try {
+
+        const parsedProgress =
+            JSON.parse(savedProgress);
+
+
+        if (parsedProgress) {
+
+            tourProgress = {
+                hubPoints:
+                    parsedProgress.hubPoints || 0,
+
+                completedChallenges:
+                    parsedProgress.completedChallenges || [],
+
+                unlockedBadges:
+                    parsedProgress.unlockedBadges || []
+            };
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Could not load saved tour progress:",
+            error
+        );
+
+    }
+
+}
+
+function getBadgeById(badgeId) {
+
+    return badges.find(function(badge) {
+        return badge.id === badgeId;
+    });
+
+}
+
+function unlockBadge(badgeId) {
+
+    if (tourProgress.unlockedBadges.includes(badgeId)) {
+        return null;
+    }
+
+
+    const badge = getBadgeById(badgeId);
+
+
+    if (!badge) {
+        return null;
+    }
+
+
+    tourProgress.unlockedBadges.push(badgeId);
+
+    tourProgress.hubPoints += badge.reward;
+
+
+    saveTourProgress();
+
+
+    return badge;
+
+}
+
+function completeChallenge() {
+
+    const isAlreadyCompleted =
+        tourProgress.completedChallenges.includes(
+            CHALLENGE_ID
+        );
+
+
+    if (!isAlreadyCompleted) {
+
+        tourProgress.completedChallenges.push(
+            CHALLENGE_ID
+        );
+
+        tourProgress.hubPoints += totalPoints;
+
+    }
+
+
+    let unlockedBadge = null;
+
+
+    /*
+        FIRST STEPS BADGE
+
+        Unlock once the user has completed
+        at least one challenge.
+
+        Checking the actual achievement condition
+        instead of only checking whether THIS
+        completion happened to be the first one.
+    */
+
+    if (tourProgress.completedChallenges.length >= 1) {
+
+        unlockedBadge =
+            unlockBadge("first-steps");
+
+    }
+
+
+    saveTourProgress();
+
+
+    return unlockedBadge;
+
+}
+
+loadTourProgress();
 loadQuestion();

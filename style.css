@@ -737,6 +737,8 @@ body.embed-mode .feedback p {
 }
 
 
+
+
 /* RESPONSIVE - MOBILE */
 
 @media (max-width: 600px) {
@@ -825,6 +827,134 @@ body.embed-mode .feedback p {
 
 }
 
+/* BADGE UNLOCK */
+
+.badge-unlock {
+    display: flex;
+
+    gap: 14px;
+
+    margin: 20px 0;
+
+    padding: 16px;
+
+    border: 2px solid #111111;
+    border-radius: var(--radius-md);
+
+    background-color: #fff3b8;
+
+    animation: badge-unlock-enter 0.38s ease-out both;
+}
+
+
+.badge-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background-color: #111111;
+
+    color: #ffffff;
+
+    font-size: 20px;
+}
+
+
+.badge-content {
+    flex: 1;
+}
+
+
+.badge-kicker {
+    margin-bottom: 3px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+}
+
+
+.badge-name {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+.badge-description {
+    margin-top: 4px;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+.badge-reward {
+    margin-top: 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* HUB POINTS */
+
+.hub-points-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 18px 0;
+
+    padding-top: 14px;
+
+    border-top: 2px solid #111111;
+}
+
+
+.hub-points-label {
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+}
+
+
+.hub-points-value {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+@keyframes badge-unlock-enter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(8px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
 
 /* RESPONSIVE - VERY SMALL */
 
@@ -905,5 +1035,9 @@ body.embed-mode .feedback p {
     .completion-points {
         animation: none;
     }
+
+    .badge-unlock {
+    animation: none;
+}
 
 }
