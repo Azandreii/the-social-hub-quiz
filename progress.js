@@ -60,6 +60,15 @@ function loadTourProgress() {
 
         }
 
+        if (
+            !tourProgress.challengeProgress ||
+            typeof tourProgress.challengeProgress !== "object"
+        ) {
+
+            tourProgress.challengeProgress = {};
+
+        }
+
     } catch (error) {
 
         console.error(
@@ -184,6 +193,12 @@ function evaluateBadges(context) {
 
 function markChallengeDiscovered(challengeId) {
 
+    if (!tourProgress.challengeProgress) {
+
+        tourProgress.challengeProgress = {};
+
+    }
+
     const existingProgress =
         tourProgress.challengeProgress[
         challengeId
@@ -303,20 +318,20 @@ function completeChallengeProgress(
 
     if (isFirstCompletion) {
 
-    tourProgress.challengeProgress[
-        challengeId
-    ] = {
+        tourProgress.challengeProgress[
+            challengeId
+        ] = {
 
-        discovered: true,
+            discovered: true,
 
-        completed: true,
+            completed: true,
 
-        bestScore:
-            challengePoints
+            bestScore:
+                challengePoints
 
-    };
+        };
 
-}
+    }
 
 
     const badgeContext = {
