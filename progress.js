@@ -2,7 +2,9 @@
 
 let tourProgress = {
     hubPoints: 0,
-    completedChallenges: [],
+
+    challengeProgress: {},
+
     unlockedBadges: []
 };
 
@@ -48,8 +50,8 @@ function loadTourProgress() {
                 hubPoints:
                     parsedProgress.hubPoints || 0,
 
-                completedChallenges:
-                    parsedProgress.completedChallenges || [],
+                challengeProgress:
+                    parsedProgress.challengeProgress || {},
 
                 unlockedBadges:
                     parsedProgress.unlockedBadges || []
@@ -74,7 +76,7 @@ function loadTourProgress() {
 
 function getBadgeById(badgeId) {
 
-    return badges.find(function(badge) {
+    return badges.find(function (badge) {
         return badge.id === badgeId;
     });
 
@@ -126,7 +128,7 @@ function evaluateBadges(context) {
     const newlyUnlockedBadges = [];
 
 
-    badges.forEach(function(badge) {
+    badges.forEach(function (badge) {
 
         if (
             tourProgress.unlockedBadges.includes(
@@ -197,28 +199,83 @@ function completeChallengeProgress(
         challengeData.totalQuestions;
 
 
-    const isAlreadyCompleted =
-        tourProgress.completedChallenges.includes(
+    const previousChallengeProgress =
+        tourProgress.challengeProgress[
             challengeId
-        );
+        ];
+
+
+    const previousBestScore =
+        previousChallengeProgress
+            ? previousChallengeProgress.bestScore
+            : 0;
+
+
+    const isFirstCompletion =
+        !previousChallengeProgress;
 
 
     /*
-        Challenge points are added to the
-        persistent total only once.
+        PERSONAL BEST SYSTEM
 
-        Replaying remains possible without
-        allowing Hub Point farming.
+        Hub Points only increase when the
+        current score is higher than the
+        previous best score.
+
+        This rewards genuine improvement
+        while preventing repeated farming.
     */
 
-    if (!isAlreadyCompleted) {
+    let scoreImprovement = 0;
 
-        tourProgress.completedChallenges.push(
-            challengeId
-        );
+
+    if (
+        challengePoints >
+        previousBestScore
+    ) {
+
+        scoreImprovement =
+            challengePoints -
+            previousBestScore;
+
 
         tourProgress.hubPoints +=
-            challengePoints;
+            scoreImprovement;
+
+
+        tourProgress.challengeProgress[
+            challengeId
+        ] = {
+
+            completed: true,
+
+            bestScore:
+                challengePoints
+
+        };
+
+    }
+
+
+    /*
+        If this is the first completion and
+        the score happened to be zero,
+        still record that the challenge
+        has been completed.
+    */
+
+    if (isFirstCompletion) {
+
+        tourProgress.challengeProgress[
+            challengeId
+        ] = {
+
+            completed: true,
+
+            bestScore:
+                challengePoints
+
+        };
 
     }
 
@@ -231,6 +288,12 @@ function completeChallengeProgress(
         challengePoints:
             challengePoints,
 
+        previousBestScore:
+            previousBestScore,
+
+        scoreImprovement:
+            scoreImprovement,
+
         firstTryBonuses:
             firstTryBonuses,
 
@@ -238,7 +301,7 @@ function completeChallengeProgress(
             totalQuestions,
 
         isFirstCompletion:
-            !isAlreadyCompleted
+            isFirstCompletion
 
     };
 
@@ -252,6 +315,12 @@ function completeChallengeProgress(
     saveTourProgress();
 
 
-    return unlockedBadges;
+    return {
+    unlockedBadges: unlockedBadges,
+    previousBestScore: previousBestScore,
+    scoreImprovement: scoreImprovement,
+    isNewBest:
+        challengePoints > previousBestScore
+};
 
 }

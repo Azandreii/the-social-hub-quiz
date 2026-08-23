@@ -398,19 +398,47 @@ function showCompletion() {
     const bonusMessage = getBonusMessage();
 
     //badge
-    const unlockedBadges =
+    const completionResult =
         completeChallenge();
+
+    const unlockedBadges =
+        completionResult.unlockedBadges;
+
+    let personalBestHTML = "";
+
+    if (
+        completionResult.isNewBest &&
+        completionResult.previousBestScore > 0
+    ) {
+
+        personalBestHTML = `
+        <div class="personal-best">
+
+            <span class="personal-best-label">
+                ↑ New personal best
+            </span>
+
+            <span class="personal-best-points">
+                +${completionResult.scoreImprovement}
+                Hub Points
+            </span>
+
+        </div>
+    `;
+
+    }
+
 
     let badgeUnlockHTML = "";
 
 
-   if (unlockedBadges.length > 0) {
+    if (unlockedBadges.length > 0) {
 
-    const rewardItems =
-        unlockedBadges
-            .map(function(badge) {
+        const rewardItems =
+            unlockedBadges
+                .map(function (badge) {
 
-                return `
+                    return `
                     <div class="reward-item">
 
                         <div class="reward-info">
@@ -432,11 +460,11 @@ function showCompletion() {
                     </div>
                 `;
 
-            })
-            .join("");
+                })
+                .join("");
 
 
-    badgeUnlockHTML = `
+        badgeUnlockHTML = `
         <div class="rewards-summary">
 
             <div class="rewards-heading">
@@ -448,7 +476,7 @@ function showCompletion() {
         </div>
     `;
 
-}
+    }
 
     questionElement.textContent = "Quick Challenge complete!";
 
@@ -486,6 +514,10 @@ function showCompletion() {
             </div>
 
         </div>
+
+        
+        
+        ${personalBestHTML}
 
         <div class="completion-bonuses">
             ${firstTryBonuses}

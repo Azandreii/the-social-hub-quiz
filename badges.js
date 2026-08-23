@@ -12,10 +12,12 @@ const badges = [
 
         icon: "★",
 
-        condition: function(progress, context) {
+        condition: function (progress, context) {
 
             return (
-                progress.completedChallenges.length >= 1
+                Object.keys(
+                    progress.challengeProgress
+                ).length >= 1
             );
 
         }
@@ -34,7 +36,7 @@ const badges = [
 
         icon: "✓",
 
-        condition: function(progress, context) {
+        condition: function (progress, context) {
 
             return (
                 context &&
