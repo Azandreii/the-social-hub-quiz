@@ -878,6 +878,17 @@ body.embed-mode .feedback p {
     }
 
 
+    .hub-challenge {
+    flex-wrap: wrap;
+}
+
+
+    .hub-challenge-action {
+    width: 100%;
+
+    margin-top: 4px;
+}
+
 }
 
 /* REWARDS SUMMARY */
@@ -999,6 +1010,43 @@ body.embed-mode .feedback p {
     font-size: 24px;
     font-weight: 700;
 }
+
+.hub-challenge-content {
+    flex: 1;
+}
+
+
+.hub-challenge-action {
+    flex-shrink: 0;
+
+    padding: 9px 12px;
+
+    border: 2px solid #111111;
+    border-radius: var(--radius-sm);
+
+    background-color: #111111;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.hub-challenge-action:hover {
+    background-color: #333333;
+}
+
+
+.hub-challenge-action:focus-visible {
+    outline: 3px solid #111111;
+    outline-offset: 3px;
+}
+
+/* KEYFRAMES */
 
 @keyframes rewards-enter {
 
@@ -1159,3 +1207,320 @@ body.embed-mode .feedback p {
 .dev-reset-button:hover {
     background-color: #ffe985;
 }
+
+/* ========================================
+   MY SOCIAL HUB
+======================================== */
+
+body.hub-page {
+    align-items: flex-start;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+}
+
+
+.hub-card {
+    width: 100%;
+    max-width: 620px;
+
+    margin: 24px auto;
+
+    padding: 32px;
+
+    box-sizing: border-box;
+
+    border-radius: var(--radius-lg);
+
+    background-color:
+        var(--color-surface);
+}
+
+
+.hub-header {
+    margin-bottom: 28px;
+}
+
+
+.hub-kicker,
+.hub-section-kicker {
+    margin-bottom: 5px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.3px;
+}
+
+
+.hub-title {
+    margin: 0;
+
+    font-size: 34px;
+    line-height: 1.05;
+}
+
+
+.hub-points-panel {
+    margin-bottom: 30px;
+
+    padding-bottom: 24px;
+
+    border-bottom:
+        2px solid #111111;
+}
+
+
+.hub-total-points {
+    font-size: 52px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+.hub-total-label {
+    margin-top: 5px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+}
+
+
+.hub-section {
+    margin-top: 30px;
+}
+
+
+.hub-section-header {
+    margin-bottom: 14px;
+}
+
+
+.hub-section-header h2 {
+    margin: 0;
+
+    font-size: 24px;
+}
+
+
+.hub-progress-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+
+.hub-stat {
+    padding: 16px;
+
+    border: 2px solid #111111;
+    border-radius: var(--radius-md);
+}
+
+
+.hub-stat strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 22px;
+}
+
+
+.hub-stat span {
+    font-size: 13px;
+
+    color: var(--color-muted);
+}
+
+
+/* CHALLENGES */
+
+.hub-challenges {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.hub-challenge {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 15px;
+
+    border: 2px solid #111111;
+    border-radius: var(--radius-md);
+}
+
+
+.hub-challenge-icon {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background-color: #111111;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.hub-challenge-content {
+    min-width: 0;
+}
+
+
+.hub-challenge-name {
+    margin-bottom: 3px;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.hub-challenge-state {
+    font-size: 12px;
+
+    color: var(--color-muted);
+}
+
+
+.hub-challenge.is-completed {
+    background-color: #eef7ef;
+}
+
+
+.hub-challenge.is-discovered {
+    background-color: #fff3b8;
+}
+
+
+.hub-challenge.is-locked {
+    opacity: 0.65;
+}
+
+
+/* BADGES */
+
+.hub-badges {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+
+.hub-badge {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 13px;
+
+    border: 2px solid #111111;
+    border-radius: var(--radius-md);
+}
+
+
+.hub-badge-icon {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+
+    background-color: #111111;
+
+    color: #ffffff;
+
+    font-weight: 700;
+}
+
+
+.hub-badge-name {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.hub-badge.is-locked {
+    opacity: 0.45;
+}
+
+/* SECONDARY / MY HUB BUTTON */
+
+.secondary-button {
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 12px 16px;
+
+    border: 2px solid #111111;
+    border-radius: var(--radius-sm);
+
+    background-color: transparent;
+
+    color: #111111;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.secondary-button:hover {
+    background-color: #eeeeea;
+
+    transform: translateY(-1px);
+}
+
+
+.secondary-button:active {
+    transform: translateY(0);
+}
+
+
+.secondary-button:focus-visible {
+    outline: 3px solid #111111;
+    outline-offset: 3px;
+}
+

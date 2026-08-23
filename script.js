@@ -151,6 +151,15 @@ function showChallengeIntro() {
 
             </button>
 
+            <button
+                type="button"
+                class="secondary-button"
+                onclick="openMySocialHub()">
+
+                 My Social Hub
+
+            </button>
+
         </div>
     `;
 
@@ -173,7 +182,7 @@ function showChallengeIntro() {
 
 function startChallenge() {
 
-    changeQuizState(function() {
+    changeQuizState(function () {
 
         currentQuestion = 0;
 
@@ -549,12 +558,12 @@ function showCompletion() {
 
     let personalBestHTML = "";
 
-if (
-    completionResult.isNewBest &&
-    completionResult.previousBestScore > 0
-) {
+    if (
+        completionResult.isNewBest &&
+        completionResult.previousBestScore > 0
+    ) {
 
-    personalBestHTML = `
+        personalBestHTML = `
         <div class="personal-best">
 
             <div class="personal-best-title">
@@ -568,7 +577,7 @@ if (
         </div>
     `;
 
-}
+    }
 
 
     let badgeUnlockHTML = "";
@@ -705,6 +714,15 @@ if (
 
         </button>
 
+        <button
+            type="button"
+            class="secondary-button"
+            onclick="openMySocialHub()">
+
+            My Social Hub
+
+        </button>
+
     </div>
 `;
 
@@ -742,141 +760,8 @@ function restartQuiz() {
 loadTourProgress();
 loadQuestion();
 
-//badges functions
+//badges functions moved to progress.js
 
-
-
-function loadTourProgress() {
-
-    const savedProgress =
-        localStorage.getItem("tshTourProgress");
-
-
-    if (!savedProgress) {
-        return;
-    }
-
-
-    try {
-
-        const parsedProgress =
-            JSON.parse(savedProgress);
-
-
-        if (parsedProgress) {
-
-            tourProgress = {
-                hubPoints:
-                    parsedProgress.hubPoints || 0,
-
-                completedChallenges:
-                    parsedProgress.completedChallenges || [],
-
-                unlockedBadges:
-                    parsedProgress.unlockedBadges || []
-            };
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Could not load saved tour progress:",
-            error
-        );
-
-    }
-
-}
-
-function getBadgeById(badgeId) {
-
-    return badges.find(function (badge) {
-        return badge.id === badgeId;
-    });
-
-}
-
-function unlockBadge(badgeId) {
-
-    if (tourProgress.unlockedBadges.includes(badgeId)) {
-        return null;
-    }
-
-
-    const badge = getBadgeById(badgeId);
-
-
-    if (!badge) {
-        return null;
-    }
-
-
-    tourProgress.unlockedBadges.push(badgeId);
-
-    tourProgress.hubPoints += badge.reward;
-
-
-    saveTourProgress();
-
-
-    return badge;
-
-}
-
-function evaluateBadges(context) {
-
-    const newlyUnlockedBadges = [];
-
-
-    badges.forEach(function (badge) {
-
-        if (
-            tourProgress.unlockedBadges.includes(
-                badge.id
-            )
-        ) {
-            return;
-        }
-
-
-        if (
-            typeof badge.condition !== "function"
-        ) {
-            return;
-        }
-
-
-        const conditionMet =
-            badge.condition(
-                tourProgress,
-                context
-            );
-
-
-        if (!conditionMet) {
-            return;
-        }
-
-
-        const unlockedBadge =
-            unlockBadge(badge.id);
-
-
-        if (unlockedBadge) {
-
-            newlyUnlockedBadges.push(
-                unlockedBadge
-            );
-
-        }
-
-    });
-
-
-    return newlyUnlockedBadges;
-
-}
 
 function completeChallenge() {
 
@@ -916,7 +801,7 @@ function createDevTools() {
         "Reset test progress";
 
 
-    resetButton.onclick = function() {
+    resetButton.onclick = function () {
 
         localStorage.removeItem(
             "tshTourProgress"
@@ -934,6 +819,34 @@ function createDevTools() {
     document.body.appendChild(
         devTools
     );
+
+}
+
+function buildInternalPageUrl(pageName) {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const queryString =
+        params.toString();
+
+
+    return queryString
+        ? `${pageName}?${queryString}`
+        : pageName;
+
+}
+
+
+function openMySocialHub() {
+
+    window.location.href =
+        buildInternalPageUrl(
+            "hub.html"
+        );
 
 }
 

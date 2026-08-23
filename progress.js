@@ -80,6 +80,54 @@ function loadTourProgress() {
 
 }
 
+function getTourProgressSummary() {
+
+    const challengeEntries =
+        Object.entries(
+            tourProgress.challengeProgress
+        );
+
+
+    const discoveredChallenges =
+        challengeEntries.filter(function(entry) {
+
+            const challenge = entry[1];
+
+            return challenge.discovered === true;
+
+        }).length;
+
+
+    const completedChallenges =
+        challengeEntries.filter(function(entry) {
+
+            const challenge = entry[1];
+
+            return challenge.completed === true;
+
+        }).length;
+
+
+    return {
+
+        hubPoints:
+            tourProgress.hubPoints,
+
+        discoveredChallenges:
+            discoveredChallenges,
+
+        completedChallenges:
+            completedChallenges,
+
+        challengeProgress:
+            tourProgress.challengeProgress,
+
+        unlockedBadges:
+            tourProgress.unlockedBadges
+
+    };
+
+}
 
 // BADGE LOOKUP
 
