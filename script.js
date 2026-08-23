@@ -13,12 +13,6 @@ let totalPoints = 0;
 let firstTryBonuses = 0;
 let attemptedCurrentQuestion = false;
 
-//global point system
-let tourProgress = {
-    hubPoints: 0,
-    completedChallenges: [],
-    unlockedBadges: []
-};
 
 const CHALLENGE_ID = "groningen-quick-challenge";
 
@@ -571,16 +565,11 @@ function restartQuiz() {
 
 }
 
+loadTourProgress();
+loadQuestion();
+
 //badges functions
 
-function saveTourProgress() {
-
-    localStorage.setItem(
-        "tshTourProgress",
-        JSON.stringify(tourProgress)
-    );
-
-}
 
 
 function loadTourProgress() {
@@ -717,24 +706,7 @@ function evaluateBadges(context) {
 
 function completeChallenge() {
 
-    const isAlreadyCompleted =
-        tourProgress.completedChallenges.includes(
-            CHALLENGE_ID
-        );
-
-
-    if (!isAlreadyCompleted) {
-
-        tourProgress.completedChallenges.push(
-            CHALLENGE_ID
-        );
-
-        tourProgress.hubPoints += totalPoints;
-
-    }
-
-
-    const badgeContext = {
+    return completeChallengeProgress({
 
         challengeId:
             CHALLENGE_ID,
@@ -746,26 +718,12 @@ function completeChallenge() {
             firstTryBonuses,
 
         totalQuestions:
-            questions.length,
+            questions.length
 
-        isFirstCompletion:
-            !isAlreadyCompleted
-
-    };
-
-
-    const unlockedBadges =
-        evaluateBadges(
-            badgeContext
-        );
-
-
-    saveTourProgress();
-
-
-    return unlockedBadges;
+    });
 
 }
+
 
 loadTourProgress();
 loadQuestion();
