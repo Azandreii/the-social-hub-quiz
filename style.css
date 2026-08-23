@@ -824,32 +824,75 @@ body.embed-mode .feedback p {
         font-size: 46px;
     }
 
+    .rewards-summary {
+        padding: 12px 14px;
+    }
+
+
+    .reward-item {
+        padding: 6px 0;
+    }
+
 
 }
 
-/* BADGE UNLOCK */
+/* REWARDS SUMMARY */
 
-.badge-unlock {
-    display: flex;
+.rewards-summary {
+    margin: 18px 0;
 
-    gap: 14px;
-
-    margin: 20px 0;
-
-    padding: 16px;
+    padding: 14px 16px;
 
     border: 2px solid #111111;
     border-radius: var(--radius-md);
 
     background-color: #fff3b8;
 
-    animation: badge-unlock-enter 0.38s ease-out both;
+    animation: rewards-enter 0.32s ease-out both;
 }
 
 
-.badge-icon {
-    width: 42px;
-    height: 42px;
+.rewards-heading {
+    margin-bottom: 8px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.2px;
+}
+
+
+.reward-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 7px 0;
+}
+
+
+.reward-item+.reward-item {
+    border-top: 1px solid rgba(17, 17, 17, 0.18);
+}
+
+
+.reward-info {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    min-width: 0;
+}
+
+
+.reward-icon {
+    width: 26px;
+    height: 26px;
 
     flex-shrink: 0;
 
@@ -863,45 +906,23 @@ body.embed-mode .feedback p {
 
     color: #ffffff;
 
-    font-size: 20px;
-}
-
-
-.badge-content {
-    flex: 1;
-}
-
-
-.badge-kicker {
-    margin-bottom: 3px;
-
-    font-size: 10px;
-    font-weight: 700;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1.2px;
-}
-
-
-.badge-name {
-    font-size: 18px;
+    font-size: 12px;
     font-weight: 700;
 }
 
 
-.badge-description {
-    margin-top: 4px;
+.reward-name {
+    font-size: 14px;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+
+.reward-points {
+    flex-shrink: 0;
 
     font-size: 13px;
-    line-height: 1.4;
-}
-
-
-.badge-reward {
-    margin-top: 8px;
-
-    font-size: 12px;
     font-weight: 700;
 }
 
@@ -935,22 +956,18 @@ body.embed-mode .feedback p {
     font-weight: 700;
 }
 
-@keyframes badge-unlock-enter {
+@keyframes rewards-enter {
 
     from {
         opacity: 0;
 
-        transform:
-            translateY(8px)
-            scale(0.97);
+        transform: translateY(6px);
     }
 
     to {
         opacity: 1;
 
-        transform:
-            translateY(0)
-            scale(1);
+        transform: translateY(0);
     }
 
 }
@@ -1036,8 +1053,8 @@ body.embed-mode .feedback p {
         animation: none;
     }
 
-    .badge-unlock {
-    animation: none;
-}
+    .rewards-summary {
+        animation: none;
+    }
 
 }

@@ -410,47 +410,51 @@ function showCompletion() {
     let badgeUnlockHTML = "";
 
 
-    if (unlockedBadges.length > 0) {
+   if (unlockedBadges.length > 0) {
 
-        badgeUnlockHTML =
-            unlockedBadges
-                .map(function (badge) {
+    const rewardItems =
+        unlockedBadges
+            .map(function(badge) {
 
-                    return `
-                    <div class="badge-unlock">
+                return `
+                    <div class="reward-item">
 
-                        <div class="badge-icon">
-                            ${badge.icon}
-                        </div>
+                        <div class="reward-info">
 
-                        <div class="badge-content">
+                            <span class="reward-icon">
+                                ${badge.icon}
+                            </span>
 
-                            <div class="badge-kicker">
-                                Badge unlocked
-                            </div>
-
-                            <div class="badge-name">
+                            <span class="reward-name">
                                 ${badge.name}
-                            </div>
-
-                            <div class="badge-description">
-                                ${badge.description}
-                            </div>
-
-                            <div class="badge-reward">
-                                +${badge.reward} Hub Points
-                            </div>
+                            </span>
 
                         </div>
+
+                        <span class="reward-points">
+                            +${badge.reward}
+                        </span>
 
                     </div>
                 `;
 
-                })
-                .join("");
+            })
+            .join("");
 
-    }
 
+    badgeUnlockHTML = `
+        <div class="rewards-summary">
+
+            <div class="rewards-heading">
+                Rewards unlocked
+            </div>
+
+            ${rewardItems}
+
+        </div>
+    `;
+
+}
 
     questionElement.textContent = "Quick Challenge complete!";
 
@@ -484,7 +488,7 @@ function showCompletion() {
             </div>
 
             <div class="completion-points-label">
-                Points
+                Challenge score
             </div>
 
         </div>
