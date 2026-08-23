@@ -4,6 +4,11 @@ if (urlParams.get("embed") === "1") {
     document.body.classList.add("embed-mode");
 }
 
+// for testing purposes inside kuula as localstorage can't be removed through the console
+if (urlParams.get("dev") === "1") {
+    createDevTools();
+}
+
 let currentQuestion = 0;
 
 //gamification vars
@@ -890,6 +895,45 @@ function completeChallenge() {
             questions.length
 
     });
+
+}
+
+function createDevTools() {
+
+    const devTools =
+        document.createElement("div");
+
+    devTools.classList.add("dev-tools");
+
+
+    const resetButton =
+        document.createElement("button");
+
+    resetButton.type = "button";
+    resetButton.classList.add("dev-reset-button");
+
+    resetButton.textContent =
+        "Reset test progress";
+
+
+    resetButton.onclick = function() {
+
+        localStorage.removeItem(
+            "tshTourProgress"
+        );
+
+        window.location.reload();
+
+    };
+
+
+    devTools.appendChild(
+        resetButton
+    );
+
+    document.body.appendChild(
+        devTools
+    );
 
 }
 

@@ -1125,3 +1125,37 @@ body.embed-mode .feedback p {
 
     opacity: 0.7;
 }
+
+/* DEVELOPMENT TOOLS */
+
+.dev-tools {
+    position: fixed;
+
+    right: 10px;
+    bottom: 10px;
+
+    z-index: 9999;
+}
+
+
+.dev-reset-button {
+    padding: 8px 11px;
+
+    border: 2px solid #111111;
+    border-radius: 8px;
+
+    background-color: #fff3b8;
+
+    color: #111111;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.dev-reset-button:hover {
+    background-color: #ffe985;
+}
