@@ -180,6 +180,40 @@ function evaluateBadges(context) {
 }
 
 
+// marked discovered
+
+function markChallengeDiscovered(challengeId) {
+
+    const existingProgress =
+        tourProgress.challengeProgress[
+        challengeId
+
+        ];
+
+
+    if (existingProgress) {
+
+        existingProgress.discovered = true;
+
+    } else {
+
+        tourProgress.challengeProgress[
+            challengeId
+        ] = {
+
+            discovered: true,
+            completed: false,
+            bestScore: 0
+
+        };
+
+    }
+
+
+    saveTourProgress();
+
+}
+
 // RECORD A CHALLENGE COMPLETION
 
 function completeChallengeProgress(
@@ -201,7 +235,7 @@ function completeChallengeProgress(
 
     const previousChallengeProgress =
         tourProgress.challengeProgress[
-            challengeId
+        challengeId
         ];
 
 
@@ -212,7 +246,8 @@ function completeChallengeProgress(
 
 
     const isFirstCompletion =
-        !previousChallengeProgress;
+        !previousChallengeProgress ||
+        !previousChallengeProgress.completed;
 
 
     /*
@@ -247,6 +282,8 @@ function completeChallengeProgress(
             challengeId
         ] = {
 
+            discovered: true,
+
             completed: true,
 
             bestScore:
@@ -266,18 +303,20 @@ function completeChallengeProgress(
 
     if (isFirstCompletion) {
 
-        tourProgress.challengeProgress[
-            challengeId
-        ] = {
+    tourProgress.challengeProgress[
+        challengeId
+    ] = {
 
-            completed: true,
+        discovered: true,
 
-            bestScore:
-                challengePoints
+        completed: true,
 
-        };
+        bestScore:
+            challengePoints
 
-    }
+    };
+
+}
 
 
     const badgeContext = {
@@ -316,11 +355,11 @@ function completeChallengeProgress(
 
 
     return {
-    unlockedBadges: unlockedBadges,
-    previousBestScore: previousBestScore,
-    scoreImprovement: scoreImprovement,
-    isNewBest:
-        challengePoints > previousBestScore
-};
+        unlockedBadges: unlockedBadges,
+        previousBestScore: previousBestScore,
+        scoreImprovement: scoreImprovement,
+        isNewBest:
+            challengePoints > previousBestScore
+    };
 
 }

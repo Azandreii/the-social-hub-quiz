@@ -12,13 +12,15 @@ const badges = [
 
         icon: "★",
 
-        condition: function (progress, context) {
+        condition: function (progress) {
 
-            return (
-                Object.keys(
-                    progress.challengeProgress
-                ).length >= 1
-            );
+            return Object.values(
+                progress.challengeProgress
+            ).some(function (challenge) {
+
+                return challenge.completed === true;
+
+            });
 
         }
     },

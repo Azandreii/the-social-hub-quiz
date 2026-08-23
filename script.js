@@ -62,6 +62,144 @@ function changeQuizState(updateFunction) {
 
 }
 
+function showChallengeIntro() {
+
+    const questionElement =
+        document.getElementById("question");
+
+    const answersElement =
+        document.getElementById("answers");
+
+    const feedbackElement =
+        document.getElementById("feedback");
+
+    const questionCounter =
+        document.getElementById("question-counter");
+
+    const progressElement =
+        document.getElementById("progress");
+
+    const answerInstruction =
+        document.getElementById("answer-instruction");
+
+
+    /*
+        Opening this screen is the first
+        measurable evidence that the user
+        intentionally discovered this challenge.
+    */
+
+    markChallengeDiscovered(
+        CHALLENGE_ID
+    );
+
+
+    questionCounter.textContent = "";
+
+    progressElement.style.display = "none";
+
+    questionElement.textContent =
+        "Groningen Quick Challenge";
+
+
+    answerInstruction.textContent =
+        "3 questions · About 1 minute";
+
+    answerInstruction.style.display = "";
+
+
+    answersElement.innerHTML = "";
+
+    feedbackElement.innerHTML = `
+
+        <div class="challenge-intro">
+
+            <p class="challenge-intro-text">
+                Test what you've noticed while exploring
+                The Social Hub Groningen.
+            </p>
+
+            <div class="challenge-intro-note">
+
+                <strong>
+                    Earn Hub Points as you play.
+                </strong>
+
+                <span>
+                    Correct answers earn points,
+                    with an extra bonus when you
+                    get them right on your first try.
+                </span>
+
+            </div>
+
+            <button
+                type="button"
+                class="feedback-button"
+                onclick="startChallenge()">
+
+                Start challenge
+
+                <span aria-hidden="true">
+                    →
+                </span>
+
+            </button>
+
+        </div>
+    `;
+
+
+    const startButton =
+        feedbackElement.querySelector(
+            ".feedback-button"
+        );
+
+
+    if (startButton) {
+
+        startButton.focus({
+            preventScroll: true
+        });
+
+    }
+
+}
+
+function startChallenge() {
+
+    changeQuizState(function() {
+
+        currentQuestion = 0;
+
+        totalPoints = 0;
+        firstTryBonuses = 0;
+        attemptedCurrentQuestion = false;
+
+
+        const progressElement =
+            document.getElementById(
+                "progress"
+            );
+
+        const answerInstruction =
+            document.getElementById(
+                "answer-instruction"
+            );
+
+
+        progressElement.style.display = "";
+
+        answerInstruction.textContent =
+            "Pick an answer";
+
+
+        loadQuestion();
+
+    });
+
+}
+
 function loadQuestion() {
 
     attemptedCurrentQuestion = false;
@@ -406,27 +544,26 @@ function showCompletion() {
 
     let personalBestHTML = "";
 
-    if (
-        completionResult.isNewBest &&
-        completionResult.previousBestScore > 0
-    ) {
+if (
+    completionResult.isNewBest &&
+    completionResult.previousBestScore > 0
+) {
 
-        personalBestHTML = `
+    personalBestHTML = `
         <div class="personal-best">
 
-            <span class="personal-best-label">
-                ↑ New personal best
-            </span>
+            <div class="personal-best-title">
+                ↑ New personal best +${completionResult.scoreImprovement}
+            </div>
 
-            <span class="personal-best-points">
-                +${completionResult.scoreImprovement}
-                Hub Points
-            </span>
+            <div class="personal-best-detail">
+                +${completionResult.scoreImprovement} Hub Points from improvement
+            </div>
 
         </div>
     `;
 
-    }
+}
 
 
     let badgeUnlockHTML = "";
@@ -758,4 +895,4 @@ function completeChallenge() {
 
 
 loadTourProgress();
-loadQuestion();
+showChallengeIntro();
