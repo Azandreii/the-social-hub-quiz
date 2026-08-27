@@ -966,14 +966,19 @@ body.embed-mode .hub-badge {
 
 
     .hub-challenge {
-    flex-wrap: wrap;
-}
+        flex-wrap: wrap;
+    }
 
 
     .hub-challenge-action {
-    width: 100%;
+        width: 100%;
 
-    margin-top: 4px;
+        margin-top: 4px;
+    }
+
+    .hub-progress-grid {
+    grid-template-columns:
+        1fr;
 }
 
 }
@@ -1133,6 +1138,130 @@ body.embed-mode .hub-badge {
     outline-offset: 3px;
 }
 
+
+/* PERFECT CHALLENGE */
+
+.hub-challenge.is-perfect .hub-challenge-icon {
+    position: relative;
+
+    transform: scale(1.06);
+
+    box-shadow:
+        0 0 0 4px #fff3b8;
+
+    animation:
+        perfect-icon-enter 0.45s ease-out both;
+}
+
+
+.hub-challenge.is-perfect .hub-challenge-icon::after {
+    content: "★";
+
+    position: absolute;
+
+    top: -10px;
+    right: -8px;
+
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid #111111;
+    border-radius: 50%;
+
+    background-color: #fff3b8;
+
+    color: #111111;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+/* FIND-IT COMPLETED STATE */
+
+.hub-challenge.is-found
+.hub-challenge-icon {
+    position: relative;
+
+    box-shadow:
+        0 0 0 4px #dfe9ff;
+}
+
+
+.hub-challenge.is-found
+.hub-challenge-icon::after {
+    content: "◎";
+
+    position: absolute;
+
+    top: -9px;
+    right: -7px;
+
+    color: #5f78a8;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-shadow:
+        -1px -1px 0 #111111,
+        1px -1px 0 #111111,
+        -1px 1px 0 #111111,
+        1px 1px 0 #111111;
+}
+
+/* PERFECT STATE *//
+
+
+.hub-challenge.is-perfect
+.hub-challenge-icon::after {
+    content: "★";
+
+    position: absolute;
+
+    top: -9px;
+    right: -7px;
+
+    color: #f0c419;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-shadow:
+        -1px -1px 0 #111111,
+        1px -1px 0 #111111,
+        -1px 1px 0 #111111,
+        1px 1px 0 #111111;
+
+    transform:
+        rotate(8deg);
+}
+
+
+@keyframes perfect-icon-enter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            scale(0.82) rotate(-8deg);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            scale(1.06) rotate(0);
+    }
+
+}
+
 /* KEYFRAMES */
 
 @keyframes rewards-enter {
@@ -1233,6 +1362,14 @@ body.embed-mode .hub-badge {
     }
 
     .rewards-summary {
+        animation: none;
+    }
+
+    .hub-challenge.is-perfect .hub-challenge-icon {
+        animation: none;
+    }
+
+    .hub-challenge.is-perfect .hub-challenge-icon {
         animation: none;
     }
 
@@ -1402,7 +1539,7 @@ body.hub-page {
     display: grid;
 
     grid-template-columns:
-        repeat(2, 1fr);
+    repeat(3, 1fr);
 
     gap: 12px;
 }
@@ -1429,6 +1566,28 @@ body.hub-page {
     font-size: 13px;
 
     color: var(--color-muted);
+}
+
+.hub-stat-label {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+}
+
+
+.hub-stat-symbol {
+    color: #111111;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+.hub-stat-symbol-perfect {
+    color: #d9a900;
 }
 
 
@@ -1610,4 +1769,3 @@ body.hub-page {
     outline: 3px solid #111111;
     outline-offset: 3px;
 }
-

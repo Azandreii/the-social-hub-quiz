@@ -162,6 +162,41 @@ function renderJourneyProgress(summary) {
         challenges.length;
 
 
+    const perfectEligibleChallenges =
+        challenges.filter(
+            function (challenge) {
+                return (
+                    challenge.supportsPerfect === true
+                );
+            }
+        );
+
+
+    const totalPerfectEligible =
+        perfectEligibleChallenges.length;
+
+
+    const perfectedChallenges =
+        perfectEligibleChallenges.filter(
+            function (challenge) {
+
+                const progress =
+                    summary.challengeProgress[
+                        challenge.id
+                    ];
+
+
+                return (
+                    progress &&
+                    progress.completed &&
+                    progress.bestScore >=
+                        challenge.perfectScore
+                );
+
+            }
+        ).length;
+
+
     const discoveredElement =
         document.getElementById(
             "hub-discovered-count"
@@ -174,12 +209,22 @@ function renderJourneyProgress(summary) {
         );
 
 
+    const perfectedElement =
+        document.getElementById(
+            "hub-perfected-count"
+        );
+
+
     discoveredElement.textContent =
         `${summary.discoveredChallenges} / ${totalChallenges}`;
 
 
     completedElement.textContent =
         `${summary.completedChallenges} / ${totalChallenges}`;
+
+
+    perfectedElement.textContent =
+        `${perfectedChallenges} / ${totalPerfectEligible}`;
 
 }
 
@@ -200,12 +245,15 @@ function renderChallenges(summary) {
 
             const progress =
                 summary.challengeProgress[
-                    challenge.id
+                challenge.id
                 ];
 
 
             let stateClass =
                 "is-locked";
+
+            let perfectClass =
+                "";
 
             let stateIcon =
                 "🔒";
@@ -216,11 +264,13 @@ function renderChallenges(summary) {
             let detailText =
                 "Keep exploring the tour";
 
-            let actionHTML = "";
+            let actionHTML =
+                "";
 
 
             /*
                 DISCOVERED
+
                 The challenge has been opened,
                 but has not yet been completed.
             */
@@ -259,12 +309,11 @@ function renderChallenges(summary) {
             /*
                 COMPLETED
 
-                This comes after the discovered
-                condition intentionally.
+                Completed challenges overwrite
+                the discovered state.
 
-                Completed challenges therefore
-                overwrite the discovered state
-                and receive a Replay action.
+                Performance-based challenges
+                may additionally reach Perfect.
             */
 
             if (
@@ -281,8 +330,74 @@ function renderChallenges(summary) {
                 stateText =
                     "Completed";
 
-                detailText =
-                    `Best ${progress.bestScore}`;
+
+                const isPerfect =
+                    challenge.supportsPerfect === true &&
+                    progress.bestScore >=
+                    challenge.perfectScore;
+
+
+                /*
+                    PERFORMANCE-BASED CHALLENGES
+                */
+
+                if (
+                    challenge.supportsPerfect === true
+                ) {
+
+                    if (isPerfect) {
+
+                        perfectClass =
+                            "is-perfect";
+
+                        detailText =
+                            "Perfect";
+
+                    } else {
+
+                        detailText =
+                            `Best ${progress.bestScore}`;
+
+                    }
+
+                }
+
+
+                /*
+                    FIND-IT CHALLENGES
+
+                    These are binary:
+                    either the location was found
+                    or it was not.
+
+                    There is no Perfect state.
+                */
+
+                else if (
+                    challenge.type ===
+                    "find-it"
+                ) {
+
+                    perfectClass =
+                        "is-found";
+
+                    detailText =
+                        "Found";
+
+                }
+
+
+                /*
+                    FALLBACK FOR ANY FUTURE
+                    NON-PERFORMANCE CHALLENGE
+                */
+
+                else {
+
+                    detailText =
+                        "Completed";
+
+                }
 
 
                 actionHTML = `
@@ -305,7 +420,7 @@ function renderChallenges(summary) {
 
 
             challengeElement.className =
-                `hub-challenge ${stateClass}`;
+                `hub-challenge ${stateClass} ${perfectClass}`;
 
 
             challengeElement.innerHTML = `
@@ -318,12 +433,11 @@ function renderChallenges(summary) {
 
                     <div class="hub-challenge-name">
 
-                        ${
-                            progress &&
-                            progress.discovered
-                                ? challenge.name
-                                : "Undiscovered Challenge"
-                        }
+                        ${progress &&
+                    progress.discovered
+                    ? challenge.name
+                    : "Undiscovered Challenge"
+                }
 
                     </div>
 
@@ -385,27 +499,26 @@ function renderBadges(summary) {
 
     <div class="hub-badge-icon">
         ${isUnlocked
-        ? badge.icon
-        : "?"
-    }
+                ? badge.icon
+                : "?"
+            }
     </div>
 
     <div class="hub-badge-name">
         ${isUnlocked
-        ? badge.name
-        : "Locked badge"
-    }
+                ? badge.name
+                : "Locked badge"
+            }
     </div>
 
-    ${
-        isUnlocked
-            ? `
+    ${isUnlocked
+                ? `
                 <div class="hub-badge-reward">
                     +${badge.reward}
                 </div>
             `
-            : ""
-    }
+                : ""
+            }
 
 `;
 

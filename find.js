@@ -141,9 +141,24 @@ function showFindIntro() {
 
 function showFindSuccess() {
 
-    markChallengeDiscovered(
-        FIND_ID
-    );
+    const existingProgress =
+        tourProgress.challengeProgress[
+            FIND_ID
+        ];
+
+
+    const isDiscovered =
+        existingProgress &&
+        existingProgress.discovered === true;
+
+
+    if (!isDiscovered) {
+
+        showFindNotStarted();
+
+        return;
+
+    }
 
 
     const result =
@@ -222,6 +237,77 @@ function showFindSuccess() {
                 </div>
 
             </div>
+
+            <button
+                type="button"
+                class="secondary-button"
+                onclick="openFindHub()">
+
+                My Social Hub
+
+            </button>
+
+        </div>
+    `;
+
+}
+
+function showFindNotStarted() {
+
+    const questionElement =
+        document.getElementById(
+            "question"
+        );
+
+    const instructionElement =
+        document.getElementById(
+            "answer-instruction"
+        );
+
+    const feedbackElement =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    questionElement.textContent =
+        "You found a challenge target";
+
+
+    instructionElement.textContent =
+        "";
+
+
+    feedbackElement.innerHTML = `
+
+        <div class="feedback">
+
+            <div class="feedback-status">
+
+                <span class="feedback-icon">
+                    !
+                </span>
+
+                <span class="feedback-label">
+                    Challenge not started
+                </span>
+
+            </div>
+
+            <h2>
+                Nice find.
+            </h2>
+
+            <p>
+                You discovered the correct location,
+                but this Find-it Challenge has not
+                been started yet.
+            </p>
+
+            <p>
+                Open the challenge first,
+                then return here to complete it.
+            </p>
 
             <button
                 type="button"

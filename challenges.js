@@ -18,6 +18,12 @@ const challenges = [
         totalQuestions:
             3,
 
+        perfectScore:
+            450,
+
+        supportsPerfect:
+            true,
+
         url:
             "index.html?challenge=groningen-quick-challenge"
     },
@@ -42,6 +48,12 @@ const challenges = [
         totalQuestions:
             3,
 
+        perfectScore:
+            450,
+
+        supportsPerfect:
+            true,
+
         url:
             "index.html?challenge=reception-quick-challenge"
     },
@@ -62,6 +74,12 @@ const challenges = [
         estimatedTime:
             "About 1 minute",
 
+        perfectScore:
+            200,
+
+        supportsPerfect:
+            true,
+
         url:
             "observation.html?challenge=lobby-observation-challenge"
     },
@@ -81,6 +99,12 @@ const challenges = [
 
         estimatedTime:
             "About 1 minute",
+
+        perfectScore:
+            null,
+
+        supportsPerfect:
+            false,
 
         url:
             "find.html?challenge=find-reception"
