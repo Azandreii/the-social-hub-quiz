@@ -817,6 +817,13 @@ body.embed-mode .hub-badge {
     padding: 11px 12px;
 }
 
+.hub-badge-reward {
+    margin-left: auto;
+
+    font-size: var(--text-small);
+    font-weight: 700;
+}
+
 /* CHALLENGE INTRO */
 
 .challenge-intro {

@@ -1,7 +1,23 @@
-const urlParams = new URLSearchParams(window.location.search);
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
 
-if (urlParams.get("embed") === "1") {
-    document.body.classList.add("embed-mode");
+
+const isEmbedMode =
+    urlParams.get("embed") === "1";
+
+
+const isDevMode =
+    urlParams.get("dev") === "1";
+
+
+if (isEmbedMode) {
+
+    document.body.classList.add(
+        "embed-mode"
+    );
+
 }
 
 // for testing purposes inside kuula as localstorage can't be removed through the console
@@ -18,8 +34,43 @@ let totalPoints = 0;
 let firstTryBonuses = 0;
 let attemptedCurrentQuestion = false;
 
+//check for quiz id
+const challengeIdFromUrl =
+    urlParams.get("challenge");
 
-const CHALLENGE_ID = "groningen-quick-challenge";
+const CHALLENGE_ID =
+    challengeIdFromUrl ||
+    "groningen-quick-challenge";
+
+const currentChallenge =
+    challenges.find(function(challenge) {
+
+        return challenge.id === CHALLENGE_ID;
+
+    });
+
+if (!currentChallenge) {
+
+    throw new Error(
+        `Challenge not found: ${CHALLENGE_ID}`
+    );
+
+}
+
+const questions =
+    quizQuestions[
+        CHALLENGE_ID
+    ];
+
+if (!questions) {
+
+    throw new Error(
+        `Question set not found for challenge: ${CHALLENGE_ID}`
+    );
+
+}
+
+// const CHALLENGE_ID = "groningen-quick-challenge";  - HARD CODED VERSION FOR TESTING PURPOSES
 
 function changeQuizState(updateFunction) {
 
@@ -85,7 +136,9 @@ function showChallengeIntro() {
         document.getElementById("progress");
 
     const answerInstruction =
-        document.getElementById("answer-instruction");
+        document.getElementById(
+            "answer-instruction"
+        );
 
 
     /*
@@ -101,27 +154,30 @@ function showChallengeIntro() {
 
     questionCounter.textContent = "";
 
-    progressElement.style.display = "none";
+    progressElement.style.display =
+        "none";
+
 
     questionElement.textContent =
-        "Groningen Quick Challenge";
+        currentChallenge.name;
 
 
     answerInstruction.textContent =
-        "3 questions · About 1 minute";
+        `${questions.length} questions · ${currentChallenge.estimatedTime}`;
 
-    answerInstruction.style.display = "";
+    answerInstruction.style.display =
+        "";
 
 
     answersElement.innerHTML = "";
+
 
     feedbackElement.innerHTML = `
 
         <div class="challenge-intro">
 
             <p class="challenge-intro-text">
-                Test what you've noticed while exploring
-                The Social Hub Groningen.
+                ${currentChallenge.description}
             </p>
 
             <div class="challenge-intro-note">
@@ -156,7 +212,7 @@ function showChallengeIntro() {
                 class="secondary-button"
                 onclick="openMySocialHub()">
 
-                 My Social Hub
+                My Social Hub
 
             </button>
 
@@ -179,7 +235,6 @@ function showChallengeIntro() {
     }
 
 }
-
 function startChallenge() {
 
     changeQuizState(function () {
@@ -843,10 +898,38 @@ function buildInternalPageUrl(pageName) {
 
 function openMySocialHub() {
 
-    window.location.href =
-        buildInternalPageUrl(
-            "hub.html"
+    const params =
+        new URLSearchParams();
+
+
+    if (isEmbedMode) {
+
+        params.set(
+            "embed",
+            "1"
         );
+
+    }
+
+
+    if (isDevMode) {
+
+        params.set(
+            "dev",
+            "1"
+        );
+
+    }
+
+
+    const queryString =
+        params.toString();
+
+
+    window.location.href =
+        queryString
+            ? `hub.html?${queryString}`
+            : "hub.html";
 
 }
 

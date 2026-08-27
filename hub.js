@@ -70,72 +70,56 @@ if (isDevMode) {
 
 }
 
-const devResetButton =
-    document.getElementById(
-        "dev-reset-progress"
-    );
-
-
-if (
-    isDevMode &&
-    devResetButton
-) {
-
-    devResetButton.hidden = false;
-
-
-    devResetButton.addEventListener(
-        "click",
-        function () {
-
-            const shouldReset =
-                window.confirm(
-                    "Reset all test progress?"
-                );
-
-
-            if (!shouldReset) {
-                return;
-            }
-
-
-            localStorage.removeItem(
-                PROGRESS_STORAGE_KEY
-            );
-
-
-            window.location.reload();
-
-        }
-    );
-
-}
 
 
 function buildHubPageUrl(pageName) {
 
-    const params =
+    const targetUrl =
+        new URL(
+            pageName,
+            window.location.href
+        );
+
+
+    const currentParams =
         new URLSearchParams(
             window.location.search
         );
 
 
-    const queryString =
-        params.toString();
+    if (currentParams.get("embed") === "1") {
+
+        targetUrl.searchParams.set(
+            "embed",
+            "1"
+        );
+
+    }
 
 
-    return queryString
-        ? `${pageName}?${queryString}`
-        : pageName;
+    if (currentParams.get("dev") === "1") {
+
+        targetUrl.searchParams.set(
+            "dev",
+            "1"
+        );
+
+    }
+
+
+    return (
+        targetUrl.pathname.split("/").pop() +
+        targetUrl.search
+    );
 
 }
 
 
-function openChallenge() {
+function openChallenge(challengeUrl) {
 
     window.location.href =
         buildHubPageUrl(
-            "index.html"
+            challengeUrl
         );
 
 }
@@ -216,7 +200,7 @@ function renderChallenges(summary) {
 
             const progress =
                 summary.challengeProgress[
-                challenge.id
+                    challenge.id
                 ];
 
 
@@ -235,6 +219,12 @@ function renderChallenges(summary) {
             let actionHTML = "";
 
 
+            /*
+                DISCOVERED
+                The challenge has been opened,
+                but has not yet been completed.
+            */
+
             if (
                 progress &&
                 progress.discovered
@@ -252,19 +242,30 @@ function renderChallenges(summary) {
                 detailText =
                     "Not completed";
 
+
                 actionHTML = `
-                <button
-                    type="button"
-                    class="hub-challenge-action"
-                    onclick="openChallenge()">
-
-                    Start challenge
-
-                </button>
-`;
+                    <button
+                        type="button"
+                        class="hub-challenge-action"
+                        onclick="openChallenge('${challenge.url}')"
+                    >
+                        Start challenge
+                    </button>
+                `;
 
             }
 
+
+            /*
+                COMPLETED
+
+                This comes after the discovered
+                condition intentionally.
+
+                Completed challenges therefore
+                overwrite the discovered state
+                and receive a Replay action.
+            */
 
             if (
                 progress &&
@@ -283,6 +284,17 @@ function renderChallenges(summary) {
                 detailText =
                     `Best ${progress.bestScore}`;
 
+
+                actionHTML = `
+                    <button
+                        type="button"
+                        class="hub-challenge-action"
+                        onclick="openChallenge('${challenge.url}')"
+                    >
+                        Replay challenge
+                    </button>
+                `;
+
             }
 
 
@@ -298,31 +310,34 @@ function renderChallenges(summary) {
 
             challengeElement.innerHTML = `
 
-    <div class="hub-challenge-icon">
-        ${stateIcon}
-    </div>
+                <div class="hub-challenge-icon">
+                    ${stateIcon}
+                </div>
 
-    <div class="hub-challenge-content">
+                <div class="hub-challenge-content">
 
-        <div class="hub-challenge-name">
-            ${progress &&
-                    progress.discovered
-                    ? challenge.name
-                    : "Undiscovered Challenge"
-                }
-        </div>
+                    <div class="hub-challenge-name">
 
-        <div class="hub-challenge-state">
-            ${stateText}
-            ·
-            ${detailText}
-        </div>
+                        ${
+                            progress &&
+                            progress.discovered
+                                ? challenge.name
+                                : "Undiscovered Challenge"
+                        }
 
-    </div>
+                    </div>
 
-    ${actionHTML}
+                    <div class="hub-challenge-state">
+                        ${stateText}
+                        ·
+                        ${detailText}
+                    </div>
 
-`;
+                </div>
+
+                ${actionHTML}
+
+            `;
 
 
             container.appendChild(
@@ -368,21 +383,31 @@ function renderBadges(summary) {
 
         badgeElement.innerHTML = `
 
-            <div class="hub-badge-icon">
-                ${isUnlocked
-                ? badge.icon
-                : "?"
-            }
-            </div>
+    <div class="hub-badge-icon">
+        ${isUnlocked
+        ? badge.icon
+        : "?"
+    }
+    </div>
 
-            <div class="hub-badge-name">
-                ${isUnlocked
-                ? badge.name
-                : "Locked badge"
-            }
-            </div>
+    <div class="hub-badge-name">
+        ${isUnlocked
+        ? badge.name
+        : "Locked badge"
+    }
+    </div>
 
-        `;
+    ${
+        isUnlocked
+            ? `
+                <div class="hub-badge-reward">
+                    +${badge.reward}
+                </div>
+            `
+            : ""
+    }
+
+`;
 
 
         container.appendChild(
