@@ -47,23 +47,43 @@ const challenges = [
     },
 
     {
-    id:
-        "lobby-observation-challenge",
+        id:
+            "lobby-observation-challenge",
 
-    name:
-        "Lobby Observation Challenge",
+        name:
+            "Lobby Observation Challenge",
 
-    description:
-        "Take a close look around the lobby, then answer a question about what you noticed.",
+        description:
+            "Take a close look around the lobby, then answer a question about what you noticed.",
 
-    type:
-        "observation",
+        type:
+            "observation",
 
-    estimatedTime:
-        "About 1 minute",
+        estimatedTime:
+            "About 1 minute",
 
-    url:
-        "observation.html?challenge=lobby-observation-challenge"
-}
+        url:
+            "observation.html?challenge=lobby-observation-challenge"
+    },
+
+    {
+        id:
+            "find-reception",
+
+        name:
+            "Find the Reception",
+
+        description:
+            "Explore the space and locate the reception area.",
+
+        type:
+            "find-it",
+
+        estimatedTime:
+            "About 1 minute",
+
+        url:
+            "find.html?challenge=find-reception"
+    }
 
 ];
