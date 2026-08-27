@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Observation Challenge</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+</head>
+
+<body>
+
+    <div class="quiz-card">
+
+        <div class="quiz-header">
+
+            <span class="quiz-label">
+                Observation Challenge
+            </span>
+
+            <span
+                id="question-counter"
+                class="question-counter">
+            </span>
+
+        </div>
+
+        <div
+            id="progress"
+            class="progress">
+        </div>
+
+        <div
+            id="quiz-stage"
+            class="quiz-stage">
+
+            <h1
+                id="question"
+                class="question">
+            </h1>
+
+            <p
+                id="answer-instruction"
+                class="answer-instruction">
+            </p>
+
+            <div id="answers"></div>
+
+            <div
+                id="feedback"
+                aria-live="polite"
+                aria-atomic="true">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="badges.js"></script>
+    <script src="challenges.js"></script>
+    <script src="observation-data.js"></script>
+    <script src="progress.js"></script>
+    <script src="observation.js"></script>
+
+</body>
+
+</html>

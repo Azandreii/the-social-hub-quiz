@@ -44,6 +44,26 @@ const challenges = [
 
         url:
             "index.html?challenge=reception-quick-challenge"
-    }
+    },
+
+    {
+    id:
+        "lobby-observation-challenge",
+
+    name:
+        "Lobby Observation Challenge",
+
+    description:
+        "Take a close look around the lobby, then answer a question about what you noticed.",
+
+    type:
+        "observation",
+
+    estimatedTime:
+        "About 1 minute",
+
+    url:
+        "observation.html?challenge=lobby-observation-challenge"
+}
 
 ];
