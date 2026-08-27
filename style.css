@@ -737,6 +737,86 @@ body.embed-mode .feedback p {
 }
 
 
+/* ========================================
+   MY SOCIAL HUB - EMBED MODE
+======================================== */
+
+body.embed-mode.hub-page {
+    min-height: 0;
+
+    display: block;
+
+    padding: 0;
+
+    background-color: transparent;
+}
+
+
+body.embed-mode .hub-card {
+    width: 100%;
+    max-width: none;
+
+    margin: 0;
+
+    padding: 22px 26px;
+
+    border-radius: 0;
+
+    background-color: var(--color-surface);
+}
+
+
+body.embed-mode .hub-header {
+    margin-bottom: 20px;
+}
+
+
+body.embed-mode .hub-title {
+    font-size: 30px;
+}
+
+
+body.embed-mode .hub-points-panel {
+    margin-bottom: 22px;
+
+    padding-bottom: 18px;
+}
+
+
+body.embed-mode .hub-total-points {
+    font-size: 44px;
+}
+
+
+body.embed-mode .hub-section {
+    margin-top: 22px;
+}
+
+
+body.embed-mode .hub-section-header {
+    margin-bottom: 10px;
+}
+
+
+body.embed-mode .hub-section-header h2 {
+    font-size: 21px;
+}
+
+
+body.embed-mode .hub-stat {
+    padding: 12px 14px;
+}
+
+
+body.embed-mode .hub-challenge {
+    padding: 12px 14px;
+}
+
+
+body.embed-mode .hub-badge {
+    padding: 11px 12px;
+}
+
 /* CHALLENGE INTRO */
 
 .challenge-intro {

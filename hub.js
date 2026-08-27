@@ -4,15 +4,113 @@ const hubUrlParams =
     );
 
 
-if (
-    hubUrlParams.get("embed") === "1"
-) {
+const isEmbedMode =
+    hubUrlParams.get("embed") === "1";
+
+
+const isDevMode =
+    hubUrlParams.get("dev") === "1";
+
+
+if (isEmbedMode) {
 
     document.body.classList.add(
         "embed-mode"
     );
 
 }
+
+
+if (isDevMode) {
+
+    const devTools =
+        document.getElementById(
+            "dev-tools"
+        );
+
+    const devResetButton =
+        document.getElementById(
+            "dev-reset-button"
+        );
+
+
+    if (devTools) {
+        devTools.hidden = false;
+    }
+
+
+    if (devResetButton) {
+
+        devResetButton.addEventListener(
+            "click",
+            function () {
+
+                const shouldReset =
+                    window.confirm(
+                        "Reset all test progress?"
+                    );
+
+
+                if (!shouldReset) {
+                    return;
+                }
+
+
+                localStorage.removeItem(
+                    PROGRESS_STORAGE_KEY
+                );
+
+
+                window.location.reload();
+
+            }
+        );
+
+    }
+
+}
+
+const devResetButton =
+    document.getElementById(
+        "dev-reset-progress"
+    );
+
+
+if (
+    isDevMode &&
+    devResetButton
+) {
+
+    devResetButton.hidden = false;
+
+
+    devResetButton.addEventListener(
+        "click",
+        function () {
+
+            const shouldReset =
+                window.confirm(
+                    "Reset all test progress?"
+                );
+
+
+            if (!shouldReset) {
+                return;
+            }
+
+
+            localStorage.removeItem(
+                PROGRESS_STORAGE_KEY
+            );
+
+
+            window.location.reload();
+
+        }
+    );
+
+}
+
 
 function buildHubPageUrl(pageName) {
 
