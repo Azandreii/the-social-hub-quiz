@@ -46,6 +46,76 @@ const badges = [
             );
 
         }
+    },
+
+    {
+        id: "perfect-journey",
+
+        name: "Perfect Journey",
+
+        description:
+            "Complete every challenge and master every performance challenge.",
+
+        reward: 250,
+
+        icon: "★",
+
+        condition: function (progress) {
+
+            const allChallengesCompleted =
+                challenges.every(
+                    function (challenge) {
+
+                        const challengeProgress =
+                            progress.challengeProgress[
+                            challenge.id
+                            ];
+
+                        return (
+                            challengeProgress &&
+                            challengeProgress.completed
+                        );
+
+                    }
+                );
+
+
+            const allPerfectChallengesPerfected =
+                challenges
+                    .filter(
+                        function (challenge) {
+
+                            return (
+                                challenge.supportsPerfect ===
+                                true
+                            );
+
+                        }
+                    )
+                    .every(
+                        function (challenge) {
+
+                            const challengeProgress =
+                                progress.challengeProgress[
+                                challenge.id
+                                ];
+
+                            return (
+                                challengeProgress &&
+                                challengeProgress.bestScore >=
+                                challenge.perfectScore
+                            );
+
+                        }
+                    );
+
+
+            return (
+                allChallengesCompleted &&
+                allPerfectChallengesPerfected
+            );
+
+        }
     }
 
 ];

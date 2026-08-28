@@ -5,10 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>The Social Hub Tour</title>
 
@@ -19,7 +16,6 @@
 
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -330,16 +326,13 @@
 
             z-index: 50;
 
-            width: min(
-                760px,
-                calc(100% - 32px)
-            );
+            width: min(760px,
+                    calc(100% - 32px));
 
             height: calc(100% - 112px);
 
             transform:
-                translateX(-50%)
-                translateY(12px);
+                translateX(-50%) translateY(12px);
 
             opacity: 0;
 
@@ -364,8 +357,7 @@
 
         .tour-hub-overlay.is-open {
             transform:
-                translateX(-50%)
-                translateY(0);
+                translateX(-50%) translateY(0);
 
             opacity: 1;
 
@@ -429,10 +421,8 @@
 
             z-index: 60;
 
-            width: min(
-                360px,
-                calc(100% - 32px)
-            );
+            width: min(360px,
+                    calc(100% - 32px));
 
             max-height:
                 calc(100% - 112px);
@@ -729,10 +719,7 @@
            ========================= */
 
 
-        @media (
-            prefers-reduced-motion:
-            reduce
-        ) {
+        @media (prefers-reduced-motion: reduce) {
 
             .tour-hub-button,
             .tour-menu-button,
@@ -744,7 +731,6 @@
             }
 
         }
-
     </style>
 
 </head>
@@ -763,10 +749,7 @@
 
         <div class="tour-hud-left">
 
-            <div
-                class="tour-brand"
-                aria-label="The Social Hub"
-            >
+            <div class="tour-brand" aria-label="The Social Hub">
                 THE<br>
                 SOCIAL<br>
                 HUB
@@ -775,10 +758,7 @@
 
             <div class="tour-points">
 
-                <span
-                    class="tour-points-icon"
-                    aria-hidden="true"
-                >
+                <span class="tour-points-icon" aria-hidden="true">
                     ★
                 </span>
 
@@ -803,11 +783,7 @@
 
         <div class="tour-hud-actions">
 
-            <button
-                class="tour-hub-button"
-                id="tour-open-hub"
-                type="button"
-            >
+            <button class="tour-hub-button" id="tour-open-hub" type="button">
                 My Social Hub
 
                 <span aria-hidden="true">
@@ -816,23 +792,13 @@
             </button>
 
 
-            <button
-                class="tour-menu-button"
-                id="tour-open-menu"
-                type="button"
-                aria-label="Open tour menu"
-                aria-expanded="false"
-            >
+            <button class="tour-menu-button" id="tour-open-menu" type="button" aria-label="Open tour menu"
+                aria-expanded="false">
                 ☰
             </button>
 
 
-            <button
-                class="tour-fullscreen-button"
-                id="tour-fullscreen"
-                type="button"
-                aria-label="Enter fullscreen"
-            >
+            <button class="tour-fullscreen-button" id="tour-fullscreen" type="button" aria-label="Enter fullscreen">
                 ⛶
             </button>
 
@@ -847,16 +813,11 @@
          ========================= -->
 
 
-    <iframe
-        id="kuula-tour"
-        src="https://kuula.co/share/collection/7TnKZ?thumbs=0&fs=0"
-        allowfullscreen
-        allow="
+    <iframe id="kuula-tour" src="https://kuula.co/share/collection/7TnKZ?thumbs=0&fs=0" allowfullscreen allow="
             xr-spatial-tracking;
             gyroscope;
             accelerometer
-        "
-    ></iframe>
+        "></iframe>
 
 
 
@@ -865,11 +826,7 @@
          ========================= -->
 
 
-    <div
-        class="tour-overlay-backdrop"
-        id="tour-overlay-backdrop"
-        aria-hidden="true"
-    ></div>
+    <div class="tour-overlay-backdrop" id="tour-overlay-backdrop" aria-hidden="true"></div>
 
 
 
@@ -878,31 +835,18 @@
          ========================= -->
 
 
-    <section
-        class="tour-hub-overlay"
-        id="tour-hub-overlay"
-        aria-label="My Social Hub"
-    >
+    <section class="tour-hub-overlay" id="tour-hub-overlay" aria-label="My Social Hub">
 
         <div class="tour-overlay-header">
 
-            <button
-                class="tour-panel-close"
-                id="tour-close-hub"
-                type="button"
-                aria-label="Close My Social Hub"
-            >
+            <button class="tour-panel-close" id="tour-close-hub" type="button" aria-label="Close My Social Hub">
                 ✕
             </button>
 
         </div>
 
 
-        <iframe
-            id="tour-hub-frame"
-            title="My Social Hub"
-            src="about:blank"
-        ></iframe>
+        <iframe id="tour-hub-frame" title="My Social Hub" src="about:blank"></iframe>
 
     </section>
 
@@ -913,11 +857,7 @@
          ========================= -->
 
 
-    <aside
-        class="tour-menu-panel"
-        id="tour-menu-panel"
-        aria-label="Tour menu"
-    >
+    <aside class="tour-menu-panel" id="tour-menu-panel" aria-label="Tour menu">
 
         <div class="tour-menu-heading">
 
@@ -934,12 +874,7 @@
             </div>
 
 
-            <button
-                class="tour-menu-close"
-                id="tour-close-menu"
-                type="button"
-                aria-label="Close menu"
-            >
+            <button class="tour-menu-close" id="tour-close-menu" type="button" aria-label="Close menu">
                 ✕
             </button>
 
@@ -949,16 +884,9 @@
 
         <div class="tour-menu-list">
 
-            <button
-                class="tour-menu-item"
-                id="tour-menu-explore"
-                type="button"
-            >
+            <button class="tour-menu-item" id="tour-menu-explore" type="button">
                 <span>
-                    <span
-                        class="tour-menu-item-symbol"
-                        aria-hidden="true"
-                    >
+                    <span class="tour-menu-item-symbol" aria-hidden="true">
                         ↗
                     </span>
 
@@ -971,16 +899,9 @@
             </button>
 
 
-            <button
-                class="tour-menu-item"
-                id="tour-menu-hub"
-                type="button"
-            >
+            <button class="tour-menu-item" id="tour-menu-hub" type="button">
                 <span>
-                    <span
-                        class="tour-menu-item-symbol"
-                        aria-hidden="true"
-                    >
+                    <span class="tour-menu-item-symbol" aria-hidden="true">
                         ★
                     </span>
 
@@ -996,16 +917,9 @@
             <div class="tour-menu-divider"></div>
 
 
-            <button
-                class="tour-menu-item"
-                id="tour-menu-how"
-                type="button"
-            >
+            <button class="tour-menu-item" id="tour-menu-how" type="button">
                 <span>
-                    <span
-                        class="tour-menu-item-symbol"
-                        aria-hidden="true"
-                    >
+                    <span class="tour-menu-item-symbol" aria-hidden="true">
                         ?
                     </span>
 
@@ -1018,16 +932,9 @@
             </button>
 
 
-            <button
-                class="tour-menu-item"
-                id="tour-menu-about"
-                type="button"
-            >
+            <button class="tour-menu-item" id="tour-menu-about" type="button">
                 <span>
-                    <span
-                        class="tour-menu-item-symbol"
-                        aria-hidden="true"
-                    >
+                    <span class="tour-menu-item-symbol" aria-hidden="true">
                         i
                     </span>
 
@@ -1043,11 +950,7 @@
 
 
 
-        <div
-            class="tour-menu-info"
-            id="tour-menu-info"
-            hidden
-        >
+        <div class="tour-menu-info" id="tour-menu-info" hidden>
 
             <h3 id="tour-menu-info-title">
                 Information
@@ -1067,8 +970,8 @@
          ========================= -->
 
 
-<script src="badges.js"></script>
-<script src="progress.js?v=4"></script>
+    <script src="badges.js"></script>
+    <script src="progress.js?v=4"></script>
 
 
 
@@ -1154,6 +1057,28 @@
                     hotspotName
                 );
 
+
+                if (
+                    hotspotName ===
+                    "groningen-quiz-hotspot"
+                ) {
+
+                    KuulaPlayerAPI.setParam(
+                        event.frame,
+                        hotspotName,
+                        "tint",
+                        "#f0c419"
+                    );
+
+                    KuulaPlayerAPI.setParam(
+                        event.frame,
+                        hotspotName,
+                        "opacity",
+                        1
+                    );
+
+                }
+
             }
         );
 
@@ -1179,7 +1104,7 @@
                 if (
                     !event.data ||
                     event.data.type !==
-                        "tsh-progress-update"
+                    "tsh-progress-update"
                 ) {
                     return;
                 }
