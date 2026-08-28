@@ -30,24 +30,42 @@ function sendProgressToWrapper() {
         return;
     }
 
+    const progressForWrapper = {
+        hubPoints:
+            tourProgress.hubPoints,
+
+        challengeProgress:
+            tourProgress.challengeProgress,
+
+        unlockedBadges:
+            tourProgress.unlockedBadges
+    };
+
+    const progressJson =
+        JSON.stringify(progressForWrapper);
+
+    if (
+        progressJson ===
+        lastSentProgressJson
+    ) {
+        return;
+    }
+
+    lastSentProgressJson =
+        progressJson;
+
     window.top.postMessage(
         {
-            type: "tsh-progress-update",
+            type:
+                "tsh-progress-update",
 
-            progress: {
-                hubPoints:
-                    tourProgress.hubPoints,
-
-                challengeProgress:
-                    tourProgress.challengeProgress,
-
-                unlockedBadges:
-                    tourProgress.unlockedBadges
-            }
+            progress:
+                progressForWrapper
         },
         "https://azandreii.github.io"
     );
 }
+
 
 
 // LOAD PROGRESS
@@ -56,6 +74,8 @@ function loadTourProgress() {
 
     const savedProgress =
         localStorage.getItem(PROGRESS_STORAGE_KEY);
+
+    let lastSentProgressJson = null;
 
 
     if (!savedProgress) {

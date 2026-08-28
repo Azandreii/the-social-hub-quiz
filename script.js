@@ -11,6 +11,7 @@ const isEmbedMode =
 const isDevMode =
     urlParams.get("dev") === "1";
 
+    /* temporary sender to test wraper communication behaviour */ 
 window.top.postMessage(
     {
         type: "tsh-wrapper-test",
@@ -83,7 +84,7 @@ if (!questions) {
 
 // const CHALLENGE_ID = "groningen-quick-challenge";  - HARD CODED VERSION FOR TESTING PURPOSES
 
-/* WRAPPER */
+/* WRAPPER TEST BEHAVIOUR*/
 function sendWrapperTestMessage() {
 
     window.top.postMessage(
@@ -96,6 +97,7 @@ function sendWrapperTestMessage() {
     );
 
 }
+
 
 
 function changeQuizState(updateFunction) {

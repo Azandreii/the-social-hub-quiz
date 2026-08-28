@@ -2,142 +2,1676 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>The Social Hub Tour</title>
 
+
+    <!-- KUULA PLAYER API -->
+
     <script src="https://static.kuula.io/api.js"></script>
 
+
     <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
         html,
         body {
-            margin: 0;
             width: 100%;
             height: 100%;
+
+            margin: 0;
+
             overflow: hidden;
+
             background: #000000;
         }
 
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #111111;
+        }
+
+
+
+        /* =========================
+           KUULA TOUR
+           ========================= */
+
+
         #kuula-tour {
+            position: absolute;
+
+            inset: 0;
+
             width: 100%;
             height: 100%;
+
             border: 0;
+
             display: block;
         }
+
+
+
+        /* =========================
+           HUD POSITIONING LAYER
+           ========================= */
+
+
+        .tour-hud {
+            position: absolute;
+
+            top: 16px;
+            left: 16px;
+            right: 16px;
+
+            z-index: 30;
+
+            display: flex;
+
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 16px;
+
+            pointer-events: none;
+        }
+
+
+
+        /* =========================
+           LEFT HUD PANEL
+           ========================= */
+
+
+        .tour-hud-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+            min-height: 58px;
+
+            padding: 8px 14px;
+
+            border: 2px solid #111111;
+
+            border-radius: 14px;
+
+            background:
+                rgba(250, 249, 246, 0.96);
+
+            pointer-events: auto;
+        }
+
+
+        .tour-brand {
+            padding-right: 16px;
+
+            border-right: 2px solid #111111;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            line-height: 0.9;
+
+            letter-spacing: -0.3px;
+        }
+
+
+        .tour-points {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+        }
+
+
+        .tour-points-icon {
+            color: #f0c419;
+
+            font-size: 24px;
+
+            line-height: 1;
+        }
+
+
+        .tour-points strong {
+            display: block;
+
+            font-size: 22px;
+
+            line-height: 1;
+        }
+
+
+        .tour-points-label {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #5f5f5f;
+
+            font-size: 12px;
+        }
+
+
+
+        /* =========================
+           RIGHT HUD PANEL
+           ========================= */
+
+
+        .tour-hud-actions {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 8px;
+
+            padding: 6px;
+
+            border: 2px solid #111111;
+
+            border-radius: 14px;
+
+            background:
+                rgba(250, 249, 246, 0.96);
+
+            pointer-events: auto;
+        }
+
+
+        .tour-hub-button,
+        .tour-menu-button,
+        .tour-fullscreen-button {
+            min-height: 44px;
+
+            border: 2px solid #111111;
+
+            background: #faf9f6;
+
+            color: #111111;
+
+            font: inherit;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background-color 0.15s ease,
+                transform 0.15s ease;
+        }
+
+
+        .tour-hub-button {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 16px;
+
+            min-width: 174px;
+
+            padding: 0 18px;
+
+            border-radius: 10px;
+
+            white-space: nowrap;
+        }
+
+
+        .tour-menu-button,
+        .tour-fullscreen-button {
+            width: 46px;
+
+            padding: 0;
+
+            border-radius: 10px;
+
+            font-size: 20px;
+        }
+
+
+        .tour-hub-button:hover,
+        .tour-menu-button:hover,
+        .tour-fullscreen-button:hover,
+        .tour-menu-item:hover,
+        .tour-panel-close:hover {
+            background: #eeeeee;
+        }
+
+
+        .tour-hub-button:active,
+        .tour-menu-button:active,
+        .tour-fullscreen-button:active {
+            transform: scale(0.97);
+        }
+
+
+        button:focus-visible {
+            outline: 3px solid #f0c419;
+
+            outline-offset: 2px;
+        }
+
+
+
+        /* =========================
+           SHARED OVERLAY BACKDROP
+           ========================= */
+
+
+        .tour-overlay-backdrop {
+            position: absolute;
+
+            inset: 0;
+
+            z-index: 40;
+
+            background:
+                rgba(17, 17, 17, 0.58);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+
+            transition:
+                opacity 0.18s ease,
+                visibility 0.18s ease;
+        }
+
+
+        .tour-overlay-backdrop.is-visible {
+            opacity: 1;
+
+            visibility: visible;
+
+            pointer-events: auto;
+        }
+
+
+
+        /* =========================
+           MY SOCIAL HUB OVERLAY
+           ========================= */
+
+
+        .tour-hub-overlay {
+            position: absolute;
+
+            top: 92px;
+            left: 50%;
+
+            z-index: 50;
+
+            width: min(
+                760px,
+                calc(100% - 32px)
+            );
+
+            height: calc(100% - 112px);
+
+            transform:
+                translateX(-50%)
+                translateY(12px);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+
+            border: 2px solid #111111;
+
+            border-radius: 16px;
+
+            background: #faf9f6;
+
+            overflow: hidden;
+
+            transition:
+                opacity 0.18s ease,
+                transform 0.18s ease,
+                visibility 0.18s ease;
+        }
+
+
+        .tour-hub-overlay.is-open {
+            transform:
+                translateX(-50%)
+                translateY(0);
+
+            opacity: 1;
+
+            visibility: visible;
+
+            pointer-events: auto;
+        }
+
+
+        .tour-overlay-header {
+            position: absolute;
+
+            top: 10px;
+            right: 10px;
+
+            z-index: 2;
+        }
+
+
+        .tour-panel-close {
+            width: 44px;
+            height: 44px;
+
+            border: 2px solid #111111;
+
+            border-radius: 50%;
+
+            background: #faf9f6;
+
+            color: #111111;
+
+            font-size: 20px;
+
+            cursor: pointer;
+        }
+
+
+        #tour-hub-frame {
+            width: 100%;
+            height: 100%;
+
+            border: 0;
+
+            display: block;
+
+            background: #faf9f6;
+        }
+
+
+
+        /* =========================
+           MENU PANEL
+           ========================= */
+
+
+        .tour-menu-panel {
+            position: absolute;
+
+            top: 92px;
+            right: 16px;
+
+            z-index: 60;
+
+            width: min(
+                360px,
+                calc(100% - 32px)
+            );
+
+            max-height:
+                calc(100% - 112px);
+
+            padding: 22px;
+
+            border: 2px solid #111111;
+
+            border-radius: 16px;
+
+            background: #faf9f6;
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+
+            transform:
+                translateX(12px);
+
+            overflow-y: auto;
+
+            transition:
+                opacity 0.18s ease,
+                transform 0.18s ease,
+                visibility 0.18s ease;
+        }
+
+
+        .tour-menu-panel.is-open {
+            opacity: 1;
+
+            visibility: visible;
+
+            pointer-events: auto;
+
+            transform:
+                translateX(0);
+        }
+
+
+        .tour-menu-heading {
+            display: flex;
+
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 16px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .tour-menu-kicker {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+        }
+
+
+        .tour-menu-heading h2 {
+            margin: 0;
+
+            font-size: 27px;
+
+            line-height: 1;
+        }
+
+
+        .tour-menu-close {
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+
+            border: 2px solid #111111;
+
+            border-radius: 50%;
+
+            background: transparent;
+
+            font-size: 18px;
+
+            cursor: pointer;
+        }
+
+
+        .tour-menu-list {
+            display: grid;
+
+            gap: 8px;
+        }
+
+
+        .tour-menu-item {
+            width: 100%;
+
+            min-height: 52px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            padding: 0 14px;
+
+            border: 2px solid #111111;
+
+            border-radius: 10px;
+
+            background: #faf9f6;
+
+            color: #111111;
+
+            font: inherit;
+
+            font-weight: 700;
+
+            text-align: left;
+
+            cursor: pointer;
+        }
+
+
+        .tour-menu-item-symbol {
+            margin-right: 8px;
+        }
+
+
+        .tour-menu-divider {
+            height: 2px;
+
+            margin: 14px 0;
+
+            background: #111111;
+        }
+
+
+
+        /* =========================
+           MENU INFORMATION PANEL
+           ========================= */
+
+
+        .tour-menu-info {
+            margin-top: 16px;
+
+            padding: 16px;
+
+            border: 2px solid #111111;
+
+            border-radius: 10px;
+
+            background: #fff3b8;
+        }
+
+
+        .tour-menu-info[hidden] {
+            display: none;
+        }
+
+
+        .tour-menu-info h3 {
+            margin:
+                0 0 8px;
+
+            font-size: 18px;
+        }
+
+
+        .tour-menu-info p {
+            margin: 0;
+
+            color: #333333;
+
+            font-size: 14px;
+
+            line-height: 1.45;
+        }
+
+
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+
+        @media (max-width: 760px) {
+
+            .tour-hud {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+
+                gap: 8px;
+            }
+
+
+            .tour-hud-left {
+                min-height: 52px;
+
+                padding: 6px 10px;
+            }
+
+
+            .tour-brand {
+                display: none;
+            }
+
+
+            .tour-points {
+                gap: 7px;
+            }
+
+
+            .tour-points-icon {
+                font-size: 21px;
+            }
+
+
+            .tour-points strong {
+                font-size: 19px;
+            }
+
+
+            .tour-hud-actions {
+                padding: 4px;
+
+                gap: 5px;
+            }
+
+
+            .tour-hub-button {
+                min-width: 0;
+
+                padding: 0 10px;
+
+                font-size: 13px;
+            }
+
+
+            .tour-hub-button span {
+                display: none;
+            }
+
+
+            .tour-menu-button,
+            .tour-fullscreen-button {
+                width: 42px;
+            }
+
+
+            .tour-hub-overlay {
+                top: 78px;
+
+                height:
+                    calc(100% - 88px);
+
+                width:
+                    calc(100% - 20px);
+
+                border-radius: 14px;
+            }
+
+
+            .tour-menu-panel {
+                top: 78px;
+                right: 10px;
+
+                width:
+                    calc(100% - 20px);
+
+                max-height:
+                    calc(100% - 88px);
+            }
+
+        }
+
+
+
+        /* =========================
+           REDUCED MOTION
+           ========================= */
+
+
+        @media (
+            prefers-reduced-motion:
+            reduce
+        ) {
+
+            .tour-hub-button,
+            .tour-menu-button,
+            .tour-fullscreen-button,
+            .tour-overlay-backdrop,
+            .tour-hub-overlay,
+            .tour-menu-panel {
+                transition: none;
+            }
+
+        }
+
     </style>
+
 </head>
+
+
 
 <body>
 
-    <iframe id="kuula-tour" src="https://kuula.co/share/collection/7TnKZ?thumbs=0" allowfullscreen
-        allow="xr-spatial-tracking; gyroscope; accelerometer"></iframe>
+
+    <!-- =========================
+         WRAPPER HUD
+         ========================= -->
+
+
+    <div class="tour-hud">
+
+        <div class="tour-hud-left">
+
+            <div
+                class="tour-brand"
+                aria-label="The Social Hub"
+            >
+                THE<br>
+                SOCIAL<br>
+                HUB
+            </div>
+
+
+            <div class="tour-points">
+
+                <span
+                    class="tour-points-icon"
+                    aria-hidden="true"
+                >
+                    ★
+                </span>
+
+
+                <div>
+
+                    <strong id="tour-hub-points">
+                        0
+                    </strong>
+
+                    <span class="tour-points-label">
+                        Hub Points
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="tour-hud-actions">
+
+            <button
+                class="tour-hub-button"
+                id="tour-open-hub"
+                type="button"
+            >
+                My Social Hub
+
+                <span aria-hidden="true">
+                    →
+                </span>
+            </button>
+
+
+            <button
+                class="tour-menu-button"
+                id="tour-open-menu"
+                type="button"
+                aria-label="Open tour menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+
+            <button
+                class="tour-fullscreen-button"
+                id="tour-fullscreen"
+                type="button"
+                aria-label="Enter fullscreen"
+            >
+                ⛶
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         KUULA
+         ========================= -->
+
+
+    <iframe
+        id="kuula-tour"
+        src="https://kuula.co/share/collection/7TnKZ?thumbs=0&fs=0"
+        allowfullscreen
+        allow="
+            xr-spatial-tracking;
+            gyroscope;
+            accelerometer
+        "
+    ></iframe>
+
+
+
+    <!-- =========================
+         DARK OVERLAY
+         ========================= -->
+
+
+    <div
+        class="tour-overlay-backdrop"
+        id="tour-overlay-backdrop"
+        aria-hidden="true"
+    ></div>
+
+
+
+    <!-- =========================
+         MY SOCIAL HUB
+         ========================= -->
+
+
+    <section
+        class="tour-hub-overlay"
+        id="tour-hub-overlay"
+        aria-label="My Social Hub"
+    >
+
+        <div class="tour-overlay-header">
+
+            <button
+                class="tour-panel-close"
+                id="tour-close-hub"
+                type="button"
+                aria-label="Close My Social Hub"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <iframe
+            id="tour-hub-frame"
+            title="My Social Hub"
+            src="about:blank"
+        ></iframe>
+
+    </section>
+
+
+
+    <!-- =========================
+         MENU
+         ========================= -->
+
+
+    <aside
+        class="tour-menu-panel"
+        id="tour-menu-panel"
+        aria-label="Tour menu"
+    >
+
+        <div class="tour-menu-heading">
+
+            <div>
+
+                <span class="tour-menu-kicker">
+                    The Social Hub
+                </span>
+
+                <h2>
+                    Explore
+                </h2>
+
+            </div>
+
+
+            <button
+                class="tour-menu-close"
+                id="tour-close-menu"
+                type="button"
+                aria-label="Close menu"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+
+        <div class="tour-menu-list">
+
+            <button
+                class="tour-menu-item"
+                id="tour-menu-explore"
+                type="button"
+            >
+                <span>
+                    <span
+                        class="tour-menu-item-symbol"
+                        aria-hidden="true"
+                    >
+                        ↗
+                    </span>
+
+                    Explore the tour
+                </span>
+
+                <span aria-hidden="true">
+                    →
+                </span>
+            </button>
+
+
+            <button
+                class="tour-menu-item"
+                id="tour-menu-hub"
+                type="button"
+            >
+                <span>
+                    <span
+                        class="tour-menu-item-symbol"
+                        aria-hidden="true"
+                    >
+                        ★
+                    </span>
+
+                    My Social Hub
+                </span>
+
+                <span aria-hidden="true">
+                    →
+                </span>
+            </button>
+
+
+            <div class="tour-menu-divider"></div>
+
+
+            <button
+                class="tour-menu-item"
+                id="tour-menu-how"
+                type="button"
+            >
+                <span>
+                    <span
+                        class="tour-menu-item-symbol"
+                        aria-hidden="true"
+                    >
+                        ?
+                    </span>
+
+                    How challenges work
+                </span>
+
+                <span aria-hidden="true">
+                    +
+                </span>
+            </button>
+
+
+            <button
+                class="tour-menu-item"
+                id="tour-menu-about"
+                type="button"
+            >
+                <span>
+                    <span
+                        class="tour-menu-item-symbol"
+                        aria-hidden="true"
+                    >
+                        i
+                    </span>
+
+                    About this experience
+                </span>
+
+                <span aria-hidden="true">
+                    +
+                </span>
+            </button>
+
+        </div>
+
+
+
+        <div
+            class="tour-menu-info"
+            id="tour-menu-info"
+            hidden
+        >
+
+            <h3 id="tour-menu-info-title">
+                Information
+            </h3>
+
+            <p id="tour-menu-info-text">
+            </p>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         SHARED PROGRESSION
+         ========================= -->
+
 
     <script src="badges.js"></script>
+
     <script src="progress.js"></script>
 
+
+
+    <!-- =========================
+         TOUR CONTROLLER
+         ========================= -->
+
+
     <script>
+
         let kuulaFrameId = null;
+
+
+
+        /* =========================
+           PROGRESS
+           ========================= */
+
 
         loadTourProgress();
 
-        console.log(
-            "RAW STORAGE:",
-            localStorage.getItem(
-                "tshTourProgress"
-            )
-        );
 
-        console.log(
-            "LOADED tourProgress:",
-            tourProgress
-        );
+        function renderTourHud() {
 
-        console.log(
-            "TOUR PROGRESS:",
-            getTourProgressSummary()
-        );
+            const summary =
+                getTourProgressSummary();
 
-        console.log(
-            "TOUR PROGRESS:",
-            getTourProgressSummary()
-        );
+
+            const pointsElement =
+                document.getElementById(
+                    "tour-hub-points"
+                );
+
+
+            pointsElement.textContent =
+                summary.hubPoints;
+
+        }
+
+
+        renderTourHud();
+
+
+
+        /* =========================
+           KUULA PLAYER
+           ========================= */
+
 
         KuulaPlayerAPI.addEventListener(
             "frameloaded",
             function (event) {
 
-                kuulaFrameId = event.frame;
+                kuulaFrameId =
+                    event.frame;
+
 
                 console.log(
                     "Kuula tour ready:",
                     kuulaFrameId
                 );
+
             }
         );
+
 
         KuulaPlayerAPI.addEventListener(
             "hotspot",
             function (event) {
 
+                const hotspotName =
+                    event.data &&
+                    event.data.name;
+
+
+                if (!hotspotName) {
+                    return;
+                }
+
+
                 console.log(
                     "Hotspot:",
-                    event.data.name
+                    hotspotName
                 );
+
             }
         );
 
+
+
+        /* =========================
+           PROGRESS FROM CHALLENGES
+           ========================= */
+
+
         window.addEventListener(
-    "message",
-    function (event) {
+            "message",
+            function (event) {
 
-        if (
-            event.origin !==
-            "https://azandreii.github.io"
-        ) {
-            return;
-        }
+                if (
+                    event.origin !==
+                    "https://azandreii.github.io"
+                ) {
+                    return;
+                }
 
-        if (
-            !event.data ||
-            event.data.type !==
-                "tsh-progress-update"
-        ) {
-            return;
-        }
 
-        const receivedProgress =
-            event.data.progress;
+                if (
+                    !event.data ||
+                    event.data.type !==
+                        "tsh-progress-update"
+                ) {
+                    return;
+                }
 
-        if (!receivedProgress) {
-            return;
-        }
 
-        tourProgress = {
-            hubPoints:
-                receivedProgress.hubPoints || 0,
+                const receivedProgress =
+                    event.data.progress;
 
-            challengeProgress:
-                receivedProgress.challengeProgress || {},
 
-            unlockedBadges:
-                receivedProgress.unlockedBadges || []
-        };
+                if (!receivedProgress) {
+                    return;
+                }
 
-        saveTourProgress();
 
-        console.log(
-            "WRAPPER PROGRESS UPDATED:",
-            getTourProgressSummary()
+                tourProgress = {
+
+                    hubPoints:
+                        receivedProgress.hubPoints
+                        || 0,
+
+                    challengeProgress:
+                        receivedProgress
+                            .challengeProgress
+                        || {},
+
+                    unlockedBadges:
+                        receivedProgress
+                            .unlockedBadges
+                        || []
+
+                };
+
+
+                saveTourProgress();
+
+
+                renderTourHud();
+
+
+                console.log(
+                    "WRAPPER PROGRESS UPDATED:",
+                    getTourProgressSummary()
+                );
+
+            }
         );
 
-    }
-);
 
 
+        /* =========================
+           OVERLAY ELEMENTS
+           ========================= */
+
+
+        const overlayBackdrop =
+            document.getElementById(
+                "tour-overlay-backdrop"
+            );
+
+
+        const hubOverlay =
+            document.getElementById(
+                "tour-hub-overlay"
+            );
+
+
+        const hubFrame =
+            document.getElementById(
+                "tour-hub-frame"
+            );
+
+
+        const menuPanel =
+            document.getElementById(
+                "tour-menu-panel"
+            );
+
+
+        const menuButton =
+            document.getElementById(
+                "tour-open-menu"
+            );
+
+
+        const menuInfo =
+            document.getElementById(
+                "tour-menu-info"
+            );
+
+
+
+        /* =========================
+           SHARED UI HELPERS
+           ========================= */
+
+
+        function showBackdrop() {
+
+            overlayBackdrop.classList.add(
+                "is-visible"
+            );
+
+            overlayBackdrop.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+        }
+
+
+        function hideBackdropIfUnused() {
+
+            const hubOpen =
+                hubOverlay.classList.contains(
+                    "is-open"
+                );
+
+
+            const menuOpen =
+                menuPanel.classList.contains(
+                    "is-open"
+                );
+
+
+            if (
+                !hubOpen &&
+                !menuOpen
+            ) {
+
+                overlayBackdrop.classList.remove(
+                    "is-visible"
+                );
+
+                overlayBackdrop.setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            }
+
+        }
+
+
+
+        /* =========================
+           MY SOCIAL HUB
+           ========================= */
+
+
+        function openHub() {
+
+            closeMenu();
+
+
+            /*
+                Reload the Hub each time so it
+                reads the latest wrapper
+                localStorage state.
+            */
+
+            hubFrame.src =
+                "hub.html?embed=1";
+
+
+            hubOverlay.classList.add(
+                "is-open"
+            );
+
+
+            showBackdrop();
+
+        }
+
+
+        function closeHub() {
+
+            hubOverlay.classList.remove(
+                "is-open"
+            );
+
+
+            hideBackdropIfUnused();
+
+        }
+
+
+        document.getElementById(
+            "tour-open-hub"
+        ).addEventListener(
+            "click",
+            openHub
+        );
+
+
+        document.getElementById(
+            "tour-close-hub"
+        ).addEventListener(
+            "click",
+            closeHub
+        );
+
+
+
+        /* =========================
+           MENU
+           ========================= */
+
+
+        function openMenu() {
+
+            closeHub();
+
+
+            menuPanel.classList.add(
+                "is-open"
+            );
+
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+
+            showBackdrop();
+
+        }
+
+
+        function closeMenu() {
+
+            menuPanel.classList.remove(
+                "is-open"
+            );
+
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+
+            menuInfo.hidden = true;
+
+
+            hideBackdropIfUnused();
+
+        }
+
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                const isOpen =
+                    menuPanel.classList.contains(
+                        "is-open"
+                    );
+
+
+                if (isOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+
+            }
+        );
+
+
+        document.getElementById(
+            "tour-close-menu"
+        ).addEventListener(
+            "click",
+            closeMenu
+        );
+
+
+
+        /* =========================
+           MENU ACTIONS
+           ========================= */
+
+
+        document.getElementById(
+            "tour-menu-explore"
+        ).addEventListener(
+            "click",
+            function () {
+
+                closeMenu();
+
+            }
+        );
+
+
+        document.getElementById(
+            "tour-menu-hub"
+        ).addEventListener(
+            "click",
+            openHub
+        );
+
+
+        function showMenuInformation(
+            title,
+            text
+        ) {
+
+            document.getElementById(
+                "tour-menu-info-title"
+            ).textContent =
+                title;
+
+
+            document.getElementById(
+                "tour-menu-info-text"
+            ).textContent =
+                text;
+
+
+            menuInfo.hidden = false;
+
+        }
+
+
+        document.getElementById(
+            "tour-menu-how"
+        ).addEventListener(
+            "click",
+            function () {
+
+                showMenuInformation(
+                    "How challenges work",
+                    "Explore the virtual tour and interact with challenge hotspots. Quizzes reward correct answers, observation challenges ask you to inspect the environment, and find-it challenges reward spatial exploration. Completing challenges earns Hub Points and badges."
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "tour-menu-about"
+        ).addEventListener(
+            "click",
+            function () {
+
+                showMenuInformation(
+                    "About this experience",
+                    "This interactive prototype transforms The Social Hub Groningen virtual tour into a digital concierge experience, combining spatial exploration with lightweight challenges, progression and discovery."
+                );
+
+            }
+        );
+
+
+
+        /* =========================
+           BACKDROP CLICK
+           ========================= */
+
+
+        overlayBackdrop.addEventListener(
+            "click",
+            function () {
+
+                closeHub();
+                closeMenu();
+
+            }
+        );
+
+
+
+        /* =========================
+           FULLSCREEN
+           ========================= */
+
+
+        const fullscreenButton =
+            document.getElementById(
+                "tour-fullscreen"
+            );
+
+
+        fullscreenButton.addEventListener(
+            "click",
+            async function () {
+
+                try {
+
+                    if (
+                        !document.fullscreenElement
+                    ) {
+
+                        await document
+                            .documentElement
+                            .requestFullscreen();
+
+                    } else {
+
+                        await document
+                            .exitFullscreen();
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "Fullscreen failed:",
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "fullscreenchange",
+            function () {
+
+                const isFullscreen =
+                    Boolean(
+                        document.fullscreenElement
+                    );
+
+
+                fullscreenButton.textContent =
+                    isFullscreen
+                        ? "✕"
+                        : "⛶";
+
+
+                fullscreenButton.setAttribute(
+                    "aria-label",
+
+                    isFullscreen
+                        ? "Exit fullscreen"
+                        : "Enter fullscreen"
+                );
+
+            }
+        );
+
+
+
+        /* =========================
+           ESCAPE KEY
+           ========================= */
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key !== "Escape"
+                ) {
+                    return;
+                }
+
+
+                if (
+                    hubOverlay.classList.contains(
+                        "is-open"
+                    )
+                ) {
+
+                    closeHub();
+
+                    return;
+                }
+
+
+                if (
+                    menuPanel.classList.contains(
+                        "is-open"
+                    )
+                ) {
+
+                    closeMenu();
+
+                }
+
+            }
+        );
 
     </script>
+
 
 </body>
 
