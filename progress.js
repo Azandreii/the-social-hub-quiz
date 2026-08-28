@@ -9,125 +9,48 @@ let tourProgress = {
 };
 
 
-const PROGRESS_STORAGE_KEY = "tshTourProgress";
+const PROGRESS_STORAGE_KEY =
+    "tshTourProgress";
 
 
 
+// =========================
 // SAVE PROGRESS
+// =========================
+
 
 function saveTourProgress() {
 
     localStorage.setItem(
         PROGRESS_STORAGE_KEY,
-        JSON.stringify(tourProgress)
+        JSON.stringify(
+            tourProgress
+        )
     );
+
 
     sendProgressToWrapper();
+
 }
+
+
+
+// =========================
+// SEND PROGRESS TO WRAPPER
+// =========================
+
 
 function sendProgressToWrapper() {
 
-    if (window.top === window) {
-        return;
-    }
-
-    const progressForWrapper = {
-        hubPoints:
-            tourProgress.hubPoints,
-
-        challengeProgress:
-            tourProgress.challengeProgress,
-
-        unlockedBadges:
-            tourProgress.unlockedBadges
-    };
-
-    const progressJson =
-        JSON.stringify(progressForWrapper);
+    /*
+        If this page IS the wrapper/top-level
+        page, there is nowhere else to send
+        the progress.
+    */
 
     if (
-        progressJson ===
-        lastSentProgressJson
+        window.top === window
     ) {
-        return;
-    }
-
-    lastSentProgressJson =
-        progressJson;
-
-    window.top.postMessage(
-        {
-            type:
-                "tsh-progress-update",
-
-            progress:
-                progressForWrapper
-        },
-        "https://azandreii.github.io"
-    );
-}
-
-
-
-// LOAD PROGRESS
-
-function loadTourProgress() {
-
-    const savedProgress =
-        localStorage.getItem(PROGRESS_STORAGE_KEY);
-
-
-    if (!savedProgress) {
-        return;
-    }
-
-
-    try {
-
-        const parsedProgress =
-            JSON.parse(savedProgress);
-
-
-        if (parsedProgress) {
-
-            tourProgress = {
-
-                hubPoints:
-                    parsedProgress.hubPoints || 0,
-
-                challengeProgress:
-                    parsedProgress.challengeProgress || {},
-
-                unlockedBadges:
-                    parsedProgress.unlockedBadges || []
-
-            };
-
-        }
-
-        if (
-            !tourProgress.challengeProgress ||
-            typeof tourProgress.challengeProgress !== "object"
-        ) {
-
-            tourProgress.challengeProgress = {};
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Could not load saved tour progress:",
-            error
-        );
-
-    }
-
-}
-
-function sendProgressToWrapper() {
-
-    if (window.top === window) {
         return;
     }
 
@@ -153,12 +76,12 @@ function sendProgressToWrapper() {
 
 
     /*
-        Avoid sending the exact same
-        progress repeatedly.
+        Avoid sending identical progress
+        repeatedly.
 
-        Store the previous value directly
-        on this function so there is no
-        separate global variable to manage.
+        The previous JSON is stored directly
+        on this function instead of relying
+        on a separate global variable.
     */
 
     if (
@@ -183,37 +106,210 @@ function sendProgressToWrapper() {
             progress:
                 progressForWrapper
         },
+
         "https://azandreii.github.io"
     );
 
 }
 
-// BADGE LOOKUP
 
-function getBadgeById(badgeId) {
 
-    return badges.find(function (badge) {
-        return badge.id === badgeId;
-    });
+// =========================
+// LOAD PROGRESS
+// =========================
+
+
+function loadTourProgress() {
+
+    const savedProgress =
+        localStorage.getItem(
+            PROGRESS_STORAGE_KEY
+        );
+
+
+    if (!savedProgress) {
+        return;
+    }
+
+
+    try {
+
+        const parsedProgress =
+            JSON.parse(
+                savedProgress
+            );
+
+
+        if (parsedProgress) {
+
+            tourProgress = {
+
+                hubPoints:
+                    parsedProgress.hubPoints
+                    || 0,
+
+                challengeProgress:
+                    parsedProgress
+                        .challengeProgress
+                    || {},
+
+                unlockedBadges:
+                    parsedProgress
+                        .unlockedBadges
+                    || []
+
+            };
+
+        }
+
+
+        if (
+            !tourProgress
+                .challengeProgress ||
+            typeof tourProgress
+                .challengeProgress !==
+                "object"
+        ) {
+
+            tourProgress
+                .challengeProgress = {};
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Could not load saved tour progress:",
+            error
+        );
+
+    }
 
 }
 
 
-// UNLOCK BADGE
 
-function unlockBadge(badgeId) {
+// =========================
+// PROGRESS SUMMARY
+// =========================
+
+
+function getTourProgressSummary() {
+
+    const challengeEntries =
+        Object.entries(
+            tourProgress
+                .challengeProgress
+        );
+
+
+    const discoveredChallenges =
+        challengeEntries.filter(
+            function (entry) {
+
+                const challenge =
+                    entry[1];
+
+
+                return (
+                    challenge.discovered ===
+                    true
+                );
+
+            }
+        ).length;
+
+
+    const completedChallenges =
+        challengeEntries.filter(
+            function (entry) {
+
+                const challenge =
+                    entry[1];
+
+
+                return (
+                    challenge.completed ===
+                    true
+                );
+
+            }
+        ).length;
+
+
+    return {
+
+        hubPoints:
+            tourProgress.hubPoints,
+
+        discoveredChallenges:
+            discoveredChallenges,
+
+        completedChallenges:
+            completedChallenges,
+
+        challengeProgress:
+            tourProgress
+                .challengeProgress,
+
+        unlockedBadges:
+            tourProgress
+                .unlockedBadges
+
+    };
+
+}
+
+
+
+// =========================
+// BADGE LOOKUP
+// =========================
+
+
+function getBadgeById(
+    badgeId
+) {
+
+    return badges.find(
+        function (badge) {
+
+            return (
+                badge.id ===
+                badgeId
+            );
+
+        }
+    );
+
+}
+
+
+
+// =========================
+// UNLOCK BADGE
+// =========================
+
+
+function unlockBadge(
+    badgeId
+) {
 
     if (
-        tourProgress.unlockedBadges.includes(
-            badgeId
-        )
+        tourProgress
+            .unlockedBadges
+            .includes(
+                badgeId
+            )
     ) {
         return null;
     }
 
 
     const badge =
-        getBadgeById(badgeId);
+        getBadgeById(
+            badgeId
+        );
 
 
     if (!badge) {
@@ -221,9 +317,12 @@ function unlockBadge(badgeId) {
     }
 
 
-    tourProgress.unlockedBadges.push(
-        badgeId
-    );
+    tourProgress
+        .unlockedBadges
+        .push(
+            badgeId
+        );
+
 
     tourProgress.hubPoints +=
         badge.reward;
@@ -237,58 +336,71 @@ function unlockBadge(badgeId) {
 }
 
 
+
+// =========================
 // CHECK ALL BADGES
-
-function evaluateBadges(context) {
-
-    const newlyUnlockedBadges = [];
+// =========================
 
 
-    badges.forEach(function (badge) {
+function evaluateBadges(
+    context
+) {
 
-        if (
-            tourProgress.unlockedBadges.includes(
-                badge.id
-            )
-        ) {
-            return;
+    const newlyUnlockedBadges =
+        [];
+
+
+    badges.forEach(
+        function (badge) {
+
+            if (
+                tourProgress
+                    .unlockedBadges
+                    .includes(
+                        badge.id
+                    )
+            ) {
+                return;
+            }
+
+
+            if (
+                typeof badge.condition !==
+                "function"
+            ) {
+                return;
+            }
+
+
+            const conditionMet =
+                badge.condition(
+                    tourProgress,
+                    context
+                );
+
+
+            if (!conditionMet) {
+                return;
+            }
+
+
+            const unlockedBadge =
+                unlockBadge(
+                    badge.id
+                );
+
+
+            if (unlockedBadge) {
+
+                newlyUnlockedBadges
+                    .push(
+                        unlockedBadge
+                    );
+
+            }
+
         }
-
-
-        if (
-            typeof badge.condition !== "function"
-        ) {
-            return;
-        }
-
-
-        const conditionMet =
-            badge.condition(
-                tourProgress,
-                context
-            );
-
-
-        if (!conditionMet) {
-            return;
-        }
-
-
-        const unlockedBadge =
-            unlockBadge(
-                badge.id
-            );
-
-
-        if (unlockedBadge) {
-
-            newlyUnlockedBadges.push(
-                unlockedBadge
-            );
-
-        }
-
-    });
+    );
 
 
     return newlyUnlockedBadges;
@@ -296,38 +408,53 @@ function evaluateBadges(context) {
 }
 
 
-// marked discovered
 
-function markChallengeDiscovered(challengeId) {
+// =========================
+// MARK CHALLENGE DISCOVERED
+// =========================
 
-    if (!tourProgress.challengeProgress) {
 
-        tourProgress.challengeProgress = {};
+function markChallengeDiscovered(
+    challengeId
+) {
+
+    if (
+        !tourProgress
+            .challengeProgress
+    ) {
+
+        tourProgress
+            .challengeProgress = {};
 
     }
 
-    const existingProgress =
-        tourProgress.challengeProgress[
-        challengeId
 
-        ];
+    const existingProgress =
+        tourProgress
+            .challengeProgress[
+                challengeId
+            ];
 
 
     if (existingProgress) {
 
-        existingProgress.discovered = true;
+        existingProgress
+            .discovered = true;
 
     } else {
 
-        tourProgress.challengeProgress[
-            challengeId
-        ] = {
+        tourProgress
+            .challengeProgress[
+                challengeId
+            ] = {
 
-            discovered: true,
-            completed: false,
-            bestScore: 0
+                discovered: true,
 
-        };
+                completed: false,
+
+                bestScore: 0
+
+            };
 
     }
 
@@ -336,7 +463,12 @@ function markChallengeDiscovered(challengeId) {
 
 }
 
-// RECORD A CHALLENGE COMPLETION
+
+
+// =========================
+// RECORD CHALLENGE COMPLETION
+// =========================
+
 
 function completeChallengeProgress(
     challengeData
@@ -345,43 +477,52 @@ function completeChallengeProgress(
     const challengeId =
         challengeData.challengeId;
 
+
     const challengePoints =
         challengeData.challengePoints;
 
+
     const firstTryBonuses =
         challengeData.firstTryBonuses;
+
 
     const totalQuestions =
         challengeData.totalQuestions;
 
 
+
     const previousChallengeProgress =
-        tourProgress.challengeProgress[
-        challengeId
-        ];
+        tourProgress
+            .challengeProgress[
+                challengeId
+            ];
 
 
     const previousBestScore =
         previousChallengeProgress
-            ? previousChallengeProgress.bestScore
+            ? previousChallengeProgress
+                .bestScore
             : 0;
 
 
     const isFirstCompletion =
         !previousChallengeProgress ||
-        !previousChallengeProgress.completed;
+        !previousChallengeProgress
+            .completed;
+
 
 
     /*
         PERSONAL BEST SYSTEM
 
-        Hub Points only increase when the
-        current score is higher than the
-        previous best score.
+        Hub Points only increase when
+        the current score is higher
+        than the previous best score.
 
         This rewards genuine improvement
         while preventing repeated farming.
     */
+
 
     let scoreImprovement = 0;
 
@@ -400,45 +541,50 @@ function completeChallengeProgress(
             scoreImprovement;
 
 
-        tourProgress.challengeProgress[
-            challengeId
-        ] = {
+        tourProgress
+            .challengeProgress[
+                challengeId
+            ] = {
 
-            discovered: true,
+                discovered: true,
 
-            completed: true,
+                completed: true,
 
-            bestScore:
-                challengePoints
+                bestScore:
+                    challengePoints
 
-        };
+            };
 
     }
+
 
 
     /*
-        If this is the first completion and
-        the score happened to be zero,
-        still record that the challenge
-        has been completed.
+        If this is the first completion
+        and the score happened to be zero,
+        still record the challenge as
+        completed.
     */
+
 
     if (isFirstCompletion) {
 
-        tourProgress.challengeProgress[
-            challengeId
-        ] = {
+        tourProgress
+            .challengeProgress[
+                challengeId
+            ] = {
 
-            discovered: true,
+                discovered: true,
 
-            completed: true,
+                completed: true,
 
-            bestScore:
-                challengePoints
+                bestScore:
+                    challengePoints
 
-        };
+            };
 
     }
+
 
 
     const badgeContext = {
@@ -476,12 +622,22 @@ function completeChallengeProgress(
     saveTourProgress();
 
 
+
     return {
-        unlockedBadges: unlockedBadges,
-        previousBestScore: previousBestScore,
-        scoreImprovement: scoreImprovement,
+
+        unlockedBadges:
+            unlockedBadges,
+
+        previousBestScore:
+            previousBestScore,
+
+        scoreImprovement:
+            scoreImprovement,
+
         isNewBest:
-            challengePoints > previousBestScore
+            challengePoints >
+            previousBestScore
+
     };
 
 }
