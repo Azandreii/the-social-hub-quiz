@@ -89,17 +89,31 @@
         );
 
         window.addEventListener(
-            "message",
-            function (event) {
+    "message",
+    function (event) {
 
-                console.log(
-                    "MESSAGE RECEIVED BY TOUR:",
-                    event.origin,
-                    event.data
-                );
+        if (
+            event.origin !==
+            "https://azandreii.github.io"
+        ) {
+            return;
+        }
 
-            }
+        if (
+            !event.data ||
+            event.data.type !==
+                "tsh-wrapper-test"
+        ) {
+            return;
+        }
+
+        console.log(
+            "TSH WRAPPER TEST RECEIVED:",
+            event.data
         );
+
+    }
+);
 
 
 
