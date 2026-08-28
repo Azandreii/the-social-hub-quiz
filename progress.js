@@ -11,7 +11,6 @@ let tourProgress = {
 
 const PROGRESS_STORAGE_KEY = "tshTourProgress";
 
-let lastSentProgressJson = null;
 
 
 // SAVE PROGRESS
@@ -77,8 +76,6 @@ function loadTourProgress() {
     const savedProgress =
         localStorage.getItem(PROGRESS_STORAGE_KEY);
 
-    let lastSentProgressJson = null;
-
 
     if (!savedProgress) {
         return;
@@ -128,44 +125,17 @@ function loadTourProgress() {
 
 }
 
-function getTourProgressSummary() {
+function sendProgressToWrapper() {
 
-    const challengeEntries =
-        Object.entries(
-            tourProgress.challengeProgress
-        );
-
-
-    const discoveredChallenges =
-        challengeEntries.filter(function(entry) {
-
-            const challenge = entry[1];
-
-            return challenge.discovered === true;
-
-        }).length;
+    if (window.top === window) {
+        return;
+    }
 
 
-    const completedChallenges =
-        challengeEntries.filter(function(entry) {
-
-            const challenge = entry[1];
-
-            return challenge.completed === true;
-
-        }).length;
-
-
-    return {
+    const progressForWrapper = {
 
         hubPoints:
             tourProgress.hubPoints,
-
-        discoveredChallenges:
-            discoveredChallenges,
-
-        completedChallenges:
-            completedChallenges,
 
         challengeProgress:
             tourProgress.challengeProgress,
@@ -174,6 +144,47 @@ function getTourProgressSummary() {
             tourProgress.unlockedBadges
 
     };
+
+
+    const progressJson =
+        JSON.stringify(
+            progressForWrapper
+        );
+
+
+    /*
+        Avoid sending the exact same
+        progress repeatedly.
+
+        Store the previous value directly
+        on this function so there is no
+        separate global variable to manage.
+    */
+
+    if (
+        sendProgressToWrapper
+            .lastSentProgressJson ===
+        progressJson
+    ) {
+        return;
+    }
+
+
+    sendProgressToWrapper
+        .lastSentProgressJson =
+        progressJson;
+
+
+    window.top.postMessage(
+        {
+            type:
+                "tsh-progress-update",
+
+            progress:
+                progressForWrapper
+        },
+        "https://azandreii.github.io"
+    );
 
 }
 
