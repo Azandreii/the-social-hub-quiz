@@ -43,6 +43,23 @@
         loadTourProgress();
 
         console.log(
+            "RAW STORAGE:",
+            localStorage.getItem(
+                "tshTourProgress"
+            )
+        );
+
+        console.log(
+            "LOADED tourProgress:",
+            tourProgress
+        );
+
+        console.log(
+            "TOUR PROGRESS:",
+            getTourProgressSummary()
+        );
+
+        console.log(
             "TOUR PROGRESS:",
             getTourProgressSummary()
         );
