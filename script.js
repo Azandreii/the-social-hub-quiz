@@ -43,7 +43,7 @@ const CHALLENGE_ID =
     "groningen-quick-challenge";
 
 const currentChallenge =
-    challenges.find(function(challenge) {
+    challenges.find(function (challenge) {
 
         return challenge.id === CHALLENGE_ID;
 
@@ -59,7 +59,7 @@ if (!currentChallenge) {
 
 const questions =
     quizQuestions[
-        CHALLENGE_ID
+    CHALLENGE_ID
     ];
 
 if (!questions) {
@@ -71,6 +71,21 @@ if (!questions) {
 }
 
 // const CHALLENGE_ID = "groningen-quick-challenge";  - HARD CODED VERSION FOR TESTING PURPOSES
+
+/* WRAPPER */
+function sendWrapperTestMessage() {
+
+    window.top.postMessage(
+        {
+            type: "tsh-wrapper-test",
+            challengeId:
+                "groningen-quick-challenge"
+        },
+        "*"
+    );
+
+}
+
 
 function changeQuizState(updateFunction) {
 
@@ -236,6 +251,8 @@ function showChallengeIntro() {
 
 }
 function startChallenge() {
+
+    sendWrapperTestMessage();
 
     changeQuizState(function () {
 

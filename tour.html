@@ -86,7 +86,20 @@
                     event.data.name
                 );
             }
-        )
+        );
+
+        window.addEventListener(
+            "message",
+            function (event) {
+
+                console.log(
+                    "MESSAGE RECEIVED BY TOUR:",
+                    event.origin,
+                    event.data
+                );
+
+            }
+        );
 
 
 
