@@ -11,6 +11,8 @@ let tourProgress = {
 
 const PROGRESS_STORAGE_KEY = "tshTourProgress";
 
+let lastSentProgressJson = null;
+
 
 // SAVE PROGRESS
 
