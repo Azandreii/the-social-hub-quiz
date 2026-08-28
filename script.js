@@ -11,6 +11,17 @@ const isEmbedMode =
 const isDevMode =
     urlParams.get("dev") === "1";
 
+window.top.postMessage(
+    {
+        type: "tsh-wrapper-test",
+        challengeId:
+            "groningen-quick-challenge",
+        message:
+            "Challenge iframe reached wrapper"
+    },
+    "https://azandreii.github.io"
+);
+
 
 if (isEmbedMode) {
 
@@ -252,7 +263,6 @@ function showChallengeIntro() {
 }
 function startChallenge() {
 
-    sendWrapperTestMessage();
 
     changeQuizState(function () {
 
