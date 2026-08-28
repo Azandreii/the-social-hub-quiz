@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Social Hub Tour</title>
+
+    <script src="https://static.kuula.io/api.js"></script>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000000;
+        }
+
+        #kuula-tour {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <iframe id="kuula-tour" src="https://kuula.co/share/collection/7TnKZ" allowfullscreen
+        allow="xr-spatial-tracking; gyroscope; accelerometer"></iframe>
+
+    <script src="badges.js"></script>
+    <script src="progress.js"></script>
+
+    <script>
+        let kuulaFrameId = null;
+
+        loadTourProgress();
+
+        console.log(
+            "TOUR PROGRESS:",
+            getTourProgressSummary()
+        );
+
+        KuulaPlayerAPI.addEventListener(
+            "frameloaded",
+            function (event) {
+
+                kuulaFrameId = event.frame;
+
+                console.log(
+                    "Kuula tour ready:",
+                    kuulaFrameId
+                );
+            }
+        );
+
+        KuulaPlayerAPI.addEventListener(
+            "hotspot",
+            function (event) {
+
+                console.log(
+                    "Hotspot:",
+                    event.data.name
+                );
+            }
+        )
+
+
+
+    </script>
+
+</body>
+
+</html>
