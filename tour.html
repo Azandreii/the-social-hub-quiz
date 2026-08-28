@@ -102,14 +102,34 @@
         if (
             !event.data ||
             event.data.type !==
-                "tsh-wrapper-test"
+                "tsh-progress-update"
         ) {
             return;
         }
 
+        const receivedProgress =
+            event.data.progress;
+
+        if (!receivedProgress) {
+            return;
+        }
+
+        tourProgress = {
+            hubPoints:
+                receivedProgress.hubPoints || 0,
+
+            challengeProgress:
+                receivedProgress.challengeProgress || {},
+
+            unlockedBadges:
+                receivedProgress.unlockedBadges || []
+        };
+
+        saveTourProgress();
+
         console.log(
-            "TSH WRAPPER TEST RECEIVED:",
-            event.data
+            "WRAPPER PROGRESS UPDATED:",
+            getTourProgressSummary()
         );
 
     }

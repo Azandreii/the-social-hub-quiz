@@ -21,6 +21,32 @@ function saveTourProgress() {
         JSON.stringify(tourProgress)
     );
 
+    sendProgressToWrapper();
+}
+
+function sendProgressToWrapper() {
+
+    if (window.top === window) {
+        return;
+    }
+
+    window.top.postMessage(
+        {
+            type: "tsh-progress-update",
+
+            progress: {
+                hubPoints:
+                    tourProgress.hubPoints,
+
+                challengeProgress:
+                    tourProgress.challengeProgress,
+
+                unlockedBadges:
+                    tourProgress.unlockedBadges
+            }
+        },
+        "https://azandreii.github.io"
+    );
 }
 
 
