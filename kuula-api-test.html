@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kuula API Test</title>
+
+    <script src="https://static.kuula.io/api.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        iframe {
+            width: 100%;
+            height: 700px;
+            border: 0;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- REPLACE THE SRC WITH YOUR KUULA EMBED URL -->
+
+    <iframe src="https://kuula.co/share/collection/7TnKZ" allowfullscreen
+        allow="xr-spatial-tracking; gyroscope; accelerometer">
+    </iframe>
+
+
+    <script>
+
+        KuulaPlayerAPI.addEventListener(
+            "hotspot",
+            function (event) {
+
+                console.log(
+                    "HOTSPOT CLICKED"
+                );
+
+                console.log(
+                    "UID:",
+                    event.data.uid
+                );
+
+                console.log(
+                    "Name:",
+                    event.data.name
+                );
+
+
+                if (
+                    event.data.name ===
+                    "groningen-quiz-hotspot"
+                ) {
+
+                    KuulaPlayerAPI.setParam(
+                        event.frame,
+                        "groningen-quiz-hotspot",
+                        "tint",
+                        "#f0c419"
+                    );
+
+                    KuulaPlayerAPI.setParam(
+                        event.frame,
+                        "groningen-quiz-hotspot",
+                        "opacity",
+                        1.00
+                    );
+
+                }
+            }
+        );
+
+
+        KuulaPlayerAPI.addEventListener(
+            "hotspot",
+            function (event) {
+
+                console.log(
+                    "HOTSPOT CLICKED"
+                );
+
+                console.log(
+                    "UID:",
+                    event.data.uid
+                );
+
+                console.log(
+                    "Name:",
+                    event.data.name
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
