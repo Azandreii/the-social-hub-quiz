@@ -590,6 +590,86 @@
             background: #fff3b8;
         }
 
+        .tour-hotspot-legend {
+            display: grid;
+
+            gap: 8px;
+
+            margin-top: 14px;
+        }
+
+
+        .tour-hotspot-legend-title {
+            margin-bottom: 2px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.1em;
+
+            text-transform: uppercase;
+        }
+
+
+        .tour-hotspot-legend-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .tour-hotspot-legend-dot {
+            width: 12px;
+            height: 12px;
+
+            flex-shrink: 0;
+
+            border: 1.5px solid #111111;
+
+            border-radius: 50%;
+        }
+
+
+        .tour-hotspot-legend-dot.is-discovered {
+            background: #4D9DE0;
+        }
+
+
+        .tour-hotspot-legend-dot.is-completed {
+            background: #63B76C;
+        }
+
+
+        .tour-hotspot-legend-dot.is-perfected {
+            background: #F2B705;
+        }
+
+        .tour-hotspot-legend-star {
+            width: 12px;
+
+            flex-shrink: 0;
+
+            color: #F2B705;
+
+            font-size: 14px;
+
+            line-height: 1;
+
+            text-align: center;
+        }
+
+
+        .tour-hotspot-legend-dot.is-found {
+            background: #9B6BD3;
+        }
+
 
         .tour-menu-info[hidden] {
             display: none;
@@ -1030,16 +1110,16 @@
         const HOTSPOT_COLORS = {
 
             discovered:
-                "#FFD84D",
+                "#4D9DE0",   // blue
 
             completed:
-                "#8FD19E",
+                "#63B76C",   // green
 
             perfected:
-                "#F4C542",
+                "#F2B705",   // gold
 
             found:
-                "#7FA8FF"
+                "#9B6BD3"    // purple
 
         };
 
@@ -1641,6 +1721,91 @@
 
         }
 
+        function showChallengeInformation() {
+
+            document.getElementById(
+                "tour-menu-info-title"
+            ).textContent =
+                "How challenges work";
+
+
+            document.getElementById(
+                "tour-menu-info-text"
+            ).innerHTML = `
+
+        Explore the virtual tour and interact
+        with challenge hotspots. Completing
+        challenges earns Hub Points and badges.
+
+        <span class="tour-hotspot-legend">
+
+            <span class="tour-hotspot-legend-title">
+                Hotspot states
+            </span>
+
+            <span class="tour-hotspot-legend-item">
+
+                <span
+                    class="
+                        tour-hotspot-legend-dot
+                        is-discovered
+                    "
+                    aria-hidden="true">
+                </span>
+
+                Discovered
+
+            </span>
+
+            <span class="tour-hotspot-legend-item">
+
+                <span
+                    class="
+                        tour-hotspot-legend-dot
+                        is-completed
+                    "
+                    aria-hidden="true">
+                </span>
+
+                Completed
+
+            </span>
+
+<span class="tour-hotspot-legend-item">
+
+    <span
+        class="tour-hotspot-legend-star"
+        aria-hidden="true">
+        ★
+    </span>
+
+    Perfected
+
+</span>
+
+            <span class="tour-hotspot-legend-item">
+
+                <span
+                    class="
+                        tour-hotspot-legend-dot
+                        is-found
+                    "
+                    aria-hidden="true">
+                </span>
+
+                Found
+
+            </span>
+
+        </span>
+
+    `;
+
+
+            menuInfo.hidden = false;
+
+        }
+
 
         document.getElementById(
             "tour-menu-how"
@@ -1648,10 +1813,7 @@
             "click",
             function () {
 
-                showMenuInformation(
-                    "How challenges work",
-                    "Explore the virtual tour and interact with challenge hotspots. Quizzes reward correct answers, observation challenges ask you to inspect the environment, and find-it challenges reward spatial exploration. Completing challenges earns Hub Points and badges."
-                );
+                showChallengeInformation();
 
             }
         );
