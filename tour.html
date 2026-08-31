@@ -970,8 +970,10 @@
          ========================= -->
 
 
+    <script src="challenges.js?v=2"></script>
     <script src="badges.js?v=2"></script>
     <script src="progress.js?v=4"></script>
+
 
 
 
@@ -1020,6 +1022,215 @@
            KUULA PLAYER
            ========================= */
 
+        // =========================
+        // HOTSPOT PROGRESSION STATES
+        // =========================
+
+
+        const HOTSPOT_COLORS = {
+
+            discovered:
+                "#FFD84D",
+
+            completed:
+                "#8FD19E",
+
+            perfected:
+                "#F4C542",
+
+            found:
+                "#7FA8FF"
+
+        };
+
+
+        function getChallengeHotspotState(
+            challenge
+        ) {
+
+            const progress =
+                tourProgress.challengeProgress[
+                challenge.id
+                ];
+
+
+            /*
+                No saved progress means the
+                hotspot should keep its normal
+                Kuula appearance.
+            */
+
+            if (!progress) {
+                return "default";
+            }
+
+
+            /*
+                PERFECTED
+        
+                Check this before completed,
+                because a perfected challenge
+                is also technically completed.
+            */
+
+            if (
+                challenge.supportsPerfect === true &&
+                progress.completed === true &&
+                progress.bestScore >=
+                challenge.perfectScore
+            ) {
+
+                return "perfected";
+
+            }
+
+
+            /*
+                FIND-IT
+        
+                Binary spatial challenges do not
+                have a Perfect state. Completion
+                means the target was found.
+            */
+
+            if (
+                (
+                    challenge.type === "find-it" ||
+                    challenge.type === "find"
+                ) &&
+                progress.completed === true
+            ) {
+
+                return "found";
+
+            }
+
+
+            /*
+                COMPLETED
+        
+                Performance challenge completed,
+                but not yet perfected.
+            */
+
+            if (
+                progress.completed === true
+            ) {
+
+                return "completed";
+
+            }
+
+
+            /*
+                DISCOVERED
+        
+                Challenge has been opened but
+                not yet completed.
+            */
+
+            if (
+                progress.discovered === true
+            ) {
+
+                return "discovered";
+
+            }
+
+
+            return "default";
+
+        }
+
+
+
+        function updateChallengeHotspot(
+            challenge
+        ) {
+
+            if (
+                !kuulaFrameId ||
+                !challenge.kuulaHotspotId
+            ) {
+                return;
+            }
+
+
+            const state =
+                getChallengeHotspotState(
+                    challenge
+                );
+
+
+            /*
+                Leave untouched hotspots using
+                their normal Kuula appearance.
+            */
+
+            if (
+                state === "default"
+            ) {
+                return;
+            }
+
+
+            const color =
+                HOTSPOT_COLORS[
+                state
+                ];
+
+
+            if (!color) {
+                return;
+            }
+
+
+            KuulaPlayerAPI.setParam(
+                kuulaFrameId,
+                challenge.kuulaHotspotId,
+                "tint",
+                color
+            );
+
+
+            KuulaPlayerAPI.setParam(
+                kuulaFrameId,
+                challenge.kuulaHotspotId,
+                "opacity",
+                1
+            );
+
+
+            console.log(
+                "HOTSPOT STATE:",
+                challenge.id,
+                state,
+                color
+            );
+
+        }
+
+
+
+        function updateAllChallengeHotspots() {
+
+            if (!kuulaFrameId) {
+                return;
+            }
+
+
+            challenges.forEach(
+                function (challenge) {
+
+                    updateChallengeHotspot(
+                        challenge
+                    );
+
+                }
+            );
+
+        }
+
 
         KuulaPlayerAPI.addEventListener(
             "frameloaded",
@@ -1033,6 +1244,26 @@
                     "Kuula tour ready:",
                     kuulaFrameId
                 );
+
+
+                updateAllChallengeHotspots();
+
+            }
+        );
+
+        KuulaPlayerAPI.addEventListener(
+            "postloaded",
+            function () {
+
+                /*
+                    A new panorama may contain
+                    different challenge hotspots.
+        
+                    Re-apply stored progression
+                    whenever a Kuula post loads.
+                */
+
+                updateAllChallengeHotspots();
 
             }
         );
@@ -1057,27 +1288,6 @@
                     hotspotName
                 );
 
-
-                if (
-                    hotspotName ===
-                    "groningen-quiz-hotspot"
-                ) {
-
-                    KuulaPlayerAPI.setParam(
-                        event.frame,
-                        hotspotName,
-                        "tint",
-                        "#f0c419"
-                    );
-
-                    KuulaPlayerAPI.setParam(
-                        event.frame,
-                        hotspotName,
-                        "opacity",
-                        1
-                    );
-
-                }
 
             }
         );
@@ -1140,8 +1350,9 @@
 
                 saveTourProgress();
 
-
                 renderTourHud();
+
+                updateAllChallengeHotspots();
 
 
                 console.log(

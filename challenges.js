@@ -12,6 +12,9 @@ const challenges = [
         type:
             "quiz",
 
+        kuulaHotspotId:
+            "groningen-quiz-hotspot",
+
         estimatedTime:
             "About 1 minute",
 
@@ -42,6 +45,9 @@ const challenges = [
         type:
             "quiz",
 
+        kuulaHotspotId:
+            "reception-quiz-hotspot",
+
         estimatedTime:
             "About 1 minute",
 
@@ -71,6 +77,9 @@ const challenges = [
         type:
             "observation",
 
+        kuulaHotspotId:
+            "lobby-observation-hotspot",
+
         estimatedTime:
             "About 1 minute",
 
@@ -96,6 +105,12 @@ const challenges = [
 
         type:
             "find-it",
+
+        kuulaHotspotId:
+            "find-reception-hotspot",
+
+        kuulaTargetHotspotId:
+            "find-reception-target",
 
         estimatedTime:
             "About 1 minute",
