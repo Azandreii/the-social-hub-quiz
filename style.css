@@ -1850,3 +1850,27 @@ body[data-theme="dark"] .feedback.feedback-success .secondary-button {
 body[data-theme="dark"] .feedback.feedback-success .secondary-button:hover {
     background: rgba(17, 17, 17, 0.06);
 }
+
+/* =========================
+   DARK MODE — ERROR FEEDBACK
+   ========================= */
+
+body[data-theme="dark"] .feedback.feedback-error {
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback.feedback-error h2,
+body[data-theme="dark"] .feedback.feedback-error p,
+body[data-theme="dark"] .feedback.feedback-error .feedback-label,
+body[data-theme="dark"] .feedback.feedback-error span {
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback.feedback-error button {
+    color: #111111;
+    border-color: #111111;
+}
+
+body[data-theme="dark"] .bonus-summary {
+    color: #111111;
+}
