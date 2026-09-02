@@ -1824,3 +1824,29 @@ body[data-theme="dark"] .challenge-intro-note,
 body[data-theme="dark"] .challenge-intro-note * {
     color: #111111;
 }
+
+/* =========================
+   DARK MODE — SUCCESS PANEL
+   ========================= */
+
+body[data-theme="dark"] .feedback.feedback-success {
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback.feedback-success h2,
+body[data-theme="dark"] .feedback.feedback-success p,
+body[data-theme="dark"] .feedback.feedback-success .feedback-label,
+body[data-theme="dark"] .feedback.feedback-success .points-earned,
+body[data-theme="dark"] .feedback.feedback-success .points-earned span {
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback.feedback-success .secondary-button {
+    color: #111111;
+    border-color: #111111;
+    background: transparent;
+}
+
+body[data-theme="dark"] .feedback.feedback-success .secondary-button:hover {
+    background: rgba(17, 17, 17, 0.06);
+}
