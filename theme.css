@@ -1,0 +1,23 @@
+:root {
+    --ui-bg: #faf9f6;
+    --ui-surface: #faf9f6;
+    --ui-text: #111111;
+    --ui-muted: #505050;
+    --ui-border: rgba(17, 17, 17, 0.35);
+    --ui-soft-border: rgba(17, 17, 17, 0.16);
+    --ui-soft-surface: rgba(17, 17, 17, 0.035);
+    --ui-accent: #F2B705;
+    --ui-shadow: rgba(0, 0, 0, 0.22);
+}
+
+body[data-theme="dark"] {
+    --ui-bg: #151515;
+    --ui-surface: #1d1d1d;
+    --ui-text: #f5f3ee;
+    --ui-muted: #b9b7b2;
+    --ui-border: rgba(245, 243, 238, 0.32);
+    --ui-soft-border: rgba(245, 243, 238, 0.16);
+    --ui-soft-surface: rgba(255, 255, 255, 0.055);
+    --ui-accent: #F2B705;
+    --ui-shadow: rgba(0, 0, 0, 0.42);
+}

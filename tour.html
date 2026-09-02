@@ -14,6 +14,7 @@
 
     <script src="https://static.kuula.io/api.js"></script>
 
+    <link rel="stylesheet" href="theme.css">
 
     <style>
         * {
@@ -66,86 +67,147 @@
 
 
         /* =========================
-           HUD POSITIONING LAYER
-           ========================= */
+   MAIN TOUR HEADER
+   ========================= */
 
 
         .tour-hud {
             position: absolute;
 
-            top: 16px;
-            left: 16px;
-            right: 16px;
+            top: 14px;
+            left: 14px;
+            right: 14px;
 
             z-index: 30;
 
-            display: flex;
+            min-height: 88px;
 
-            align-items: flex-start;
-            justify-content: space-between;
+            display: grid;
 
-            gap: 16px;
-
-            pointer-events: none;
-        }
-
-
-
-        /* =========================
-           LEFT HUD PANEL
-           ========================= */
-
-
-        .tour-hud-left {
-            display: flex;
+            grid-template-columns:
+                0.9fr 1.2fr 0.9fr;
 
             align-items: center;
 
-            gap: 16px;
+            gap: 28px;
 
-            min-height: 58px;
+            padding: 12px 18px;
 
-            padding: 8px 14px;
+            border: 1.5px solid rgba(17, 17, 17, 0.28);
 
-            border: 2px solid #111111;
+            border-radius: 16px;
+
+            background:
+                rgba(250, 249, 246, 0.97);
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.16);
+
+            pointer-events: none;
+
+            transition:
+                grid-template-columns 0.42s cubic-bezier(.22, .8, .25, 1),
+                background-color 0.20s ease,
+                border-color 0.20s ease,
+                box-shadow 0.20s ease;
+        }
+
+        /* =========================
+   HEADER WHILE KUULA CARD IS OPEN
+   ========================= */
+
+        .tour-hud.is-challenge-open {
+            grid-template-columns:
+                0.42fr 1.75fr 0.58fr;
+
+            background: transparent;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+
+        .tour-hud.is-challenge-open .tour-hud-left,
+        .tour-hud.is-challenge-open .tour-hud-actions {
+            min-height: 72px;
+
+            padding: 10px 16px;
+
+            border: 1.5px solid rgba(17, 17, 17, 0.28);
 
             border-radius: 14px;
 
             background:
-                rgba(250, 249, 246, 0.96);
+                rgba(250, 249, 246, 0.97);
 
-            pointer-events: auto;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.16);
         }
 
 
-        .tour-brand {
-            padding-right: 16px;
-
-            border-right: 2px solid #111111;
-
-            font-size: 13px;
-
-            font-weight: 800;
-
-            line-height: 0.9;
-
-            letter-spacing: -0.3px;
-        }
 
 
-        .tour-points {
+        /* =========================
+   HEADER LEFT
+   ========================= */
+
+
+        .tour-hud-left {
+            min-width: 0;
+
             display: flex;
 
             align-items: center;
 
-            gap: 9px;
+            gap: 18px;
+
+            pointer-events: auto;
+
+            transition:
+                background-color 0.28s ease,
+                border-color 0.28s ease,
+                box-shadow 0.28s ease,
+                transform 0.42s cubic-bezier(.22, .8, .25, 1);
+        }
+
+        .tour-hud.is-challenge-open .tour-hud-left {
+            transform: translateX(-6px);
+        }
+
+        .tour-brand {
+            flex-shrink: 0;
+
+            padding-right: 20px;
+
+            border-right:
+                1.5px solid rgba(17, 17, 17, 0.20);
+
+            font-size: 14px;
+
+            font-weight: 900;
+
+            line-height: 0.88;
+
+            letter-spacing: -0.5px;
+        }
+
+
+        .tour-points {
+            min-width: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
         }
 
 
         .tour-points-icon {
-            color: #f0c419;
+            flex-shrink: 0;
 
-            font-size: 24px;
+            color: #F2B705;
+
+            font-size: 33px;
 
             line-height: 1;
         }
@@ -154,7 +216,9 @@
         .tour-points strong {
             display: block;
 
-            font-size: 22px;
+            font-size: 27px;
+
+            font-weight: 800;
 
             line-height: 1;
         }
@@ -163,7 +227,7 @@
         .tour-points-label {
             display: block;
 
-            margin-top: 3px;
+            margin-top: 4px;
 
             color: #5f5f5f;
 
@@ -173,40 +237,152 @@
 
 
         /* =========================
-           RIGHT HUD PANEL
-           ========================= */
+   HEADER CENTER
+   ========================= */
+
+
+        .tour-current-challenge {
+            min-width: 0;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            opacity: 1;
+
+            transform: translateY(0);
+
+            transition:
+                opacity 0.22s ease,
+                transform 0.30s cubic-bezier(.22, .8, .25, 1),
+                visibility 0.22s ease;
+        }
+
+
+        .tour-current-challenge.is-hidden {
+            opacity: 0;
+
+            transform: translateY(-10px) scale(0.98);
+
+            visibility: hidden;
+
+            pointer-events: none;
+        }
+
+
+        .tour-current-kicker {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #505050;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.11em;
+
+            text-transform: uppercase;
+        }
+
+
+        .tour-current-title {
+            margin: 0;
+
+            overflow: hidden;
+
+            color: #111111;
+
+            font-size: 18px;
+
+            font-weight: 800;
+
+            line-height: 1.15;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+        }
+
+
+        .tour-current-progress {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #505050;
+
+            font-size: 12px;
+        }
+
+
+        .tour-current-progress-track {
+            width: min(290px, 100%);
+            height: 4px;
+
+            margin-top: 8px;
+
+            overflow: hidden;
+
+            border-radius: 999px;
+
+            background: #e5e5e5;
+        }
+
+
+        .tour-current-progress-fill {
+            width: 0%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background: #F2B705;
+
+            transition:
+                width 0.2s ease;
+        }
+
+
+
+        /* =========================
+   HEADER RIGHT
+   ========================= */
 
 
         .tour-hud-actions {
+            min-width: 0;
+
             display: flex;
 
             align-items: center;
 
             justify-content: flex-end;
 
-            gap: 8px;
-
-            padding: 6px;
-
-            border: 2px solid #111111;
-
-            border-radius: 14px;
-
-            background:
-                rgba(250, 249, 246, 0.96);
-
+            gap: 10px;
             pointer-events: auto;
+
+            transition:
+                background-color 0.28s ease,
+                border-color 0.28s ease,
+                box-shadow 0.28s ease,
+                transform 0.42s cubic-bezier(.22, .8, .25, 1);
+        }
+
+        .tour-hud.is-challenge-open .tour-hud-actions {
+            transform: translateX(6px);
         }
 
 
         .tour-hub-button,
         .tour-menu-button,
         .tour-fullscreen-button {
-            min-height: 44px;
+            height: 48px;
 
-            border: 2px solid #111111;
+            border:
+                1.5px solid rgba(17, 17, 17, 0.65);
 
-            background: #faf9f6;
+            background: transparent;
 
             color: #111111;
 
@@ -218,19 +394,21 @@
 
             transition:
                 background-color 0.15s ease,
-                transform 0.15s ease;
+                transform 0.15s ease,
+                border-color 0.15s ease;
         }
 
 
         .tour-hub-button {
+            min-width: 180px;
+
             display: flex;
 
             align-items: center;
+
             justify-content: center;
 
-            gap: 16px;
-
-            min-width: 174px;
+            gap: 22px;
 
             padding: 0 18px;
 
@@ -242,22 +420,25 @@
 
         .tour-menu-button,
         .tour-fullscreen-button {
-            width: 46px;
+            width: 50px;
 
             padding: 0;
 
             border-radius: 10px;
 
-            font-size: 20px;
+            font-size: 21px;
         }
 
 
         .tour-hub-button:hover,
         .tour-menu-button:hover,
-        .tour-fullscreen-button:hover,
-        .tour-menu-item:hover,
-        .tour-panel-close:hover {
-            background: #eeeeee;
+        .tour-fullscreen-button:hover {
+            background: rgba(242,
+                    183,
+                    5,
+                    0.10);
+
+            border-color: #111111;
         }
 
 
@@ -321,7 +502,7 @@
         .tour-hub-overlay {
             position: absolute;
 
-            top: 92px;
+            top: 116px;
             left: 50%;
 
             z-index: 50;
@@ -329,7 +510,7 @@
             width: min(760px,
                     calc(100% - 32px));
 
-            height: calc(100% - 112px);
+            height: calc(100% - 132px);
 
             transform:
                 translateX(-50%) translateY(12px);
@@ -416,24 +597,24 @@
         .tour-menu-panel {
             position: absolute;
 
-            top: 92px;
-            right: 16px;
+            top: 116px;
+            right: 14px;
+            bottom: 14px;
 
             z-index: 60;
 
-            width: min(360px,
-                    calc(100% - 32px));
+            width: min(390px, calc(100% - 28px));
 
-            max-height:
-                calc(100% - 112px);
+            padding: 28px;
 
-            padding: 22px;
-
-            border: 2px solid #111111;
+            border: 1.5px solid rgba(17, 17, 17, 0.35);
 
             border-radius: 16px;
 
-            background: #faf9f6;
+            background: rgba(250, 249, 246, 0.98);
+
+            box-shadow:
+                0 18px 50px rgba(0, 0, 0, 0.22);
 
             opacity: 0;
 
@@ -441,15 +622,14 @@
 
             pointer-events: none;
 
-            transform:
-                translateX(12px);
+            transform: translateX(28px);
 
             overflow-y: auto;
 
             transition:
-                opacity 0.18s ease,
-                transform 0.18s ease,
-                visibility 0.18s ease;
+                opacity 0.22s ease,
+                transform 0.32s cubic-bezier(.22, .8, .25, 1),
+                visibility 0.22s ease;
         }
 
 
@@ -471,22 +651,24 @@
             align-items: flex-start;
             justify-content: space-between;
 
-            gap: 16px;
+            gap: 20px;
 
-            margin-bottom: 22px;
+            margin-bottom: 28px;
         }
 
 
         .tour-menu-kicker {
             display: block;
 
-            margin-bottom: 5px;
+            margin-bottom: 7px;
 
-            font-size: 11px;
+            color: #505050;
 
-            font-weight: 700;
+            font-size: 10px;
 
-            letter-spacing: 0.12em;
+            font-weight: 800;
+
+            letter-spacing: 0.14em;
 
             text-transform: uppercase;
         }
@@ -495,54 +677,77 @@
         .tour-menu-heading h2 {
             margin: 0;
 
-            font-size: 27px;
+            font-size: 32px;
 
-            line-height: 1;
+            font-weight: 800;
+
+            line-height: 0.95;
+
+            letter-spacing: -0.03em;
         }
 
 
         .tour-menu-close {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
 
             flex-shrink: 0;
 
-            border: 2px solid #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1.5px solid #111111;
 
             border-radius: 50%;
 
             background: transparent;
 
-            font-size: 18px;
+            color: #111111;
+
+            font-size: 19px;
+            line-height: 1;
 
             cursor: pointer;
+
+            transition:
+                background-color 0.15s ease,
+                transform 0.15s ease;
+        }
+
+        .tour-menu-close:hover {
+            background: rgba(242, 183, 5, 0.12);
+        }
+
+        .tour-menu-close:active {
+            transform: scale(0.94);
         }
 
 
         .tour-menu-list {
             display: grid;
 
-            gap: 8px;
+            gap: 10px;
         }
 
 
         .tour-menu-item {
             width: 100%;
 
-            min-height: 52px;
+            min-height: 58px;
 
             display: flex;
 
             align-items: center;
             justify-content: space-between;
 
-            gap: 12px;
+            gap: 14px;
 
-            padding: 0 14px;
+            padding: 0 16px;
 
-            border: 2px solid #111111;
+            border: 1.5px solid #111111;
 
-            border-radius: 10px;
+            border-radius: 12px;
 
             background: #faf9f6;
 
@@ -555,6 +760,19 @@
             text-align: left;
 
             cursor: pointer;
+
+            transition:
+                background-color 0.15s ease,
+                transform 0.15s ease,
+                border-color 0.15s ease;
+        }
+
+        .tour-menu-item:hover {
+            background: rgba(242, 183, 5, 0.10);
+        }
+
+        .tour-menu-item:active {
+            transform: scale(0.985);
         }
 
 
@@ -562,6 +780,42 @@
             margin-right: 8px;
         }
 
+        #tour-menu-explore {
+            background: #111111;
+            color: #faf9f6;
+            border-color: #111111;
+        }
+
+        #tour-menu-explore:hover {
+            background: #2a2a2a;
+        }
+
+        #tour-menu-hub {
+            background: rgba(242, 183, 5, 0.14);
+        }
+
+        #tour-menu-how:hover,
+        #tour-menu-about:hover {
+            background: rgba(17, 17, 17, 0.05);
+        }
+
+        #tour-menu-how,
+        #tour-menu-about {
+            min-height: 54px;
+
+            border-color: rgba(17, 17, 17, 0.55);
+
+            background: transparent;
+
+            font-weight: 650;
+        }
+
+        #tour-menu-how.is-active,
+        #tour-menu-about.is-active {
+            background: rgba(242, 183, 5, 0.08);
+
+            border-color: rgba(17, 17, 17, 0.85);
+        }
 
         .tour-menu-divider {
             height: 2px;
@@ -572,6 +826,202 @@
         }
 
 
+        /* =========================
+           DARK/LIGHT MODE STYLING CSS
+           ========================= */
+
+        .tour-menu-panel {
+            background: var(--ui-surface);
+            color: var(--ui-text);
+
+            transition:
+                opacity 0.22s ease,
+                transform 0.32s cubic-bezier(.22, .8, .25, 1),
+                visibility 0.22s ease,
+                background-color 0.22s ease,
+                color 0.22s ease;
+        }
+
+        .tour-menu-kicker,
+        .tour-theme-kicker {
+            color: var(--ui-muted);
+        }
+
+        .tour-theme-control {
+            border-color: var(--ui-soft-border);
+        }
+
+        .tour-theme-button {
+            border-color: var(--ui-border);
+            color: var(--ui-text);
+        }
+
+        .tour-theme-button.is-active {
+            border-color: var(--ui-text);
+            background: var(--ui-text);
+            color: var(--ui-surface);
+        }
+
+        body[data-theme="dark"] .tour-menu-close {
+            border-color: var(--ui-text);
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] #tour-menu-explore {
+            background: #0f0f0f;
+
+            border-color: rgba(245, 243, 238, 0.72);
+
+            color: #f5f3ee;
+
+            box-shadow:
+                0 0 0 1px rgba(245, 243, 238, 0.08),
+                0 8px 22px rgba(0, 0, 0, 0.28);
+        }
+
+        body[data-theme="dark"] #tour-menu-explore:hover {
+            background: #171717;
+
+            border-color: #f5f3ee;
+
+            transform: translateY(-1px);
+        }
+
+        body[data-theme="dark"] #tour-menu-hub {
+            background: rgba(242, 183, 5, 0.18);
+            border-color: rgba(242, 183, 5, 0.65);
+            color: #f5f3ee;
+        }
+
+        body[data-theme="dark"] #tour-menu-how,
+        body[data-theme="dark"] #tour-menu-about {
+            background: rgba(255, 255, 255, 0.035);
+            border-color: rgba(245, 243, 238, 0.30);
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] #tour-menu-how:hover,
+        body[data-theme="dark"] #tour-menu-about:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        body[data-theme="dark"] #tour-menu-how.is-active,
+        body[data-theme="dark"] #tour-menu-about.is-active {
+            background: rgba(242, 183, 5, 0.12);
+            border-color: rgba(242, 183, 5, 0.65);
+        }
+
+        body[data-theme="dark"] .tour-menu-divider {
+            background: rgba(245, 243, 238, 0.70);
+        }
+
+        body[data-theme="dark"] .tour-menu-info {
+            background: rgba(255, 255, 255, 0.045);
+            border-color: rgba(245, 243, 238, 0.18);
+        }
+
+        body[data-theme="dark"] .tour-menu-info h3 {
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-menu-info p {
+            color: var(--ui-muted);
+        }
+
+        body[data-theme="dark"] .tour-hotspot-legend {
+            border-color: rgba(245, 243, 238, 0.16);
+        }
+
+        body[data-theme="dark"] .tour-hotspot-legend-title,
+        body[data-theme="dark"] .tour-hotspot-legend-item {
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-theme-button {
+            border-color: rgba(245, 243, 238, 0.30);
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-theme-button:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        body[data-theme="dark"] .tour-theme-button.is-active {
+            background: #f5f3ee;
+            border-color: #f5f3ee;
+            color: #111111;
+        }
+
+        body[data-theme="dark"] .tour-hud {
+            background: rgba(29, 29, 29, 0.97);
+
+            border-color: rgba(245, 243, 238, 0.28);
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.32);
+
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-brand {
+            border-color: rgba(245, 243, 238, 0.20);
+
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-points strong {
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-points-label {
+            color: var(--ui-muted);
+        }
+
+        body[data-theme="dark"] .tour-brand {
+            border-color: rgba(245, 243, 238, 0.20);
+
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-points strong {
+            color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-points-label {
+            color: var(--ui-muted);
+        }
+
+        body[data-theme="dark"] .tour-hub-button,
+        body[data-theme="dark"] .tour-menu-button,
+        body[data-theme="dark"] .tour-fullscreen-button {
+            border-color: rgba(245, 243, 238, 0.55);
+
+            color: var(--ui-text);
+
+            background: transparent;
+        }
+
+        body[data-theme="dark"] .tour-hub-button:hover,
+        body[data-theme="dark"] .tour-menu-button:hover,
+        body[data-theme="dark"] .tour-fullscreen-button:hover {
+            background: rgba(242, 183, 5, 0.10);
+
+            border-color: var(--ui-text);
+        }
+
+        body[data-theme="dark"] .tour-hud.is-challenge-open .tour-hud-left,
+
+        body[data-theme="dark"] .tour-hud.is-challenge-open .tour-hud-actions {
+            background: rgba(29, 29, 29, 0.97);
+
+            border-color: rgba(245, 243, 238, 0.28);
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.32);
+        }
+
+
+
 
         /* =========================
            MENU INFORMATION PANEL
@@ -579,23 +1029,29 @@
 
 
         .tour-menu-info {
-            margin-top: 16px;
+            margin-top: 0px;
 
-            padding: 16px;
+            padding: 18px;
 
-            border: 2px solid #111111;
+            border: 1.5px solid rgba(17, 17, 17, 0.20);
 
-            border-radius: 10px;
+            border-radius: 12px;
 
-            background: #fff3b8;
+            background: rgba(17, 17, 17, 0.035);
         }
+
+
 
         .tour-hotspot-legend {
             display: grid;
 
-            gap: 8px;
+            gap: 7px;
 
-            margin-top: 14px;
+            margin-top: 16px;
+
+            padding-top: 14px;
+
+            border-top: 1px solid rgba(17, 17, 17, 0.16);
         }
 
 
@@ -677,21 +1133,123 @@
 
 
         .tour-menu-info h3 {
-            margin:
-                0 0 8px;
+            margin: 0 0 10px;
 
-            font-size: 18px;
+            font-size: 17px;
+
+            font-weight: 800;
+
+            line-height: 1.15;
         }
-
 
         .tour-menu-info p {
             margin: 0;
 
-            color: #333333;
+            color: #444444;
 
-            font-size: 14px;
+            font-size: 13px;
 
-            line-height: 1.45;
+            line-height: 1.55;
+        }
+
+        .tour-theme-control {
+            margin-top: 24px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid rgba(17, 17, 17, 0.16);
+        }
+
+        .tour-theme-copy {
+            margin-bottom: 12px;
+        }
+
+        .tour-theme-kicker {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #5a5a5a;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.12em;
+
+            text-transform: uppercase;
+        }
+
+        .tour-theme-copy strong {
+            display: block;
+
+            font-size: 16px;
+
+            font-weight: 800;
+        }
+
+        .tour-theme-options {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 8px;
+        }
+
+        .tour-theme-button {
+            min-height: 46px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 0 12px;
+
+            border:
+                1.5px solid rgba(17, 17, 17, 0.45);
+
+            border-radius: 10px;
+
+            background: transparent;
+
+            color: #111111;
+
+            font: inherit;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background-color 0.15s ease,
+                border-color 0.15s ease,
+                transform 0.15s ease;
+        }
+
+        .tour-theme-button:hover {
+            border-color: #111111;
+
+            background:
+                rgba(17, 17, 17, 0.04);
+        }
+
+        .tour-theme-button:active {
+            transform: scale(0.98);
+        }
+
+        .tour-theme-button.is-active {
+            border-color: #111111;
+
+            background: #111111;
+
+            color: #faf9f6;
         }
 
 
@@ -702,68 +1260,6 @@
 
 
         @media (max-width: 760px) {
-
-            .tour-hud {
-                top: 10px;
-                left: 10px;
-                right: 10px;
-
-                gap: 8px;
-            }
-
-
-            .tour-hud-left {
-                min-height: 52px;
-
-                padding: 6px 10px;
-            }
-
-
-            .tour-brand {
-                display: none;
-            }
-
-
-            .tour-points {
-                gap: 7px;
-            }
-
-
-            .tour-points-icon {
-                font-size: 21px;
-            }
-
-
-            .tour-points strong {
-                font-size: 19px;
-            }
-
-
-            .tour-hud-actions {
-                padding: 4px;
-
-                gap: 5px;
-            }
-
-
-            .tour-hub-button {
-                min-width: 0;
-
-                padding: 0 10px;
-
-                font-size: 13px;
-            }
-
-
-            .tour-hub-button span {
-                display: none;
-            }
-
-
-            .tour-menu-button,
-            .tour-fullscreen-button {
-                width: 42px;
-            }
 
 
             .tour-hub-overlay {
@@ -779,16 +1275,6 @@
             }
 
 
-            .tour-menu-panel {
-                top: 78px;
-                right: 10px;
-
-                width:
-                    calc(100% - 20px);
-
-                max-height:
-                    calc(100% - 88px);
-            }
 
         }
 
@@ -810,6 +1296,45 @@
                 transition: none;
             }
 
+            .tour-hud,
+            .tour-hud-left,
+            .tour-hud-actions,
+            .tour-current-challenge {
+                transition: none;
+            }
+
+
+
+        }
+
+        /* =========================
+   DARK HUD FINAL OVERRIDES
+   ========================= */
+
+        body[data-theme="dark"] .tour-hud.is-challenge-open {
+            background: transparent;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+
+        body[data-theme="dark"] .tour-hud .tour-current-kicker {
+            color: #b9b7b2;
+        }
+
+
+        body[data-theme="dark"] .tour-hud .tour-current-title {
+            color: #f5f3ee;
+        }
+
+
+        body[data-theme="dark"] .tour-hud .tour-current-progress {
+            color: #c8c6c1;
+        }
+
+
+        body[data-theme="dark"] .tour-hud .tour-current-progress-track {
+            background: rgba(245, 243, 238, 0.20);
         }
     </style>
 
@@ -821,11 +1346,13 @@
 
 
     <!-- =========================
-         WRAPPER HUD
-         ========================= -->
+     WRAPPER HUD
+     ========================= -->
 
 
-    <div class="tour-hud">
+    <header class="tour-hud">
+
+        <!-- LEFT: BRAND + HUB POINTS -->
 
         <div class="tour-hud-left">
 
@@ -861,6 +1388,37 @@
 
 
 
+        <!-- CENTER: CURRENT CHALLENGE -->
+
+        <div class="tour-current-challenge">
+
+            <span class="tour-current-kicker">
+                Current challenge
+            </span>
+
+
+            <h2 class="tour-current-title" id="tour-current-title">
+                Explore The Social Hub
+            </h2>
+
+
+            <span class="tour-current-progress" id="tour-current-progress">
+                Discover challenges throughout the tour
+            </span>
+
+
+            <div class="tour-current-progress-track" aria-hidden="true">
+
+                <div class="tour-current-progress-fill" id="tour-current-progress-fill"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RIGHT: ACTIONS -->
+
         <div class="tour-hud-actions">
 
             <button class="tour-hub-button" id="tour-open-hub" type="button">
@@ -884,7 +1442,7 @@
 
         </div>
 
-    </div>
+    </header>
 
 
 
@@ -1038,6 +1596,36 @@
 
             <p id="tour-menu-info-text">
             </p>
+
+        </div>
+
+        <div class="tour-theme-control">
+
+            <div class="tour-theme-copy">
+
+                <span class="tour-theme-kicker">
+                    Appearance
+                </span>
+
+                <strong>
+                    Theme
+                </strong>
+
+            </div>
+
+            <div class="tour-theme-options" role="group" aria-label="Theme">
+
+                <button class="tour-theme-button is-active" id="tour-theme-light" type="button" aria-pressed="true">
+                    ☀
+                    <span>Light</span>
+                </button>
+
+                <button class="tour-theme-button" id="tour-theme-dark" type="button" aria-pressed="false">
+                    ☾
+                    <span>Dark</span>
+                </button>
+
+            </div>
 
         </div>
 
@@ -1335,19 +1923,12 @@
             "postloaded",
             function () {
 
-                /*
-                    A new panorama may contain
-                    different challenge hotspots.
-        
-                    Re-apply stored progression
-                    whenever a Kuula post loads.
-                */
-
                 updateAllChallengeHotspots();
+
+                showCurrentChallengeHud();
 
             }
         );
-
 
         KuulaPlayerAPI.addEventListener(
             "hotspot",
@@ -1369,8 +1950,50 @@
                 );
 
 
+                const challengeHotspot =
+                    challenges.find(
+                        function (challenge) {
+
+                            return (
+                                challenge.kuulaHotspotId ===
+                                hotspotName
+                            );
+
+                        }
+                    );
+
+
+                const findTargetHotspot =
+                    challenges.find(
+                        function (challenge) {
+
+                            return (
+                                challenge.kuulaTargetHotspotId ===
+                                hotspotName
+                            );
+
+                        }
+                    );
+
+
+                if (
+                    challengeHotspot ||
+                    findTargetHotspot
+                ) {
+
+                    hideCurrentChallengeHud();
+
+                }
+
             }
         );
+
+        /* !!! replace by another method
+        KuulaPlayerAPI.addEventListener("cardclosed", function () {
+
+            showCurrentChallengeHud();
+
+        }); */
 
 
 
@@ -1378,6 +2001,22 @@
            PROGRESS FROM CHALLENGES
            ========================= */
 
+        /*
+         * Restore the full HUD when a Kuula card closes.
+         */
+        window.addEventListener("message", (event) => {
+
+            if (!event.origin.includes("kuula")) {
+                return;
+            }
+
+            if (event.data?.cmd !== "cardclosed") {
+                return;
+            }
+
+            showCurrentChallengeHud();
+
+        });
 
         window.addEventListener(
             "message",
@@ -1479,17 +2118,100 @@
                 "tour-open-menu"
             );
 
-
         const menuInfo =
             document.getElementById(
                 "tour-menu-info"
             );
+
+        const currentChallengeHud =
+            document.getElementById(
+                "tour-current-title"
+            ).closest(
+                ".tour-current-challenge"
+            );
+
+        /* =========================
+           LIGHT/DARK MODE
+           ========================= */
+
+        const lightThemeButton =
+            document.getElementById(
+                "tour-theme-light"
+            );
+
+        const darkThemeButton =
+            document.getElementById(
+                "tour-theme-dark"
+            );
+
+        const THEME_STORAGE_KEY =
+            "tshTourTheme";
 
 
 
         /* =========================
            SHARED UI HELPERS
            ========================= */
+
+        const tourHud =
+            document.querySelector(
+                ".tour-hud"
+            );
+
+
+        function hideCurrentChallengeHud() {
+
+            if (
+                !currentChallengeHud ||
+                !tourHud
+            ) {
+                return;
+            }
+
+
+            currentChallengeHud.classList.add(
+                "is-hidden"
+            );
+
+
+            tourHud.classList.add(
+                "is-challenge-open"
+            );
+
+        }
+
+
+        function showCurrentChallengeHud() {
+
+            if (
+                !currentChallengeHud ||
+                !tourHud
+            ) {
+                return;
+            }
+
+            /*
+             * First restore the full-width HUD.
+             * The CSS grid transition now has time
+             * to animate back from the two islands.
+             */
+            tourHud.classList.remove(
+                "is-challenge-open"
+            );
+
+            /*
+             * Then bring the centre information back
+             * shortly after the header begins closing.
+             */
+            window.setTimeout(() => {
+
+                currentChallengeHud.classList.remove(
+                    "is-hidden"
+                );
+
+            }, 180);
+
+        }
 
 
         function showBackdrop() {
@@ -1603,6 +2325,174 @@
            MENU
            ========================= */
 
+        const themeClients =
+            new Set();
+
+
+        window.addEventListener(
+            "message",
+            function (event) {
+
+                if (
+                    !event.data ||
+                    event.data.type !==
+                    "tsh-theme-request"
+                ) {
+                    return;
+                }
+
+
+                const allowedOrigin =
+                    event.origin ===
+                    "https://azandreii.github.io" ||
+
+                    event.origin.startsWith(
+                        "http://127.0.0.1:"
+                    ) ||
+
+                    event.origin.startsWith(
+                        "http://localhost:"
+                    );
+
+
+                if (!allowedOrigin) {
+                    return;
+                }
+
+
+                themeClients.add(
+                    event.source
+                );
+
+
+                event.source.postMessage(
+                    {
+                        type:
+                            "tsh-theme-update",
+
+                        theme:
+                            document.body.dataset.theme ===
+                                "dark"
+                                ? "dark"
+                                : "light"
+                    },
+                    event.origin
+                );
+
+
+                console.log(
+                    "THEME CLIENT CONNECTED:",
+                    event.origin
+                );
+
+            }
+        );
+
+        function applyTheme(theme) {
+
+
+        /*    const themeClients =
+                new Set(); */
+
+            const isDark =
+                theme === "dark";
+
+
+            document.body.dataset.theme =
+                isDark
+                    ? "dark"
+                    : "light";
+
+            lightThemeButton.classList.toggle(
+                "is-active",
+                !isDark
+            );
+
+            darkThemeButton.classList.toggle(
+                "is-active",
+                isDark
+            );
+
+            lightThemeButton.setAttribute(
+                "aria-pressed",
+                String(!isDark)
+            );
+
+            darkThemeButton.setAttribute(
+                "aria-pressed",
+                String(isDark)
+            );
+
+            localStorage.setItem(
+                THEME_STORAGE_KEY,
+                isDark
+                    ? "dark"
+                    : "light"
+            );
+
+            themeClients.forEach(
+                function (clientWindow) {
+
+                    try {
+
+                        clientWindow.postMessage(
+                            {
+                                type:
+                                    "tsh-theme-update",
+
+                                theme:
+                                    isDark
+                                        ? "dark"
+                                        : "light"
+                            },
+                            "*"
+                        );
+
+                    } catch (error) {
+
+                        themeClients.delete(
+                            clientWindow
+                        );
+
+                    }
+
+                }
+            );
+        }
+
+        lightThemeButton.addEventListener(
+            "click",
+            function () {
+
+                applyTheme(
+                    "light"
+                );
+
+            }
+        );
+
+
+        darkThemeButton.addEventListener(
+            "click",
+            function () {
+
+                applyTheme(
+                    "dark"
+                );
+
+            }
+        );
+
+        const savedTheme =
+            localStorage.getItem(
+                THEME_STORAGE_KEY
+            );
+
+        applyTheme(
+            savedTheme === "dark"
+                ? "dark"
+                : "light"
+        );
 
         function openMenu() {
 
@@ -1639,6 +2529,10 @@
 
 
             menuInfo.hidden = true;
+
+            updateMenuInfoToggle(
+                null
+            );
 
 
             hideBackdropIfUnused();
@@ -1699,6 +2593,48 @@
             openHub
         );
 
+        function updateMenuInfoToggle(activeButtonId) {
+
+            const howButton =
+                document.getElementById(
+                    "tour-menu-how"
+                );
+
+            const aboutButton =
+                document.getElementById(
+                    "tour-menu-about"
+                );
+
+            const howSymbol =
+                howButton.querySelector(
+                    ':scope > span:last-child'
+                );
+
+            const aboutSymbol =
+                aboutButton.querySelector(
+                    ':scope > span:last-child'
+                );
+
+            howSymbol.textContent =
+                activeButtonId === "tour-menu-how"
+                    ? "−"
+                    : "+";
+
+            aboutSymbol.textContent =
+                activeButtonId === "tour-menu-about"
+                    ? "−"
+                    : "+";
+
+            howButton.classList.toggle(
+                "is-active",
+                activeButtonId === "tour-menu-how"
+            );
+
+            aboutButton.classList.toggle(
+                "is-active",
+                activeButtonId === "tour-menu-about"
+            );
+        }
 
         function showMenuInformation(
             title,
@@ -1800,9 +2736,20 @@
         </span>
 
     `;
+            document.getElementById(
+                "tour-menu-how"
+            ).insertAdjacentElement(
+                "afterend",
+                menuInfo
+            );
 
+            updateMenuInfoToggle(
+                "tour-menu-how"
+            );
 
             menuInfo.hidden = false;
+
+
 
         }
 
@@ -1824,6 +2771,16 @@
         ).addEventListener(
             "click",
             function () {
+                document.getElementById(
+                    "tour-menu-about"
+                ).insertAdjacentElement(
+                    "afterend",
+                    menuInfo
+                );
+
+                updateMenuInfoToggle(
+                    "tour-menu-about"
+                );
 
                 showMenuInformation(
                     "About this experience",

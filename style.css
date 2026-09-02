@@ -977,9 +977,9 @@ body.embed-mode .hub-badge {
     }
 
     .hub-progress-grid {
-    grid-template-columns:
-        1fr;
-}
+        grid-template-columns:
+            1fr;
+    }
 
 }
 
@@ -1182,8 +1182,7 @@ body.embed-mode .hub-badge {
 
 /* FIND-IT COMPLETED STATE */
 
-.hub-challenge.is-found
-.hub-challenge-icon {
+.hub-challenge.is-found .hub-challenge-icon {
     position: relative;
 
     box-shadow:
@@ -1191,8 +1190,7 @@ body.embed-mode .hub-badge {
 }
 
 
-.hub-challenge.is-found
-.hub-challenge-icon::after {
+.hub-challenge.is-found .hub-challenge-icon::after {
     content: "◎";
 
     position: absolute;
@@ -1217,8 +1215,7 @@ body.embed-mode .hub-badge {
 /* PERFECT STATE */
 
 
-.hub-challenge.is-perfect
-.hub-challenge-icon::after {
+.hub-challenge.is-perfect .hub-challenge-icon::after {
     content: "★";
 
     position: absolute;
@@ -1539,7 +1536,7 @@ body.hub-page {
     display: grid;
 
     grid-template-columns:
-    repeat(3, 1fr);
+        repeat(3, 1fr);
 
     gap: 12px;
 }
@@ -1768,4 +1765,62 @@ body.hub-page {
 .secondary-button:focus-visible {
     outline: 3px solid #111111;
     outline-offset: 3px;
+}
+
+body[data-theme="dark"] {
+    background: var(--ui-bg);
+    color: var(--ui-text);
+}
+
+body[data-theme="dark"] .quiz-card {
+    background: var(--ui-surface);
+    color: var(--ui-text);
+
+    border-color: var(--ui-border);
+}
+
+body[data-theme="dark"] #question,
+body[data-theme="dark"] .question,
+body[data-theme="dark"] .feedback-title {
+    color: var(--ui-text);
+}
+
+body[data-theme="dark"] #answer-instruction,
+body[data-theme="dark"] .quiz-label,
+body[data-theme="dark"] .question-counter,
+body[data-theme="dark"] .hub-points-label {
+    color: var(--ui-muted);
+}
+
+body[data-theme="dark"] button {
+    color: var(--ui-text);
+
+    background: rgba(255, 255, 255, 0.04);
+
+    border-color: rgba(245, 243, 238, 0.35);
+}
+
+body[data-theme="dark"] button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08);
+
+    border-color: var(--ui-text);
+}
+
+body[data-theme="dark"] .intro-points-note {
+    background: #fff0ad;
+    border-color: #111111;
+    color: #111111;
+}
+
+body[data-theme="dark"] .intro-points-note strong {
+    color: #111111;
+}
+
+body[data-theme="dark"] .intro-points-note p {
+    color: #111111;
+}
+
+body[data-theme="dark"] .challenge-intro-note,
+body[data-theme="dark"] .challenge-intro-note * {
+    color: #111111;
 }
