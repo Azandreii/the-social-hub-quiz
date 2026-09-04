@@ -2123,13 +2123,17 @@ body[data-theme="dark"] .feedback-complete .secondary-button:hover {
 
 /* Dark mode — intro My Social Hub button */
 
-body[data-theme="dark"] .challenge-intro .secondary-button {
+/* Dark mode — secondary navigation buttons */
+
+body[data-theme="dark"] .challenge-intro .secondary-button,
+body[data-theme="dark"] .feedback:not(.feedback-success):not(.feedback-error):not(.feedback-complete) .secondary-button {
     background-color: transparent;
     border-color: rgba(245, 243, 238, 0.55);
     color: #f5f3ee;
 }
 
-body[data-theme="dark"] .challenge-intro .secondary-button:hover {
+body[data-theme="dark"] .challenge-intro .secondary-button:hover,
+body[data-theme="dark"] .feedback:not(.feedback-success):not(.feedback-error):not(.feedback-complete) .secondary-button:hover {
     background-color: rgba(255, 255, 255, 0.08);
     border-color: #f5f3ee;
 }
