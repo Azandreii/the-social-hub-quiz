@@ -1792,7 +1792,7 @@ body[data-theme="dark"] .hub-points-label {
     color: var(--ui-muted);
 }
 
-body[data-theme="dark"] button {
+body[data-theme="dark"] .answer-button {
     color: var(--ui-text);
 
     background: rgba(255, 255, 255, 0.04);
@@ -1800,7 +1800,7 @@ body[data-theme="dark"] button {
     border-color: rgba(245, 243, 238, 0.35);
 }
 
-body[data-theme="dark"] button:hover:not(:disabled) {
+body[data-theme="dark"] .answer-button:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.08);
 
     border-color: var(--ui-text);
@@ -1825,52 +1825,298 @@ body[data-theme="dark"] .challenge-intro-note * {
     color: #111111;
 }
 
-/* =========================
-   DARK MODE — SUCCESS PANEL
-   ========================= */
 
-body[data-theme="dark"] .feedback.feedback-success {
-    color: #111111;
+
+/* =========================================
+   MY SOCIAL HUB — DARK MODE
+   ========================================= */
+
+body[data-theme="dark"].hub-page {
+    background: var(--ui-bg);
+    color: var(--ui-text);
 }
 
-body[data-theme="dark"] .feedback.feedback-success h2,
-body[data-theme="dark"] .feedback.feedback-success p,
-body[data-theme="dark"] .feedback.feedback-success .feedback-label,
-body[data-theme="dark"] .feedback.feedback-success .points-earned,
-body[data-theme="dark"] .feedback.feedback-success .points-earned span {
-    color: #111111;
+
+body[data-theme="dark"] .hub-card {
+    background: var(--ui-surface);
+    color: var(--ui-text);
 }
 
-body[data-theme="dark"] .feedback.feedback-success .secondary-button {
-    color: #111111;
+
+/* Headings */
+
+body[data-theme="dark"] .hub-title,
+body[data-theme="dark"] .hub-section-header h2,
+body[data-theme="dark"] .hub-total-points,
+body[data-theme="dark"] .hub-total-label,
+body[data-theme="dark"] .hub-kicker,
+body[data-theme="dark"] .hub-section-kicker {
+    color: var(--ui-text);
+}
+
+
+/* Main divider */
+
+body[data-theme="dark"] .hub-points-panel {
+    border-color: var(--ui-text);
+}
+
+
+/* Progress statistics */
+
+body[data-theme="dark"] .hub-stat {
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(245, 243, 238, 0.45);
+    color: var(--ui-text);
+}
+
+body[data-theme="dark"] .hub-stat strong {
+    color: var(--ui-text);
+}
+
+body[data-theme="dark"] .hub-stat span {
+    color: var(--ui-muted);
+}
+
+
+/* Default challenge cards */
+
+body[data-theme="dark"] .hub-challenge {
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(245, 243, 238, 0.40);
+    color: var(--ui-text);
+}
+
+body[data-theme="dark"] .hub-challenge-name {
+    color: var(--ui-text);
+}
+
+body[data-theme="dark"] .hub-challenge-state {
+    color: var(--ui-muted);
+}
+
+
+/* Discovered remains yellow */
+
+body[data-theme="dark"] .hub-challenge.is-discovered {
+    background: #fff3b8;
     border-color: #111111;
-    background: transparent;
-}
-
-body[data-theme="dark"] .feedback.feedback-success .secondary-button:hover {
-    background: rgba(17, 17, 17, 0.06);
-}
-
-/* =========================
-   DARK MODE — ERROR FEEDBACK
-   ========================= */
-
-body[data-theme="dark"] .feedback.feedback-error {
     color: #111111;
 }
 
-body[data-theme="dark"] .feedback.feedback-error h2,
-body[data-theme="dark"] .feedback.feedback-error p,
-body[data-theme="dark"] .feedback.feedback-error .feedback-label,
-body[data-theme="dark"] .feedback.feedback-error span {
+body[data-theme="dark"] .hub-challenge.is-discovered .hub-challenge-name,
+body[data-theme="dark"] .hub-challenge.is-discovered .hub-challenge-state {
     color: #111111;
 }
 
-body[data-theme="dark"] .feedback.feedback-error button {
+
+/* Completed remains green */
+
+body[data-theme="dark"] .hub-challenge.is-completed {
+    background: #eef7ef;
+    border-color: #111111;
     color: #111111;
+}
+
+body[data-theme="dark"] .hub-challenge.is-completed .hub-challenge-name,
+body[data-theme="dark"] .hub-challenge.is-completed .hub-challenge-state {
+    color: #111111;
+}
+
+
+/* Challenge icons */
+
+body[data-theme="dark"] .hub-challenge-icon {
+    background: #111111;
+    color: #ffffff;
+}
+
+
+/* Challenge action buttons */
+
+body[data-theme="dark"] .hub-challenge-action {
+    background: #111111;
+    border-color: #111111;
+    color: #ffffff;
+}
+
+body[data-theme="dark"] .hub-challenge-action:hover {
+    background: #333333;
+}
+
+
+/* Locked challenges */
+
+body[data-theme="dark"] .hub-challenge.is-locked {
+    background: rgba(255, 255, 255, 0.025);
+    border-color: rgba(245, 243, 238, 0.28);
+}
+
+body[data-theme="dark"] .hub-challenge.is-locked .hub-challenge-name {
+    color: var(--ui-muted);
+}
+
+body[data-theme="dark"] .hub-challenge.is-locked .hub-challenge-state {
+    color: var(--ui-muted);
+}
+
+
+/* Badges */
+
+body[data-theme="dark"] .hub-badge {
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(245, 243, 238, 0.40);
+    color: var(--ui-text);
+}
+
+body[data-theme="dark"] .hub-badge-name,
+body[data-theme="dark"] .hub-badge-reward {
+    color: var(--ui-text);
+}
+
+body[data-theme="dark"] .hub-badge-icon {
+    background: #111111;
+    color: #ffffff;
+}
+
+
+/* Locked badges */
+
+body[data-theme="dark"] .hub-badge.is-locked {
+    opacity: 0.55;
+}
+
+body[data-theme="dark"] .hub-badge.is-locked .hub-badge-name {
+    color: var(--ui-muted);
+}
+
+/* =========================================
+   QUIZ FEEDBACK — DARK MODE
+   ========================================= */
+
+
+/* Light semantic panels keep dark text */
+
+body[data-theme="dark"] .feedback-success,
+body[data-theme="dark"] .feedback-error,
+body[data-theme="dark"] .feedback-complete {
+    color: #111111;
+}
+
+
+/* Status icon stays black with white symbol */
+
+body[data-theme="dark"] .feedback-success .feedback-icon,
+body[data-theme="dark"] .feedback-error .feedback-icon,
+body[data-theme="dark"] .feedback-complete .feedback-icon {
+    background-color: #111111;
+    color: #ffffff;
+}
+
+
+/* Correct/error text */
+
+body[data-theme="dark"] .feedback-success h2,
+body[data-theme="dark"] .feedback-success p,
+body[data-theme="dark"] .feedback-success .feedback-label,
+body[data-theme="dark"] .feedback-success .points-earned,
+
+body[data-theme="dark"] .feedback-error h2,
+body[data-theme="dark"] .feedback-error p,
+body[data-theme="dark"] .feedback-error .feedback-label {
+    color: #111111;
+}
+
+
+/* Correct-answer points label */
+
+body[data-theme="dark"] .feedback-success .points-earned span {
+    color: #555555;
+}
+
+
+/* Primary feedback buttons:
+   Next one / Try Again / Restart challenge */
+
+body[data-theme="dark"] .feedback .feedback-button {
+    background-color: #111111;
+    border-color: #111111;
+    color: #ffffff;
+}
+
+body[data-theme="dark"] .feedback .feedback-button span {
+    color: #ffffff;
+}
+
+body[data-theme="dark"] .feedback .feedback-button:hover {
+    background-color: #333333;
+}
+
+
+/* Completion screen */
+
+body[data-theme="dark"] .feedback-complete h2,
+body[data-theme="dark"] .feedback-complete > p,
+body[data-theme="dark"] .feedback-complete .feedback-label,
+body[data-theme="dark"] .feedback-complete .completion-points,
+body[data-theme="dark"] .feedback-complete .hub-points-value,
+body[data-theme="dark"] .feedback-complete .personal-best-title,
+body[data-theme="dark"] .feedback-complete .personal-best-detail {
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback-complete .completion-points-label,
+body[data-theme="dark"] .feedback-complete .completion-bonuses,
+body[data-theme="dark"] .feedback-complete .hub-points-label {
+    color: #5a5a5a;
+}
+
+
+/* Completion sub-panels */
+
+body[data-theme="dark"] .feedback-complete .bonus-summary {
+    background-color: #faf9f6;
+    border-color: #111111;
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback-complete .bonus-summary strong {
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback-complete .hub-points-total {
     border-color: #111111;
 }
 
-body[data-theme="dark"] .bonus-summary {
+
+/* Rewards */
+
+body[data-theme="dark"] .feedback-complete .rewards-summary {
+    background-color: #fff3b8;
+    border-color: #111111;
     color: #111111;
+}
+
+body[data-theme="dark"] .feedback-complete .rewards-heading,
+body[data-theme="dark"] .feedback-complete .reward-name,
+body[data-theme="dark"] .feedback-complete .reward-points {
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback-complete .reward-icon {
+    background-color: #111111;
+    color: #ffffff;
+}
+
+
+/* Secondary My Social Hub button */
+
+body[data-theme="dark"] .feedback-complete .secondary-button {
+    background-color: transparent;
+    border-color: #111111;
+    color: #111111;
+}
+
+body[data-theme="dark"] .feedback-complete .secondary-button:hover {
+    background-color: rgba(17, 17, 17, 0.06);
 }
