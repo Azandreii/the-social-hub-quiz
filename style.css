@@ -2120,3 +2120,16 @@ body[data-theme="dark"] .feedback-complete .secondary-button {
 body[data-theme="dark"] .feedback-complete .secondary-button:hover {
     background-color: rgba(17, 17, 17, 0.06);
 }
+
+/* Dark mode — intro My Social Hub button */
+
+body[data-theme="dark"] .challenge-intro .secondary-button {
+    background-color: transparent;
+    border-color: rgba(245, 243, 238, 0.55);
+    color: #f5f3ee;
+}
+
+body[data-theme="dark"] .challenge-intro .secondary-button:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: #f5f3ee;
+}
