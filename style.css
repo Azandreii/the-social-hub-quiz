@@ -2543,6 +2543,20 @@ body.embed-mode .hub-dashboard-close {
     font-size: 10px;
 }
 
+/* Compact Hub Points display for 4+ digits */
+
+.tour-points.is-compact {
+    gap: 9px;
+}
+
+.tour-points.is-compact strong {
+    font-size: 23px;
+    letter-spacing: -0.5px;
+}
+
+.tour-points.is-compact .tour-points-icon {
+    font-size: 30px;
+}
 
 /* -----------------------------------------
    DARK MODE DETAILS
@@ -2605,4 +2619,209 @@ body[data-theme="dark"] .hub-dashboard-stat-link {
         display: none;
     }
 
+}
+
+/* =========================================
+   HUB — CONTINUE YOUR JOURNEY
+   ========================================= */
+
+.hub-dashboard-content .hub-challenges {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.hub-dashboard-journey-card {
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 9px 11px;
+
+    border:
+        1px solid var(--ui-soft-border);
+
+    border-radius: 8px;
+
+    background:
+        var(--ui-soft-surface);
+}
+
+
+.hub-dashboard-journey-main {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.hub-dashboard-journey-icon {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #111111;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+
+.hub-dashboard-journey-copy {
+    min-width: 0;
+}
+
+
+.hub-dashboard-journey-copy strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: var(--ui-text);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    line-height: 1.15;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+.hub-dashboard-journey-copy span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--ui-muted);
+
+    font-size: 9px;
+    line-height: 1.2;
+}
+
+
+.hub-dashboard-journey-action {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 9px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: transparent;
+    color: var(--ui-text);
+
+    font: inherit;
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.hub-dashboard-action-arrow {
+    font-size: 16px;
+
+    transition:
+        transform 0.15s ease;
+}
+
+
+.hub-dashboard-journey-action:hover
+.hub-dashboard-action-arrow {
+    transform:
+        translateX(3px);
+}
+
+
+/* Current journey item */
+
+.hub-dashboard-journey-card.is-active {
+    background:
+        rgba(242, 183, 5, 0.16);
+
+    border-color:
+        rgba(242, 183, 5, 0.42);
+}
+
+
+/* Completed */
+
+.hub-dashboard-journey-card.is-completed {
+    background:
+        rgba(99, 183, 108, 0.10);
+}
+
+
+/* Perfect */
+
+.hub-dashboard-journey-card.is-perfect {
+    background:
+        rgba(99, 183, 108, 0.10);
+}
+
+
+.hub-dashboard-journey-card.is-perfect
+.hub-dashboard-journey-icon {
+    box-shadow:
+        0 0 0 3px
+        rgba(242, 183, 5, 0.30);
+}
+
+
+/* Empty state */
+
+.hub-dashboard-empty {
+    min-height: 76px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 4px;
+
+    padding: 14px;
+
+    border:
+        1px solid var(--ui-soft-border);
+
+    border-radius: 8px;
+
+    background:
+        var(--ui-soft-surface);
+}
+
+
+.hub-dashboard-empty strong {
+    font-size: 11px;
+}
+
+
+.hub-dashboard-empty span {
+    color: var(--ui-muted);
+
+    font-size: 10px;
+    line-height: 1.4;
 }

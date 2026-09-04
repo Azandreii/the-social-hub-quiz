@@ -135,7 +135,7 @@ function renderMySocialHub() {
 
     renderJourneyProgress(summary);
 
-    renderChallenges(summary);
+    renderDashboardJourney(summary);
 
     renderBadges(summary);
 
@@ -199,7 +199,7 @@ function renderJourneyProgress(summary) {
 
                 const progress =
                     summary.challengeProgress[
-                        challenge.id
+                    challenge.id
                     ];
 
 
@@ -207,54 +207,54 @@ function renderJourneyProgress(summary) {
                     progress &&
                     progress.completed &&
                     progress.bestScore >=
-                        challenge.perfectScore
+                    challenge.perfectScore
                 );
 
             }
         ).length;
 
     const findChallenges =
-    challenges.filter(
-        function (challenge) {
+        challenges.filter(
+            function (challenge) {
 
-            return (
-                challenge.type === "find-it"
-            );
+                return (
+                    challenge.type === "find-it"
+                );
 
-        }
-    );
+            }
+        );
 
 
-const completedFindChallenges =
-    findChallenges.filter(
-        function (challenge) {
+    const completedFindChallenges =
+        findChallenges.filter(
+            function (challenge) {
 
-            const progress =
-                summary.challengeProgress[
+                const progress =
+                    summary.challengeProgress[
                     challenge.id
-                ];
+                    ];
 
-            return (
-                progress &&
-                progress.completed === true
-            );
+                return (
+                    progress &&
+                    progress.completed === true
+                );
 
-        }
-    ).length;
-
-
-const findElement =
-    document.getElementById(
-        "hub-find-count"
-    );
+            }
+        ).length;
 
 
-if (findElement) {
+    const findElement =
+        document.getElementById(
+            "hub-find-count"
+        );
 
-    findElement.textContent =
-        `${completedFindChallenges} / ${findChallenges.length}`;
 
-}
+    if (findElement) {
+
+        findElement.textContent =
+            `${completedFindChallenges} / ${findChallenges.length}`;
+
+    }
 
 
     const discoveredElement =
@@ -288,6 +288,288 @@ if (findElement) {
 
 }
 
+function renderDashboardJourney(summary) {
+
+    const container =
+        document.getElementById(
+            "hub-challenges"
+        );
+
+
+    /*
+     * Only challenges the visitor has
+     * actually discovered belong on the
+     * dashboard.
+     */
+    const discoveredChallenges =
+        challenges.filter(
+            function (challenge) {
+
+                const progress =
+                    summary.challengeProgress[
+                    challenge.id
+                    ];
+
+                return (
+                    progress &&
+                    progress.discovered === true
+                );
+
+            }
+        );
+
+
+    /*
+     * Prioritise:
+     *
+     * 1. Not completed
+     * 2. Completed but not perfected
+     * 3. Perfected / found
+     */
+    discoveredChallenges.sort(
+        function (a, b) {
+
+            return (
+                getDashboardJourneyPriority(
+                    a,
+                    summary
+                ) -
+                getDashboardJourneyPriority(
+                    b,
+                    summary
+                )
+            );
+
+        }
+    );
+
+
+    /*
+     * Dashboard stays intentionally compact.
+     */
+    const visibleChallenges =
+        discoveredChallenges.slice(
+            0,
+            3
+        );
+
+
+    if (visibleChallenges.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="hub-dashboard-empty">
+
+                <strong>
+                    Start exploring
+                </strong>
+
+                <span>
+                    Discover challenges throughout
+                    the tour to see them here.
+                </span>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        visibleChallenges
+            .map(
+                function (challenge) {
+
+                    return createDashboardJourneyCard(
+                        challenge,
+                        summary
+                    );
+
+                }
+            )
+            .join("");
+
+}
+
+function getDashboardJourneyPriority(
+    challenge,
+    summary
+) {
+
+    const progress =
+        summary.challengeProgress[
+        challenge.id
+        ];
+
+
+    if (
+        !progress ||
+        progress.completed !== true
+    ) {
+
+        return 1;
+
+    }
+
+
+    if (
+        challenge.supportsPerfect === true &&
+        progress.bestScore <
+        challenge.perfectScore
+    ) {
+
+        return 2;
+
+    }
+
+
+    return 3;
+
+}
+
+
+
+function createDashboardJourneyCard(
+    challenge,
+    summary
+) {
+
+    const progress =
+        summary.challengeProgress[
+        challenge.id
+        ];
+
+
+    const isCompleted =
+        progress.completed === true;
+
+
+    const isPerfect =
+        (
+            challenge.supportsPerfect === true &&
+            isCompleted &&
+            progress.bestScore >=
+            challenge.perfectScore
+        );
+
+
+    const isFind =
+        challenge.type === "find-it";
+
+
+    let icon = "○";
+
+    let stateText =
+        "Discovered · Not completed";
+
+    let actionText =
+        "Start challenge";
+
+
+    if (isPerfect) {
+
+        icon = "★";
+
+        stateText =
+            "Completed · Perfect";
+
+        actionText =
+            "Replay challenge";
+
+    } else if (
+        isFind &&
+        isCompleted
+    ) {
+
+        icon = "✓";
+
+        stateText =
+            "Completed · Found";
+
+        actionText =
+            "View challenge";
+
+    } else if (isCompleted) {
+
+        icon = "✓";
+
+        stateText =
+            challenge.supportsPerfect === true
+                ? `Completed · Best ${progress.bestScore}`
+                : "Completed";
+
+        actionText =
+            "Replay challenge";
+
+    }
+
+
+    const cardClass =
+        isPerfect
+            ? " is-perfect"
+            : isCompleted
+                ? " is-completed"
+                : " is-active";
+
+
+    return `
+
+        <article
+            class="hub-dashboard-journey-card${cardClass}"
+        >
+
+            <div class="hub-dashboard-journey-main">
+
+                <span
+                    class="hub-dashboard-journey-icon"
+                >
+                    ${icon}
+                </span>
+
+
+                <div
+                    class="hub-dashboard-journey-copy"
+                >
+
+                    <strong>
+                        ${challenge.name}
+                    </strong>
+
+                    <span>
+                        ${stateText}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="hub-dashboard-journey-action"
+                onclick="openChallenge(
+                    '${challenge.id}'
+                )"
+                aria-label="${actionText}: ${challenge.name}"
+            >
+                <span class="hub-dashboard-action-label">
+                    ${actionText}
+                </span>
+
+                <span
+                    class="hub-dashboard-action-arrow"
+                    aria-hidden="true"
+                >
+                    →
+                </span>
+            </button>
+
+        </article>
+    `;
+
+}
 
 function renderChallenges(summary) {
 

@@ -1679,6 +1679,16 @@
             pointsElement.textContent =
                 summary.hubPoints;
 
+            const pointsContainer =
+                pointsElement.closest(
+                    ".tour-points"
+                );
+
+            pointsContainer.classList.toggle(
+                "is-compact",
+                summary.hubPoints >= 1000
+            );
+
         }
 
 
@@ -2380,19 +2390,20 @@
                 );
 
 
-                console.log(
+                /* console.log(
                     "THEME CLIENT CONNECTED:",
-                    event.origin
-                );
+                    event.origin 
+                ) */
 
             }
         );
 
+
         function applyTheme(theme) {
 
 
-        /*    const themeClients =
-                new Set(); */
+            /*    const themeClients =
+                    new Set(); */
 
             const isDark =
                 theme === "dark";
