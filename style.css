@@ -2137,3 +2137,472 @@ body[data-theme="dark"] .feedback:not(.feedback-success):not(.feedback-error):no
     background-color: rgba(255, 255, 255, 0.08);
     border-color: #f5f3ee;
 }
+
+/* =========================================
+   MY SOCIAL HUB — COMPACT DASHBOARD
+   ========================================= */
+
+.hub-card {
+    width: min(960px, calc(100% - 32px));
+    max-width: none;
+
+    margin: 20px auto;
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 1.5px solid var(--ui-border);
+    border-radius: 18px;
+
+    background: var(--ui-surface);
+    color: var(--ui-text);
+}
+
+
+/* -----------------------------------------
+   TOP BAR
+   ----------------------------------------- */
+
+.hub-dashboard-header {
+    min-height: 86px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 18px 22px;
+
+    border-bottom:
+        1px solid var(--ui-soft-border);
+}
+
+
+.hub-dashboard-brand {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+.hub-dashboard-logo {
+    display: flex;
+    flex-direction: column;
+
+    flex-shrink: 0;
+
+    font-size: 12px;
+    font-weight: 900;
+
+    line-height: 0.9;
+    letter-spacing: -0.3px;
+}
+
+
+.hub-dashboard-divider {
+    width: 1px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    background:
+        var(--ui-soft-border);
+}
+
+
+.hub-dashboard-points {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.hub-dashboard-points-icon {
+    color: var(--ui-accent);
+
+    font-size: 34px;
+    line-height: 1;
+}
+
+
+.hub-dashboard-points strong {
+    display: block;
+
+    font-size: 25px;
+    line-height: 1;
+}
+
+
+.hub-dashboard-points span:last-child {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--ui-muted);
+
+    font-size: 11px;
+}
+
+
+.hub-dashboard-close {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: var(--ui-text);
+
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+}
+
+
+.hub-dashboard-close span:last-child {
+    font-size: 22px;
+    font-weight: 400;
+}
+
+body.embed-mode .hub-dashboard-close {
+    display: none;
+}
+
+
+/* -----------------------------------------
+   INTRO
+   ----------------------------------------- */
+
+.hub-dashboard-intro {
+    padding:
+        18px 22px 10px;
+}
+
+
+.hub-dashboard-intro .hub-title {
+    margin: 0;
+
+    font-size: 27px;
+    line-height: 1;
+}
+
+
+.hub-dashboard-intro p {
+    margin: 6px 0 0;
+
+    color: var(--ui-muted);
+
+    font-size: 12px;
+}
+
+
+/* -----------------------------------------
+   STATS
+   ----------------------------------------- */
+
+.hub-dashboard-stats {
+    display: grid;
+
+    grid-template-columns:
+        1.25fr 1fr 1fr 1fr;
+
+    gap: 8px;
+
+    padding:
+        0 22px 18px;
+}
+
+
+.hub-dashboard-stat {
+    min-width: 0;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 15px;
+
+    border:
+        1px solid var(--ui-soft-border);
+
+    border-radius: 10px;
+
+    background:
+        var(--ui-soft-surface);
+}
+
+
+.hub-dashboard-stat-points {
+    position: relative;
+
+    flex-direction: column;
+
+    background:
+        rgba(242, 183, 5, 0.18);
+
+    border-color:
+        rgba(242, 183, 5, 0.35);
+}
+
+
+.hub-dashboard-stat-icon {
+    flex-shrink: 0;
+
+    font-size: 20px;
+    line-height: 1;
+
+    color: var(--ui-accent);
+}
+
+
+.hub-dashboard-stat strong {
+    display: block;
+
+    font-size: 24px;
+    line-height: 1;
+}
+
+
+.hub-dashboard-stat span:not(.hub-dashboard-stat-icon) {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--ui-muted);
+
+    font-size: 11px;
+    line-height: 1.25;
+}
+
+
+.hub-dashboard-stat-link {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: auto;
+    padding: 10px 0 0;
+
+    border: 0;
+    border-top:
+        1px solid rgba(17, 17, 17, 0.16);
+
+    background: transparent;
+
+    color: var(--ui-text);
+
+    font: inherit;
+    font-size: 10px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+}
+
+
+/* -----------------------------------------
+   MAIN CONTENT
+   ----------------------------------------- */
+
+.hub-dashboard-content {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.45fr)
+        minmax(260px, 0.8fr);
+
+    gap: 14px;
+
+    padding:
+        0 22px 22px;
+}
+
+
+.hub-dashboard-column {
+    min-width: 0;
+}
+
+
+.hub-dashboard-column h2 {
+    margin:
+        0 0 9px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* -----------------------------------------
+   CHALLENGE LIST — COMPACT
+   ----------------------------------------- */
+
+.hub-challenges {
+    gap: 7px;
+}
+
+
+.hub-challenge {
+    min-height: 58px;
+
+    gap: 12px;
+
+    padding: 10px 12px;
+
+    border-width: 1px;
+    border-radius: 9px;
+}
+
+
+.hub-challenge-icon {
+    width: 30px;
+    height: 30px;
+
+    font-size: 13px;
+}
+
+
+.hub-challenge-name {
+    margin-bottom: 2px;
+
+    font-size: 12px;
+}
+
+
+.hub-challenge-state {
+    font-size: 10px;
+}
+
+
+.hub-challenge-action {
+    padding:
+        7px 9px;
+
+    border-width: 1px;
+
+    font-size: 10px;
+}
+
+
+/* -----------------------------------------
+   BADGES — RECENT ACHIEVEMENTS
+   ----------------------------------------- */
+
+.hub-badges {
+    grid-template-columns:
+        1fr;
+
+    gap: 7px;
+}
+
+
+.hub-badge {
+    min-height: 58px;
+
+    gap: 10px;
+
+    padding:
+        10px 12px;
+
+    border-width: 1px;
+    border-radius: 9px;
+}
+
+
+.hub-badge-icon {
+    width: 30px;
+    height: 30px;
+
+    font-size: 12px;
+}
+
+
+.hub-badge-name {
+    font-size: 12px;
+}
+
+
+.hub-badge-reward {
+    font-size: 10px;
+}
+
+
+/* -----------------------------------------
+   DARK MODE DETAILS
+   ----------------------------------------- */
+
+body[data-theme="dark"] .hub-dashboard-stat-link {
+    border-color:
+        rgba(245, 243, 238, 0.18);
+
+    color: var(--ui-text);
+}
+
+
+/* -----------------------------------------
+   RESPONSIVE
+   ----------------------------------------- */
+
+@media (max-width: 560px) {
+
+    .hub-card {
+        width:
+            calc(100% - 20px);
+
+        margin:
+            10px auto;
+    }
+
+
+    .hub-dashboard-header {
+        padding:
+            14px 16px;
+    }
+
+
+    .hub-dashboard-intro {
+        padding:
+            16px 16px 10px;
+    }
+
+
+    .hub-dashboard-stats {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        padding:
+            0 16px 16px;
+    }
+
+
+    .hub-dashboard-content {
+        grid-template-columns:
+            1fr;
+
+        padding:
+            0 16px 16px;
+    }
+
+
+    .hub-dashboard-close span:first-child {
+        display: none;
+    }
+
+}

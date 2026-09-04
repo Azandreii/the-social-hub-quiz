@@ -149,9 +149,26 @@ function renderHubPoints(summary) {
             "hub-total-points"
         );
 
+    const dashboardPointsElement =
+        document.getElementById(
+            "hub-dashboard-points-value"
+        );
 
-    pointsElement.textContent =
-        summary.hubPoints;
+
+    if (pointsElement) {
+
+        pointsElement.textContent =
+            summary.hubPoints;
+
+    }
+
+
+    if (dashboardPointsElement) {
+
+        dashboardPointsElement.textContent =
+            summary.hubPoints;
+
+    }
 
 }
 
@@ -195,6 +212,49 @@ function renderJourneyProgress(summary) {
 
             }
         ).length;
+
+    const findChallenges =
+    challenges.filter(
+        function (challenge) {
+
+            return (
+                challenge.type === "find-it"
+            );
+
+        }
+    );
+
+
+const completedFindChallenges =
+    findChallenges.filter(
+        function (challenge) {
+
+            const progress =
+                summary.challengeProgress[
+                    challenge.id
+                ];
+
+            return (
+                progress &&
+                progress.completed === true
+            );
+
+        }
+    ).length;
+
+
+const findElement =
+    document.getElementById(
+        "hub-find-count"
+    );
+
+
+if (findElement) {
+
+    findElement.textContent =
+        `${completedFindChallenges} / ${findChallenges.length}`;
+
+}
 
 
     const discoveredElement =

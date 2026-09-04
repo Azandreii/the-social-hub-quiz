@@ -16,153 +16,231 @@
 
     <main class="hub-card">
 
-        <header class="hub-header">
+    <!-- =====================================
+         DASHBOARD TOP BAR
+         ===================================== -->
+
+    <header class="hub-dashboard-header">
+
+        <div class="hub-dashboard-brand">
+
+            <div class="hub-dashboard-logo">
+                <span>THE</span>
+                <span>SOCIAL</span>
+                <span>HUB</span>
+            </div>
+
+            <div class="hub-dashboard-divider"></div>
+
+            <div class="hub-dashboard-points">
+
+                <span class="hub-dashboard-points-icon">
+                    ☆
+                </span>
+
+                <div>
+                    <strong id="hub-total-points">
+                        0
+                    </strong>
+
+                    <span>
+                        Hub Points
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            class="hub-dashboard-close"
+            aria-label="Close My Social Hub"
+            onclick="window.history.back()"
+        >
+            <span>Close</span>
+            <span aria-hidden="true">×</span>
+        </button>
+
+    </header>
+
+
+    <!-- =====================================
+         DASHBOARD INTRO
+         ===================================== -->
+
+    <section class="hub-dashboard-intro">
+
+        <h1 class="hub-title">
+            My Social Hub
+        </h1>
+
+        <p>
+            Your progress overview
+        </p>
+
+    </section>
+
+
+    <!-- =====================================
+         PROGRESS SUMMARY
+         ===================================== -->
+
+    <section class="hub-dashboard-stats">
+
+        <article class="hub-dashboard-stat hub-dashboard-stat-points">
+
+            <span class="hub-dashboard-stat-icon">
+                ☆
+            </span>
 
             <div>
 
-                <div class="hub-kicker">
-                    The Social Hub Groningen
-                </div>
+                <strong
+                    id="hub-dashboard-points-value"
+                >
+                    0
+                </strong>
 
-                <h1 class="hub-title">
-                    My Social Hub
-                </h1>
-
-            </div>
-
-        </header>
-
-
-        <section class="hub-points-panel">
-
-            <div id="hub-total-points" class="hub-total-points">
-                0
-            </div>
-
-            <div class="hub-total-label">
-                Hub Points
-            </div>
-
-        </section>
-
-
-        <section class="hub-section">
-
-            <div class="hub-section-header">
-
-                <div>
-
-                    <div class="hub-section-kicker">
-                        Your journey
-                    </div>
-
-                    <h2>
-                        Tour progress
-                    </h2>
-
-                </div>
+                <span>
+                    Hub Points
+                </span>
 
             </div>
 
+            <button
+                type="button"
+                class="hub-dashboard-stat-link"
+                id="hub-view-badges"
+            >
+                View all badges
+                <span aria-hidden="true">→</span>
+            </button>
 
-            <div class="hub-progress-grid">
-
-                <div class="hub-stat">
-
-                    <strong id="hub-discovered-count">
-                        0 / 0
-                    </strong>
-
-                    <span>
-                        Discovered
-                    </span>
-
-                </div>
+        </article>
 
 
-                <div class="hub-stat">
+        <article class="hub-dashboard-stat">
 
-                    <strong id="hub-completed-count">
-                        0 / 0
-                    </strong>
+            <span class="hub-dashboard-stat-icon">
+                ✓
+            </span>
 
-                    <span>
-                        Completed
-                    </span>
+            <div>
 
-                </div>
+                <strong id="hub-completed-count">
+                    0 / 0
+                </strong>
 
-
-                <div class="hub-stat">
-
-                    <strong id="hub-perfected-count">
-                        0 / 0
-                    </strong>
-
-                    <span class="hub-stat-label">
-                        <span class="hub-stat-symbol hub-stat-symbol-perfect">
-                            ★
-                        </span>
-                        Perfected
-                    </span>
-
-                </div>
+                <span>
+                    Challenges<br>
+                    Completed
+                </span>
 
             </div>
 
-        </section>
+        </article>
 
 
-        <section class="hub-section">
+        <article class="hub-dashboard-stat">
 
-            <div class="hub-section-header">
+            <span class="hub-dashboard-stat-icon">
+                ★
+            </span>
 
-                <div>
+            <div>
 
-                    <div class="hub-section-kicker">
-                        Explore
-                    </div>
+                <strong id="hub-perfected-count">
+                    0 / 0
+                </strong>
 
-                    <h2>
-                        Challenges
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div id="hub-challenges" class="hub-challenges">
-            </div>
-
-        </section>
-
-
-        <section class="hub-section">
-
-            <div class="hub-section-header">
-
-                <div>
-
-                    <div class="hub-section-kicker">
-                        Achievements
-                    </div>
-
-                    <h2>
-                        Badges
-                    </h2>
-
-                </div>
+                <span>
+                    Challenges<br>
+                    Perfected
+                </span>
 
             </div>
 
+        </article>
 
-            <div id="hub-badges" class="hub-badges">
+
+        <article class="hub-dashboard-stat">
+
+            <span class="hub-dashboard-stat-icon">
+                ♧
+            </span>
+
+            <div>
+
+                <strong id="hub-find-count">
+                    0 / 0
+                </strong>
+
+                <span>
+                    Find-it Challenges<br>
+                    Completed
+                </span>
+
             </div>
 
-        </section>
+        </article>
 
-    </main>
+    </section>
+
+
+    <!-- Keep this for the existing JS temporarily -->
+
+    <span
+        id="hub-discovered-count"
+        hidden
+    >
+        0 / 0
+    </span>
+
+
+    <!-- =====================================
+         DASHBOARD CONTENT
+         ===================================== -->
+
+    <section class="hub-dashboard-content">
+
+
+        <!-- CONTINUE JOURNEY -->
+
+        <div class="hub-dashboard-column">
+
+            <h2>
+                Continue your journey
+            </h2>
+
+            <div
+                id="hub-challenges"
+                class="hub-challenges"
+            >
+            </div>
+
+        </div>
+
+
+        <!-- ACHIEVEMENTS -->
+
+        <div class="hub-dashboard-column">
+
+            <h2>
+                Recent achievements
+            </h2>
+
+            <div
+                id="hub-badges"
+                class="hub-badges"
+            >
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
 
 
     <div class="dev-tools" id="dev-tools" hidden>
